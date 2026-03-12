@@ -20,9 +20,12 @@ This package wraps the FRED API so you can pull data directly into R with a sing
 
 ## How is this different from fredr?
 
-There is an existing R package called [fredr](https://cran.r-project.org/package=fredr), written by Sam Boysel and Davis Vaughan and published on CRAN in 2021. It is a solid package, but it hasn't been updated since August 2021 and depends on `httr`, which has been superseded by `httr2`. It also doesn't support fetching multiple series in a single call, doesn't cache results locally, and doesn't handle automatic pagination — so browsing large category trees or release lists requires manual offset management.
+There is an existing R package called [fredr](https://cran.r-project.org/package=fredr), written by Sam Boysel and Davis Vaughan and published on CRAN in 2021. It's a solid package, but it hasn't been updated since August 2021. In practice this means:
 
-**fred** is a ground-up rewrite built on `httr2` with modern error handling, automatic rate-limit retries, transparent pagination, local caching, and multi-series support out of the box. `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns a single tidy data frame in one call. Both packages talk to the same FRED API, but **fred** handles caching, retries, and pagination automatically so you don't have to.
+- **One series at a time** — fredr can only fetch one series per call, so pulling GDP, unemployment, and CPI means three separate requests. With **fred**, `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns everything in one tidy data frame.
+- **No caching** — fredr downloads the data fresh every time you run your script. **fred** caches results locally, so repeated calls are instant.
+- **No automatic pagination** — browsing large category trees or release lists in fredr means managing offsets yourself. **fred** handles this transparently.
+- **Old HTTP stack** — fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and modern error handling.
 
 ## Installation
 
