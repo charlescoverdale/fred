@@ -161,6 +161,12 @@ FRED can compute transformations server-side, so you don't have to calculate the
 ```r
 # Year-on-year percent change in GDP
 gdp_growth <- fred_series("GDP", units = "pc1")
+tail(gdp_growth, 4)
+#>          date series_id value
+#>   2023-01-01       GDP  3.57
+#>   2023-04-01       GDP  4.49
+#>   2023-07-01       GDP  5.36
+#>   2023-10-01       GDP  5.78
 
 # Other options: "pch" (period-on-period %), "chg" (level change),
 # "log" (natural log), "pca" (annualised rate)
@@ -171,6 +177,12 @@ gdp_growth <- fred_series("GDP", units = "pc1")
 ```r
 # CPI since 2020 only
 cpi <- fred_series("CPIAUCSL", from = "2020-01-01")
+head(cpi, 4)
+#>          date series_id   value
+#>   2020-01-01  CPIAUCSL  257.971
+#>   2020-02-01  CPIAUCSL  258.678
+#>   2020-03-01  CPIAUCSL  258.115
+#>   2020-04-01  CPIAUCSL  256.389
 ```
 
 ### Aggregate daily data to a lower frequency
@@ -179,6 +191,12 @@ cpi <- fred_series("CPIAUCSL", from = "2020-01-01")
 # The 10-year Treasury yield is published daily.
 # Aggregate to monthly averages:
 rates <- fred_series("DGS10", frequency = "m")
+tail(rates, 4)
+#>          date series_id value
+#>   2024-09-01     DGS10  3.73
+#>   2024-10-01     DGS10  4.10
+#>   2024-11-01     DGS10  4.34
+#>   2024-12-01     DGS10  4.39
 
 # Or get end-of-period values instead of averages:
 rates_eop <- fred_series("DGS10", frequency = "m", aggregation = "eop")
