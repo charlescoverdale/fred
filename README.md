@@ -1,8 +1,6 @@
-# fred <img src="man/figures/logo.png" align="right" height="139" />
+# fred
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 **fred** provides clean, tidy access to economic data from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/) API directly from R.
 

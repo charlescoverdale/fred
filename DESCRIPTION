@@ -15,7 +15,7 @@ Description: Provides clean, tidy access to economic data from the 'Federal
     St. Louis'.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Language: en-GB
+Language: en-US
 URL: https://github.com/charlescoverdale/fred
 BugReports: https://github.com/charlescoverdale/fred/issues
 Roxygen: list(markdown = TRUE)
