@@ -246,7 +246,7 @@ The **fred** package is part of a suite of R packages for economic and financial
 | [obr](https://github.com/charlescoverdale/obr) | Office for Budget Responsibility | On CRAN |
 | [readecb](https://github.com/charlescoverdale/readecb) | European Central Bank | On CRAN |
 | [readoecd](https://github.com/charlescoverdale/readoecd) | OECD | On CRAN |
-| [inflateR](https://github.com/charlescoverdale/inflateR) | UK inflation adjustment | On CRAN |
+| [inflateR](https://github.com/charlescoverdale/inflateR) | Inflation adjustment | On CRAN |
 
 ## Attribution
 
