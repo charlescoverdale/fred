@@ -10,15 +10,15 @@
 #' This avoids the need to compute growth rates or log transforms locally.
 #' Supported values:
 #' \itemize{
-#'   \item `"lin"` — levels (no transformation, the default)
-#'   \item `"chg"` — change from previous period
-#'   \item `"ch1"` — change from one year ago
-#'   \item `"pch"` — percent change from previous period
-#'   \item `"pc1"` — percent change from one year ago
-#'   \item `"pca"` — compounded annual rate of change
-#'   \item `"cch"` — continuously compounded rate of change
-#'   \item `"cca"` — continuously compounded annual rate of change
-#'   \item `"log"` — natural log
+#'   \item `"lin"` -levels (no transformation, the default)
+#'   \item `"chg"` -change from previous period
+#'   \item `"ch1"` -change from one year ago
+#'   \item `"pch"` -percent change from previous period
+#'   \item `"pc1"` -percent change from one year ago
+#'   \item `"pca"` -compounded annual rate of change
+#'   \item `"cch"` -continuously compounded rate of change
+#'   \item `"cca"` -continuously compounded annual rate of change
+#'   \item `"log"` -natural log
 #' }
 #'
 #' @param series_id Character. One or more FRED series IDs (e.g. `"GDP"`,
@@ -33,6 +33,9 @@
 #'   the default).
 #' @param aggregation Character. Aggregation method when `frequency` is
 #'   specified. One of `"avg"` (default), `"sum"`, or `"eop"` (end of period).
+#' @param cache Logical. If `TRUE` (the default), results are cached locally
+#'   and returned from the cache on subsequent calls. Set to `FALSE` to force
+#'   a fresh download from the API.
 #'
 #' @return A data frame with columns:
 #' \describe{
@@ -58,7 +61,7 @@
 #' }
 fred_series <- function(series_id, from = NULL, to = NULL,
                         units = "lin", frequency = NULL,
-                        aggregation = "avg") {
+                        aggregation = "avg", cache = TRUE) {
   if (!is.character(series_id) || length(series_id) == 0L) {
     cli::cli_abort("{.arg series_id} must be a non-empty character vector.")
   }
@@ -87,7 +90,7 @@ fred_series <- function(series_id, from = NULL, to = NULL,
                         if (!is.null(to))   paste0("_to_", to))
     cache_file <- file.path(cache_dir, paste0(cache_key, ".rds"))
 
-    if (file.exists(cache_file)) {
+    if (isTRUE(cache) && file.exists(cache_file)) {
       results[[sid]] <- readRDS(cache_file)
       next
     }

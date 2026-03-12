@@ -10,7 +10,8 @@ fred_series(
   to = NULL,
   units = "lin",
   frequency = NULL,
-  aggregation = "avg"
+  aggregation = "avg",
+  cache = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,10 @@ the default).}
 
 \item{aggregation}{Character. Aggregation method when \code{frequency} is
 specified. One of \code{"avg"} (default), \code{"sum"}, or \code{"eop"} (end of period).}
+
+\item{cache}{Logical. If \code{TRUE} (the default), results are cached locally
+and returned from the cache on subsequent calls. Set to \code{FALSE} to force
+a fresh download from the API.}
 }
 \value{
 A data frame with columns:
@@ -50,15 +55,15 @@ FRED supports server-side unit transformations via the \code{units} argument.
 This avoids the need to compute growth rates or log transforms locally.
 Supported values:
 \itemize{
-\item \code{"lin"} — levels (no transformation, the default)
-\item \code{"chg"} — change from previous period
-\item \code{"ch1"} — change from one year ago
-\item \code{"pch"} — percent change from previous period
-\item \code{"pc1"} — percent change from one year ago
-\item \code{"pca"} — compounded annual rate of change
-\item \code{"cch"} — continuously compounded rate of change
-\item \code{"cca"} — continuously compounded annual rate of change
-\item \code{"log"} — natural log
+\item \code{"lin"} -levels (no transformation, the default)
+\item \code{"chg"} -change from previous period
+\item \code{"ch1"} -change from one year ago
+\item \code{"pch"} -percent change from previous period
+\item \code{"pc1"} -percent change from one year ago
+\item \code{"pca"} -compounded annual rate of change
+\item \code{"cch"} -continuously compounded rate of change
+\item \code{"cca"} -continuously compounded annual rate of change
+\item \code{"log"} -natural log
 }
 }
 \examples{
