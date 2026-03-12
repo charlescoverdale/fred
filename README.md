@@ -6,15 +6,15 @@
 
 ## What is FRED?
 
-The Federal Reserve Economic Data (FRED) database is maintained by the [Federal Reserve Bank of St. Louis](https://www.stlouisfed.org/) — one of twelve regional Reserve Banks in the US Federal Reserve System. While the Fed's Board of Governors in Washington sets monetary policy, the regional banks each developed their own research specialisms. St. Louis carved out a reputation for applied economic research and data dissemination, and FRED launched in 1991 as a dial-up bulletin board before moving to the web in the mid-1990s. It has since grown into arguably the single most important free data platform for macroeconomic research, now hosting over 800,000 time series covering GDP, employment, inflation, interest rates, trade, financial markets, and more.
+The Federal Reserve Economic Data (FRED) database is maintained by the [Federal Reserve Bank of St. Louis](https://www.stlouisfed.org/) - one of twelve regional Reserve Banks in the US Federal Reserve System. While the Fed's Board of Governors in Washington sets monetary policy, the regional banks each developed their own research specialisms. St. Louis carved out a reputation for applied economic research and data dissemination, and FRED launched in 1991 as a dial-up bulletin board before moving to the web in the mid-1990s. It has since grown into arguably the single most important free data platform for macroeconomic research, now hosting over 800,000 time series covering GDP, employment, inflation, interest rates, trade, financial markets, and more.
 
-What makes FRED unusual is its role as an aggregator. The database doesn't just publish the St. Louis Fed's own data — it pulls in series from 118 different sources, including the Bureau of Labor Statistics, Bureau of Economic Analysis, Census Bureau, Treasury Department, World Bank, and dozens of other US and international agencies. Rather than visiting each agency's website individually and navigating their different data formats, FRED gives you a single, consistent interface to all of them. It's the closest thing economics has to a universal data catalogue.
+What makes FRED unusual is its role as an aggregator. The database doesn't just publish the St. Louis Fed's own data - it pulls in series from 118 different sources, including the Bureau of Labor Statistics, Bureau of Economic Analysis, Census Bureau, Treasury Department, World Bank, and dozens of other US and international agencies. Rather than visiting each agency's website individually and navigating their different data formats, FRED gives you a single, consistent interface to all of them. It's the closest thing economics has to a universal data catalogue.
 
 ## The FRED API
 
-FRED provides a [free REST API](https://fred.stlouisfed.org/docs/api/fred/) that gives programmatic access to the full database. The API supports searching for series, fetching observations, browsing the category tree, tracking data releases and revisions, and applying server-side transformations like percent change or frequency aggregation — all without needing to visit the website. Anyone can register for a free API key.
+FRED provides a [free REST API](https://fred.stlouisfed.org/docs/api/fred/) that gives programmatic access to the full database. The API supports searching for series, fetching observations, browsing the category tree, tracking data releases and revisions, and applying server-side transformations like percent change or frequency aggregation - all without needing to visit the website. Anyone can register for a free API key.
 
-This package wraps the FRED API so you can pull data directly into R with a single function call. Rather than constructing API URLs by hand, `fred_series("GDP")` fetches the data, parses the response, and returns a tidy data frame. You can fetch multiple series at once, apply transformations, search by keyword, browse categories, and track revisions — all from R. Results are cached locally so repeated calls are instant.
+This package wraps the FRED API so you can pull data directly into R with a single function call. Rather than constructing API URLs by hand, `fred_series("GDP")` fetches the data, parses the response, and returns a tidy data frame. You can fetch multiple series at once, apply transformations, search by keyword, browse categories, and track revisions - all from R. Results are cached locally so repeated calls are instant.
 
 ## How is this different from fredr?
 
@@ -22,15 +22,15 @@ There is an existing R package called [fredr](https://cran.r-project.org/package
 
 **What's better for users:**
 
-- **Multiple series in one call** — fredr can only fetch one series at a time, so pulling GDP, unemployment, and CPI means three separate requests and manually binding the results. With **fred**, `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns everything in one tidy data frame.
-- **Local caching** — fredr downloads data fresh every time you run your script. If you're knitting a Quarto report and tweaking a chart title, it re-downloads everything from scratch on every render. **fred** caches results locally after the first download, so subsequent calls are instant and don't touch the API.
-- **Automatic pagination** — FRED's API returns results in pages of 1,000. If a category has 2,500 series, fredr gives you the first 1,000 and stops — most users won't realise they're getting incomplete data. **fred** automatically fetches all pages and stitches them together.
+- **Multiple series in one call** - fredr can only fetch one series at a time, so pulling GDP, unemployment, and CPI means three separate requests and manually binding the results. With **fred**, `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns everything in one tidy data frame.
+- **Local caching** - fredr downloads data fresh every time you run your script. If you're knitting a Quarto report and tweaking a chart title, it re-downloads everything from scratch on every render. **fred** caches results locally after the first download, so subsequent calls are instant and don't touch the API.
+- **Automatic pagination** - FRED's API returns results in pages of 1,000. If a category has 2,500 series, fredr gives you the first 1,000 and stops - most users won't realise they're getting incomplete data. **fred** automatically fetches all pages and stitches them together.
 
 **What's better under the hood:**
 
-- **Modern HTTP stack** — fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and graceful error handling when the API is unreachable.
-- **Fewer dependencies** — **fred** depends on 3 packages (`httr2`, `cli`, `tools`). fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`, and `purrr`.
-- **Actively maintained** — fredr has had no updates since August 2021.
+- **Modern HTTP stack** - fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and graceful error handling when the API is unreachable.
+- **Fewer dependencies** - **fred** depends on 3 packages (`httr2`, `cli`, `tools`). fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`, and `purrr`.
+- **Actively maintained** - fredr has had no updates since August 2021.
 
 ## Installation
 
@@ -41,7 +41,7 @@ devtools::install_github("charlescoverdale/fred")
 
 ## API key (required)
 
-**You need a free API key to use this package.** The FRED API requires authentication so the St. Louis Fed can manage server load — but the key is completely free and takes about two minutes to set up. You only need to do this once.
+**You need a free API key to use this package.** The FRED API requires authentication so the St. Louis Fed can manage server load - but the key is completely free and takes about two minutes to set up. You only need to do this once.
 
 ### Step 1: Create a FRED account
 
@@ -55,7 +55,7 @@ devtools::install_github("charlescoverdale/fred")
 1. Once logged in, go to <https://fredaccount.stlouisfed.org/apikeys>
 2. Click **Request API Key**
 3. Enter a short description (e.g. "R data analysis") and agree to the terms
-4. Your API key will appear on screen — it's a string of letters and numbers like `abcdef1234567890abcdef1234567890`
+4. Your API key will appear on screen - it's a string of letters and numbers like `abcdef1234567890abcdef1234567890`
 5. Copy it
 
 ### Step 3: Save the key so R can find it
@@ -65,7 +65,7 @@ The best approach is to store your key in a file called `.Renviron`, which R rea
 **Option A: From RStudio**
 
 1. Open RStudio
-2. In the console, type `file.edit("~/.Renviron")` and press Enter — this opens (or creates) the file
+2. In the console, type `file.edit("~/.Renviron")` and press Enter - this opens (or creates) the file
 3. Add this line, replacing the placeholder with your actual key:
    ```
    FRED_API_KEY=abcdef1234567890abcdef1234567890
@@ -91,7 +91,7 @@ library(fred)
 fred_set_key("abcdef1234567890abcdef1234567890")
 ```
 
-This only lasts until you close R — you'll need to run it again next session.
+This only lasts until you close R - you'll need to run it again next session.
 
 ### Verify it works
 
@@ -134,13 +134,13 @@ fred_category_children()
 
 ## Key features
 
-- **Multiple series in one call** — `fred_series(c("GDP", "UNRATE"))` returns a single tidy data frame
-- **Server-side transformations** — percent change, log, annualised rates via the `units` argument
-- **Frequency aggregation** — aggregate daily/weekly data to monthly/quarterly/annual
-- **Automatic pagination** — all list endpoints paginate transparently
-- **Local caching** — data is cached on first download; use `clear_cache()` to reset
-- **Graceful error handling** — informative messages when the API is unreachable or keys are invalid
-- **Minimal dependencies** — only `httr2`, `cli`, and `tools`
+- **Multiple series in one call** - `fred_series(c("GDP", "UNRATE"))` returns a single tidy data frame
+- **Server-side transformations** - percent change, log, annualised rates via the `units` argument
+- **Frequency aggregation** - aggregate daily/weekly data to monthly/quarterly/annual
+- **Automatic pagination** - all list endpoints paginate transparently
+- **Local caching** - data is cached on first download; use `clear_cache()` to reset
+- **Graceful error handling** - informative messages when the API is unreachable or keys are invalid
+- **Minimal dependencies** - only `httr2`, `cli`, and `tools`
 
 ## Functions
 
