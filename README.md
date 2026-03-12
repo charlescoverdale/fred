@@ -29,22 +29,71 @@ install.packages("fred")
 pak::pak("charlescoverdale/fred")
 ```
 
-## Setup
+## API key (required)
 
-You need a free FRED API key. Register at <https://fredaccount.stlouisfed.org/apikeys>.
+**You need a free API key to use this package.** The FRED API requires authentication so the St. Louis Fed can manage server load — but the key is completely free and takes about two minutes to set up. You only need to do this once.
 
-The recommended approach is to add your key to `.Renviron`:
+### Step 1: Create a FRED account
 
-```
-FRED_API_KEY=your_key_here
-```
+1. Go to <https://fredaccount.stlouisfed.org/login/secure/>
+2. Click **Create New Account**
+3. Fill in your name, email, and a password, then click **Create Account**
+4. Check your email and click the verification link
 
-Or set it for the current session:
+### Step 2: Request an API key
+
+1. Once logged in, go to <https://fredaccount.stlouisfed.org/apikeys>
+2. Click **Request API Key**
+3. Enter a short description (e.g. "R data analysis") and agree to the terms
+4. Your API key will appear on screen — it's a string of letters and numbers like `abcdef1234567890abcdef1234567890`
+5. Copy it
+
+### Step 3: Save the key so R can find it
+
+The best approach is to store your key in a file called `.Renviron`, which R reads automatically every time it starts. This means you only set it once and never have to think about it again.
+
+**Option A: From RStudio**
+
+1. Open RStudio
+2. In the console, type `file.edit("~/.Renviron")` and press Enter — this opens (or creates) the file
+3. Add this line, replacing the placeholder with your actual key:
+   ```
+   FRED_API_KEY=abcdef1234567890abcdef1234567890
+   ```
+4. Save the file and close it
+5. Restart R (Session → Restart R, or press Ctrl+Shift+F10 / Cmd+Shift+F10)
+
+**Option B: From the terminal**
+
+1. Open Terminal (Mac/Linux) or Command Prompt (Windows)
+2. Run this command, replacing the placeholder with your actual key:
+   ```bash
+   echo 'FRED_API_KEY=abcdef1234567890abcdef1234567890' >> ~/.Renviron
+   ```
+3. Restart R
+
+**Option C: Set it for the current session only**
+
+If you just want to try things out without editing any files, you can set the key temporarily:
 
 ```r
 library(fred)
-fred_set_key("your_key_here")
+fred_set_key("abcdef1234567890abcdef1234567890")
 ```
+
+This only lasts until you close R — you'll need to run it again next session.
+
+### Verify it works
+
+After restarting R, check that the key is picked up:
+
+```r
+library(fred)
+fred_get_key()
+#> [1] "abcdef1234567890abcdef1234567890"
+```
+
+If that prints your key, you're good to go.
 
 ## Quick start
 
