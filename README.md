@@ -18,6 +18,12 @@ FRED provides a [free REST API](https://fred.stlouisfed.org/docs/api/fred/) that
 
 This package wraps the FRED API so you can pull data directly into R with a single function call. Rather than constructing API URLs by hand, `fred_series("GDP")` fetches the data, parses the response, and returns a tidy data frame. You can fetch multiple series at once, apply transformations, search by keyword, browse categories, and track revisions — all from R. Results are cached locally so repeated calls are instant.
 
+## How is this different from fredr?
+
+There is an existing R package called [fredr](https://cran.r-project.org/package=fredr), written by Sam Boysel and Davis Vaughan and published on CRAN in 2021. It is a solid package, but it hasn't been updated since August 2021 and depends on `httr`, which has been superseded by `httr2`. It also doesn't support fetching multiple series in a single call, doesn't cache results locally, and doesn't handle automatic pagination — so browsing large category trees or release lists requires manual offset management.
+
+**fred** is a ground-up rewrite built on `httr2` with modern error handling, automatic rate-limit retries, transparent pagination, local caching, and multi-series support out of the box. `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns a single tidy data frame in one call. Server-side transformations and frequency aggregation work the same way — the API hasn't changed — but the plumbing around it is cleaner and more robust.
+
 ## Installation
 
 ```r
