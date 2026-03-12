@@ -105,42 +105,92 @@ fred_get_key()
 
 If that prints your key, you're good to go.
 
-## Quick start
+## How do I find the series I need?
+
+Every dataset in FRED has a short series ID. For example, `GDP` is US quarterly GDP, `UNRATE` is the US unemployment rate, and `CPIAUCSL` is the Consumer Price Index. You need to know the series ID to pull data.
+
+There are two ways to find it:
+
+**1. Search from R** using `fred_search()`:
+
+```r
+fred_search("consumer price index")
+#>            id                                          title frequency
+#>      CPIAUCSL   Consumer Price Index for All Urban Consumers   Monthly
+#>    CPILFESL     CPI Less Food and Energy (Core CPI)          Monthly
+#>    CPIENGSL     CPI: Energy                                  Monthly
+#>    ...
+```
+
+**2. Browse the FRED website** at [fred.stlouisfed.org](https://fred.stlouisfed.org). Search or browse by category, and the series ID is shown at the top of every data page. This is often the easiest way to explore what's available if you're not sure what you're looking for.
+
+Once you have a series ID, pass it to `fred_series()`.
+
+## Examples
+
+### Fetch a single series
 
 ```r
 library(fred)
 
-# Fetch GDP
+# US quarterly GDP
 gdp <- fred_series("GDP")
-
-# Multiple series in one call
-macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
-
-# Year-on-year percent change (computed server-side)
-gdp_growth <- fred_series("GDP", units = "pc1")
-
-# Aggregate daily data to monthly
-rates <- fred_series("DGS10", frequency = "m")
-
-# Search for series
-fred_search("consumer price index")
-
-# Series metadata
-fred_info("GDP")
-
-# Browse the category tree
-fred_category_children()
+tail(gdp)
+#>          date series_id    value
+#>   2023-04-01       GDP 27063.01
+#>   2023-07-01       GDP 27610.55
+#>   ...
 ```
 
-## Key features
+### Fetch multiple series in one call
 
-- **Multiple series in one call** - `fred_series(c("GDP", "UNRATE"))` returns a single tidy data frame
-- **Server-side transformations** - percent change, log, annualised rates via the `units` argument
-- **Frequency aggregation** - aggregate daily/weekly data to monthly/quarterly/annual
-- **Automatic pagination** - all list endpoints paginate transparently
-- **Local caching** - data is cached on first download; use `clear_cache()` to reset
-- **Graceful error handling** - informative messages when the API is unreachable or keys are invalid
-- **Minimal dependencies** - only `httr2`, `cli`, and `tools`
+```r
+# GDP, unemployment, and CPI together
+macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
+
+# Returns a single data frame with a series_id column
+table(macro$series_id)
+#>  CPIAUCSL       GDP    UNRATE
+#>       977       310       953
+```
+
+### Growth rates and transformations
+
+FRED can compute transformations server-side, so you don't have to calculate them yourself.
+
+```r
+# Year-on-year percent change in GDP
+gdp_growth <- fred_series("GDP", units = "pc1")
+
+# Other options: "pch" (period-on-period %), "chg" (level change),
+# "log" (natural log), "pca" (annualised rate)
+```
+
+### Filter by date
+
+```r
+# CPI since 2020 only
+cpi <- fred_series("CPIAUCSL", from = "2020-01-01")
+```
+
+### Aggregate daily data to a lower frequency
+
+```r
+# The 10-year Treasury yield is published daily.
+# Aggregate to monthly averages:
+rates <- fred_series("DGS10", frequency = "m")
+
+# Or get end-of-period values instead of averages:
+rates_eop <- fred_series("DGS10", frequency = "m", aggregation = "eop")
+```
+
+### Look up what a series actually measures
+
+```r
+fred_info("UNRATE")
+#>       id                                title frequency units  seasonal_adjustment
+#>   UNRATE   Unemployment Rate                   Monthly     %   Seasonally Adjusted
+```
 
 ## Functions
 
