@@ -20,12 +20,19 @@ This package wraps the FRED API so you can pull data directly into R with a sing
 
 ## How is this different from fredr?
 
-There is an existing R package called [fredr](https://cran.r-project.org/package=fredr), written by Sam Boysel and Davis Vaughan and published on CRAN in 2021. It's a solid package, but it hasn't been updated since August 2021. In practice this means:
+There is an existing R package called [fredr](https://cran.r-project.org/package=fredr), written by Sam Boysel and Davis Vaughan and published on CRAN in 2021. It's a solid package, but it hasn't been updated since August 2021.
 
-- **One series at a time** — fredr can only fetch one series per call, so pulling GDP, unemployment, and CPI means three separate requests. With **fred**, `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns everything in one tidy data frame.
-- **No caching** — fredr downloads the data fresh every time you run your script. **fred** caches results locally, so repeated calls are instant.
-- **No automatic pagination** — browsing large category trees or release lists in fredr means managing offsets yourself. **fred** handles this transparently.
-- **Old HTTP stack** — fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and modern error handling.
+**What's better for users:**
+
+- **Multiple series in one call** — fredr can only fetch one series at a time, so pulling GDP, unemployment, and CPI means three separate requests and manually binding the results. With **fred**, `fred_series(c("GDP", "UNRATE", "CPIAUCSL"))` returns everything in one tidy data frame.
+- **Local caching** — fredr downloads data fresh every time you run your script. If you're knitting a Quarto report and tweaking a chart title, it re-downloads everything from scratch on every render. **fred** caches results locally after the first download, so subsequent calls are instant and don't touch the API.
+- **Automatic pagination** — FRED's API returns results in pages of 1,000. If a category has 2,500 series, fredr gives you the first 1,000 and stops — most users won't realise they're getting incomplete data. **fred** automatically fetches all pages and stitches them together.
+
+**What's better under the hood:**
+
+- **Modern HTTP stack** — fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and graceful error handling when the API is unreachable.
+- **Fewer dependencies** — **fred** depends on 3 packages (`httr2`, `cli`, `tools`). fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`, and `purrr`.
+- **Actively maintained** — fredr has had no updates since August 2021.
 
 ## Installation
 
