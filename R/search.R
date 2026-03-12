@@ -52,6 +52,13 @@ fred_search <- function(query, type = "full_text", limit = 100L,
     cli::cli_abort("{.arg type} must be one of {.val {valid_types}}.")
   }
 
+  valid_order <- c("search_rank", "series_id", "title", "units", "frequency",
+                    "seasonal_adjustment", "last_updated", "popularity",
+                    "group_popularity")
+  if (!order_by %in% valid_order) {
+    cli::cli_abort("{.arg order_by} must be one of {.val {valid_order}}.")
+  }
+
   limit <- min(as.integer(limit), 1000L)
 
   params <- list(
@@ -68,7 +75,7 @@ fred_search <- function(query, type = "full_text", limit = 100L,
   serieses <- resp[["seriess"]]
 
   if (is.null(serieses) || length(serieses) == 0L) {
-    cli::cli_alert_info("No series found for query {.val {query}}.")
+    cli::cli_inform("No series found for query {.val {query}}.")
     return(data.frame())
   }
 

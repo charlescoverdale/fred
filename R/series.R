@@ -76,6 +76,11 @@ fred_series <- function(series_id, from = NULL, to = NULL,
     cli::cli_abort("{.arg aggregation} must be one of {.val {valid_agg}}.")
   }
 
+  valid_freq <- c("d", "w", "bw", "m", "q", "sa", "a")
+  if (!is.null(frequency) && !frequency %in% valid_freq) {
+    cli::cli_abort("{.arg frequency} must be one of {.val {valid_freq}} or {.val NULL}.")
+  }
+
   if (!is.null(from)) from <- as.character(from)
   if (!is.null(to))   to   <- as.character(to)
 
@@ -84,7 +89,7 @@ fred_series <- function(series_id, from = NULL, to = NULL,
   results <- list()
 
   for (sid in series_id) {
-    cache_key <- paste0("obs_", sid, "_", units,
+    cache_key <- paste0("obs_", sid, "_", units, "_", aggregation,
                         if (!is.null(frequency)) paste0("_", frequency),
                         if (!is.null(from)) paste0("_from_", from),
                         if (!is.null(to))   paste0("_to_", to))

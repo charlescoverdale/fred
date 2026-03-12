@@ -14,9 +14,9 @@ clear_cache <- function() {
   cache_dir <- tools::R_user_dir("fred", "cache")
   if (dir.exists(cache_dir)) {
     unlink(cache_dir, recursive = TRUE)
-    cli::cli_alert_success("Cache cleared.")
+    cli::cli_inform("Cache cleared.")
   } else {
-    cli::cli_alert_info("No cache to clear.")
+    cli::cli_inform("No cache to clear.")
   }
   invisible(NULL)
 }
