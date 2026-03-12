@@ -27,12 +27,9 @@ There is an existing R package called [fredr](https://cran.r-project.org/package
 ## Installation
 
 ```r
-# Install from CRAN (when available)
-install.packages("fred")
-
-# Or the development version from GitHub
-# install.packages("pak")
-pak::pak("charlescoverdale/fred")
+# Install from GitHub (CRAN submission in progress)
+# install.packages("remotes")
+remotes::install_github("charlescoverdale/fred")
 ```
 
 ## API key (required)
