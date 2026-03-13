@@ -1,0 +1,74 @@
+# Package index
+
+## Data Access
+
+Fetch time series observations from FRED
+
+- [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)
+  : Fetch observations for one or more FRED series
+
+## Search & Discovery
+
+Search for series and retrieve metadata
+
+- [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)
+  : Search for FRED series
+- [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md)
+  : Get metadata for a FRED series
+- [`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)
+  : Get vintage dates for a FRED series
+
+## Categories
+
+Browse the FRED category tree
+
+- [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.md)
+  : Get a FRED category
+- [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.md)
+  : List child categories
+- [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.md)
+  : List series in a category
+
+## Releases & Sources
+
+Explore data releases and their sources
+
+- [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.md)
+  : List all FRED releases
+- [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.md)
+  : List series in a release
+- [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.md)
+  : Get release dates
+- [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.md)
+  : List all FRED data sources
+- [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.md)
+  : List releases from a source
+
+## Tags
+
+Search and explore FRED tags
+
+- [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.md)
+  : List or search FRED tags
+- [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.md)
+  : Find tags related to a given tag
+
+## Configuration
+
+Manage API key and recently updated series
+
+- [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.md)
+  : Set the FRED API key
+- [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)
+  : Get the current FRED API key
+- [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md)
+  : List recently updated FRED series
+
+## Utilities
+
+Low-level API access and cache management
+
+- [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md)
+  : Make a raw request to the FRED API
+- [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)
+  : Clear the fred cache
