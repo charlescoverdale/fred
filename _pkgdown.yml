@@ -1,0 +1,61 @@
+url: https://charlescoverdale.github.io/fred/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/charlescoverdale/fred
+
+reference:
+  - title: "Data Access"
+    desc: "Fetch time series observations from FRED"
+    contents:
+      - fred_series
+
+  - title: "Search & Discovery"
+    desc: "Search for series and retrieve metadata"
+    contents:
+      - fred_search
+      - fred_info
+      - fred_vintages
+
+  - title: "Categories"
+    desc: "Browse the FRED category tree"
+    contents:
+      - fred_category
+      - fred_category_children
+      - fred_category_series
+
+  - title: "Releases & Sources"
+    desc: "Explore data releases and their sources"
+    contents:
+      - fred_releases
+      - fred_release_series
+      - fred_release_dates
+      - fred_sources
+      - fred_source_releases
+
+  - title: "Tags"
+    desc: "Search and explore FRED tags"
+    contents:
+      - fred_tags
+      - fred_related_tags
+
+  - title: "Configuration"
+    desc: "Manage API key and recently updated series"
+    contents:
+      - fred_set_key
+      - fred_get_key
+      - fred_updates
+
+  - title: "Utilities"
+    desc: "Low-level API access and cache management"
+    contents:
+      - fred_request
+      - clear_cache

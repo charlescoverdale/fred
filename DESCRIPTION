@@ -16,7 +16,8 @@ Description: Provides clean, tidy access to economic data from the 'Federal
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
-URL: https://github.com/charlescoverdale/fred
+URL: https://charlescoverdale.github.io/fred/,
+    https://github.com/charlescoverdale/fred
 BugReports: https://github.com/charlescoverdale/fred/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

@@ -1,5 +1,8 @@
 # fred
 
+[![R-CMD-check](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/fred)](https://CRAN.R-project.org/package=fred)
+[![Downloads](https://cranlogs.r-pkg.org/badges/fred)](https://CRAN.R-project.org/package=fred)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 **fred** provides clean, tidy access to economic data from the [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org/) API directly from R.
@@ -246,8 +249,13 @@ The **fred** package is part of a suite of R packages for economic and financial
 | [obr](https://github.com/charlescoverdale/obr) | Office for Budget Responsibility | On CRAN |
 | [readecb](https://github.com/charlescoverdale/readecb) | European Central Bank | On CRAN |
 | [readoecd](https://github.com/charlescoverdale/readoecd) | OECD | On CRAN |
+| [readnoaa](https://github.com/charlescoverdale/readnoaa) | NOAA climate and weather data | On GitHub |
 | [inflateR](https://github.com/charlescoverdale/inflateR) | Inflation adjustment | On CRAN |
 
 ## Attribution
 
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
+
+## Keywords
+
+FRED, Federal Reserve, economic data, macroeconomic data, time series, US economy, interest rates, inflation, GDP, unemployment, monetary policy, St. Louis Fed, API, R package
