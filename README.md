@@ -1,6 +1,4 @@
 # fred
-
-[![R-CMD-check](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/fred)](https://CRAN.R-project.org/package=fred)
 [![Downloads](https://cranlogs.r-pkg.org/badges/fred)](https://CRAN.R-project.org/package=fred)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
