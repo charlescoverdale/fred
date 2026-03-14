@@ -25,3 +25,10 @@ functions such as \code{\link[=fred_series]{fred_series()}} or \code{\link[=fred
 fred_request("series", series_id = "GDP")
 }
 }
+\seealso{
+Other configuration: 
+\code{\link{clear_cache}()},
+\code{\link{fred_get_key}()},
+\code{\link{fred_set_key}()}
+}
+\concept{configuration}

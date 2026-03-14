@@ -44,6 +44,7 @@
 #'   \item{value}{Numeric. The observation value.}
 #' }
 #'
+#' @family series
 #' @export
 #' @examples
 #' \dontrun{
@@ -154,6 +155,7 @@ fred_series <- function(series_id, from = NULL, to = NULL,
 #'
 #' @return A data frame with one row containing series metadata.
 #'
+#' @family series
 #' @export
 #' @examples
 #' \dontrun{
@@ -181,6 +183,7 @@ fred_info <- function(series_id) {
 #'
 #' @return A data frame with columns `series_id` and `vintage_date`.
 #'
+#' @family series
 #' @export
 #' @examples
 #' \dontrun{

@@ -16,6 +16,7 @@ fred_env <- new.env(parent = emptyenv())
 #'
 #' @return Invisible `NULL`.
 #'
+#' @family configuration
 #' @export
 #' @examples
 #' \dontrun{
@@ -36,6 +37,7 @@ fred_set_key <- function(key) {
 #'
 #' @return Character. The API key.
 #'
+#' @family configuration
 #' @export
 #' @examples
 #' \dontrun{

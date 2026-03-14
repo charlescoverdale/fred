@@ -19,3 +19,9 @@ related series published together (e.g. "Employment Situation", "GDP").
 fred_releases()
 }
 }
+\seealso{
+Other releases: 
+\code{\link{fred_release_dates}()},
+\code{\link{fred_release_series}()}
+}
+\concept{releases}

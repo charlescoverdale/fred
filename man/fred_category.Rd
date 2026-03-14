@@ -28,3 +28,9 @@ fred_category()
 fred_category(32992)
 }
 }
+\seealso{
+Other categories: 
+\code{\link{fred_category_children}()},
+\code{\link{fred_category_series}()}
+}
+\concept{categories}

@@ -21,3 +21,9 @@ Returns the child categories for a given parent category.
 fred_category_children()
 }
 }
+\seealso{
+Other categories: 
+\code{\link{fred_category}()},
+\code{\link{fred_category_series}()}
+}
+\concept{categories}

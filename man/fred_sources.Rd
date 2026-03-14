@@ -20,3 +20,8 @@ Reserve Board, U.S. Census Bureau, and over 100 others.
 fred_sources()
 }
 }
+\seealso{
+Other sources: 
+\code{\link{fred_source_releases}()}
+}
+\concept{sources}

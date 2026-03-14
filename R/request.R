@@ -14,6 +14,7 @@ fred_base_url <- "https://api.stlouisfed.org/fred/"
 #'
 #' @return A list parsed from the JSON response.
 #'
+#' @family configuration
 #' @export
 #' @examples
 #' \dontrun{

@@ -21,3 +21,9 @@ understanding the data calendar and when revisions occurred.
 fred_release_dates(53)
 }
 }
+\seealso{
+Other releases: 
+\code{\link{fred_release_series}()},
+\code{\link{fred_releases}()}
+}
+\concept{releases}

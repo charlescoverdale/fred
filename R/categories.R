@@ -12,6 +12,7 @@
 #'
 #' @return A data frame with category metadata.
 #'
+#' @family categories
 #' @export
 #' @examples
 #' \dontrun{
@@ -35,6 +36,7 @@ fred_category <- function(category_id = 0L) {
 #'
 #' @return A data frame of child categories.
 #'
+#' @family categories
 #' @export
 #' @examples
 #' \dontrun{
@@ -57,6 +59,7 @@ fred_category_children <- function(category_id = 0L) {
 #'
 #' @return A data frame of series metadata.
 #'
+#' @family categories
 #' @export
 #' @examples
 #' \dontrun{

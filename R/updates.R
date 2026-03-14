@@ -8,6 +8,7 @@
 #'
 #' @return A data frame of recently updated series.
 #'
+#' @family series
 #' @export
 #' @examples
 #' \dontrun{

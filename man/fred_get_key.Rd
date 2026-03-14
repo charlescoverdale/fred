@@ -18,3 +18,10 @@ environment variable. Raises an error if no key is found.
 fred_get_key()
 }
 }
+\seealso{
+Other configuration: 
+\code{\link{clear_cache}()},
+\code{\link{fred_request}()},
+\code{\link{fred_set_key}()}
+}
+\concept{configuration}

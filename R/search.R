@@ -26,6 +26,7 @@
 #'   `title`, `frequency`, `units`, `seasonal_adjustment`, `last_updated`,
 #'   `popularity`, and `notes`.
 #'
+#' @family series
 #' @export
 #' @examples
 #' \dontrun{

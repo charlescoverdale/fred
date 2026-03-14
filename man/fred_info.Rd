@@ -21,3 +21,11 @@ frequency, seasonal adjustment, and notes.
 fred_info("GDP")
 }
 }
+\seealso{
+Other series: 
+\code{\link{fred_search}()},
+\code{\link{fred_series}()},
+\code{\link{fred_updates}()},
+\code{\link{fred_vintages}()}
+}
+\concept{series}

@@ -1,4 +1,13 @@
 #' @keywords internal
+#' @concept FRED
+#' @concept Federal Reserve
+#' @concept economic data
+#' @concept US economy
+#' @concept GDP
+#' @concept inflation
+#' @concept employment
+#' @concept interest rates
+#' @concept time series
 "_PACKAGE"
 
 ## usethis namespace: start

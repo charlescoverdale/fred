@@ -23,3 +23,9 @@ through all results.
 fred_category_series(32992)
 }
 }
+\seealso{
+Other categories: 
+\code{\link{fred_category}()},
+\code{\link{fred_category_children}()}
+}
+\concept{categories}

@@ -26,3 +26,10 @@ Register for a free API key at
 fred_set_key("your_api_key_here")
 }
 }
+\seealso{
+Other configuration: 
+\code{\link{clear_cache}()},
+\code{\link{fred_get_key}()},
+\code{\link{fred_request}()}
+}
+\concept{configuration}

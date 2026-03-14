@@ -12,6 +12,7 @@
 #' @return A data frame of tags with columns including `name`,
 #'   `group_id`, `notes`, `popularity`, and `series_count`.
 #'
+#' @family tags
 #' @export
 #' @examples
 #' \dontrun{
@@ -40,6 +41,7 @@ fred_tags <- function(query = NULL, limit = 1000L) {
 #'
 #' @return A data frame of related tags.
 #'
+#' @family tags
 #' @export
 #' @examples
 #' \dontrun{

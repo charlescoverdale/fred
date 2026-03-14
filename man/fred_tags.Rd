@@ -26,3 +26,8 @@ fred_tags()
 fred_tags("inflation")
 }
 }
+\seealso{
+Other tags: 
+\code{\link{fred_related_tags}()}
+}
+\concept{tags}

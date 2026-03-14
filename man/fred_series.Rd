@@ -81,3 +81,11 @@ gdp_growth <- fred_series("GDP", units = "pc1")
 rates <- fred_series("DGS10", frequency = "m")
 }
 }
+\seealso{
+Other series: 
+\code{\link{fred_info}()},
+\code{\link{fred_search}()},
+\code{\link{fred_updates}()},
+\code{\link{fred_vintages}()}
+}
+\concept{series}

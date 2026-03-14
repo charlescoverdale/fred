@@ -21,3 +21,9 @@ Returns all series belonging to a given release.
 fred_release_series(53)
 }
 }
+\seealso{
+Other releases: 
+\code{\link{fred_release_dates}()},
+\code{\link{fred_releases}()}
+}
+\concept{releases}

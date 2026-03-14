@@ -60,3 +60,11 @@ fred_search("consumer price index", filter_variable = "frequency",
 fred_search("GDP*", type = "series_id")
 }
 }
+\seealso{
+Other series: 
+\code{\link{fred_info}()},
+\code{\link{fred_series}()},
+\code{\link{fred_updates}()},
+\code{\link{fred_vintages}()}
+}
+\concept{series}

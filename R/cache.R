@@ -5,6 +5,7 @@
 #'
 #' @return Invisible `NULL`.
 #'
+#' @family configuration
 #' @export
 #' @examples
 #' \dontrun{

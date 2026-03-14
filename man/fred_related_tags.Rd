@@ -21,3 +21,8 @@ Returns tags that are frequently used together with the specified tag.
 fred_related_tags("gdp")
 }
 }
+\seealso{
+Other tags: 
+\code{\link{fred_tags}()}
+}
+\concept{tags}

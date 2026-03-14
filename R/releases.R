@@ -8,6 +8,7 @@
 #' @return A data frame of releases with columns including `id`, `name`,
 #'   `press_release`, and `link`.
 #'
+#' @family releases
 #' @export
 #' @examples
 #' \dontrun{
@@ -28,6 +29,7 @@ fred_releases <- function() {
 #'
 #' @return A data frame of series metadata.
 #'
+#' @family releases
 #' @export
 #' @examples
 #' \dontrun{
@@ -54,6 +56,7 @@ fred_release_series <- function(release_id) {
 #'
 #' @return A data frame with columns `release_id` and `date`.
 #'
+#' @family releases
 #' @export
 #' @examples
 #' \dontrun{

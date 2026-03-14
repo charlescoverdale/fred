@@ -18,3 +18,10 @@ function will re-download from the FRED API.
 clear_cache()
 }
 }
+\seealso{
+Other configuration: 
+\code{\link{fred_get_key}()},
+\code{\link{fred_request}()},
+\code{\link{fred_set_key}()}
+}
+\concept{configuration}

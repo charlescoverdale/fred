@@ -21,3 +21,11 @@ for real-time analysis and understanding data revisions.
 fred_vintages("GDP")
 }
 }
+\seealso{
+Other series: 
+\code{\link{fred_info}()},
+\code{\link{fred_search}()},
+\code{\link{fred_series}()},
+\code{\link{fred_updates}()}
+}
+\concept{series}

@@ -9,6 +9,7 @@
 #' @return A data frame of sources with columns including `id`, `name`,
 #'   and `link`.
 #'
+#' @family sources
 #' @export
 #' @examples
 #' \dontrun{
@@ -29,6 +30,7 @@ fred_sources <- function() {
 #'
 #' @return A data frame of releases.
 #'
+#' @family sources
 #' @export
 #' @examples
 #' \dontrun{

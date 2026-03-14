@@ -21,3 +21,8 @@ Returns all releases published by a given data source.
 fred_source_releases(22)
 }
 }
+\seealso{
+Other sources: 
+\code{\link{fred_sources}()}
+}
+\concept{sources}

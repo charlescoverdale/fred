@@ -21,4 +21,13 @@ Useful links:
 \strong{Maintainer}: Charles Coverdale \email{charlesfcoverdale@gmail.com}
 
 }
+\concept{FRED}
+\concept{Federal Reserve}
+\concept{GDP}
+\concept{US economy}
+\concept{economic data}
+\concept{employment}
+\concept{inflation}
+\concept{interest rates}
+\concept{time series}
 \keyword{internal}
