@@ -1,6 +1,6 @@
 Package: fred
 Title: Access 'Federal Reserve Economic Data'
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to economic data from the 'Federal
     Reserve Economic Data' ('FRED') API <https://fred.stlouisfed.org/docs/api/fred/>.
@@ -16,8 +16,7 @@ Description: Provides clean, tidy access to economic data from the 'Federal
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
-URL: https://charlescoverdale.github.io/fred/,
-    https://github.com/charlescoverdale/fred
+URL: https://github.com/charlescoverdale/fred
 BugReports: https://github.com/charlescoverdale/fred/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

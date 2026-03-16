@@ -1,4 +1,4 @@
-# CRAN submission comments — fred 0.1.1
+# CRAN submission comments — fred 0.1.2
 
 ## Resubmission
 
@@ -7,6 +7,7 @@ This is a resubmission of fred 0.1.0. Changes since 0.1.0:
 * Examples now use `\donttest` with `tempdir()` cache instead of `\dontrun`,
   fixing CRAN policy compliance.
 * Cache directory is now configurable via `options(fred.cache_dir = ...)`.
+* Removed non-existent pkgdown URL from DESCRIPTION (was returning 404).
 
 ## R CMD check results
 

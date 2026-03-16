@@ -11,7 +11,6 @@ Provides clean, tidy access to economic data from the 'Federal Reserve Economic 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://charlescoverdale.github.io/fred/}
   \item \url{https://github.com/charlescoverdale/fred}
   \item Report bugs at \url{https://github.com/charlescoverdale/fred/issues}
 }

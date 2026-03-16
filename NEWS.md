@@ -1,3 +1,7 @@
+# fred 0.1.2
+
+* Removed non-existent pkgdown URL from DESCRIPTION.
+
 # fred 0.1.1
 
 * Examples now use `\donttest` with `tempdir()` cache instead of `\dontrun`,
