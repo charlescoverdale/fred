@@ -1,3 +1,9 @@
+# fred 0.1.1
+
+* Examples now use `\donttest` with `tempdir()` cache instead of `\dontrun`,
+  fixing CRAN policy compliance.
+* Cache directory is now configurable via `options(fred.cache_dir = ...)`.
+
 # fred 0.1.0
 
 * Initial CRAN release.

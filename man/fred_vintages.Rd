@@ -17,8 +17,10 @@ Returns the dates on which data for a series were revised. This is useful
 for real-time analysis and understanding data revisions.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_vintages("GDP")
+options(op)
 }
 }
 \seealso{

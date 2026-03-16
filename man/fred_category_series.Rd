@@ -19,8 +19,10 @@ Returns all series belonging to a given category. Automatically paginates
 through all results.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_category_series(32992)
+options(op)
 }
 }
 \seealso{

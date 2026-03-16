@@ -17,8 +17,10 @@ Returns descriptive information about a series, including its title, units,
 frequency, seasonal adjustment, and notes.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_info("GDP")
+options(op)
 }
 }
 \seealso{

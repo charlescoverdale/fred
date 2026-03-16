@@ -12,8 +12,10 @@
 #' @family sources
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_sources()
+#' options(op)
 #' }
 fred_sources <- function() {
   items <- fred_fetch_all("sources", result_key = "sources",
@@ -33,9 +35,11 @@ fred_sources <- function() {
 #' @family sources
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # Bureau of Labor Statistics
 #' fred_source_releases(22)
+#' options(op)
 #' }
 fred_source_releases <- function(source_id) {
   items <- fred_fetch_all(

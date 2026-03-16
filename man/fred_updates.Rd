@@ -16,8 +16,10 @@ A data frame of recently updated series.
 Returns series that have been recently updated or revised.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_updates()
+options(op)
 }
 }
 \seealso{

@@ -14,8 +14,10 @@ Deletes all locally cached FRED data files. The next call to any data
 function will re-download from the FRED API.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 clear_cache()
+options(op)
 }
 }
 \seealso{

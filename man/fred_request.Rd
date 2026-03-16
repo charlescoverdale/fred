@@ -21,8 +21,10 @@ returns the parsed JSON as a list. Most users should use the higher-level
 functions such as \code{\link[=fred_series]{fred_series()}} or \code{\link[=fred_search]{fred_search()}}.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_request("series", series_id = "GDP")
+options(op)
 }
 }
 \seealso{

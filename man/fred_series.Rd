@@ -67,7 +67,8 @@ Supported values:
 }
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # Single series
 gdp <- fred_series("GDP")
 
@@ -79,6 +80,7 @@ gdp_growth <- fred_series("GDP", units = "pc1")
 
 # Aggregate daily to monthly
 rates <- fred_series("DGS10", frequency = "m")
+options(op)
 }
 }
 \seealso{

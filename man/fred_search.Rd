@@ -48,7 +48,8 @@ Searches the FRED database by keywords or series ID substring. Returns
 matching series with their metadata, ordered by relevance.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # Keyword search
 fred_search("unemployment rate")
 
@@ -58,6 +59,7 @@ fred_search("consumer price index", filter_variable = "frequency",
 
 # Search by series ID pattern
 fred_search("GDP*", type = "series_id")
+options(op)
 }
 }
 \seealso{

@@ -16,9 +16,11 @@ A data frame of child categories.
 Returns the child categories for a given parent category.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # Top-level categories
 fred_category_children()
+options(op)
 }
 }
 \seealso{

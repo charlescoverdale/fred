@@ -1,5 +1,10 @@
 # Series observation and metadata functions
 
+#' @noRd
+fred_cache_dir <- function() {
+  getOption("fred.cache_dir", default = tools::R_user_dir("fred", "cache"))
+}
+
 #' Fetch observations for one or more FRED series
 #'
 #' The main function in the package. Downloads time series observations from
@@ -47,7 +52,8 @@
 #' @family series
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # Single series
 #' gdp <- fred_series("GDP")
 #'
@@ -59,6 +65,7 @@
 #'
 #' # Aggregate daily to monthly
 #' rates <- fred_series("DGS10", frequency = "m")
+#' options(op)
 #' }
 fred_series <- function(series_id, from = NULL, to = NULL,
                         units = "lin", frequency = NULL,
@@ -86,7 +93,7 @@ fred_series <- function(series_id, from = NULL, to = NULL,
   if (!is.null(to))   to   <- as.character(to)
 
   # Check cache
-  cache_dir <- tools::R_user_dir("fred", "cache")
+  cache_dir <- fred_cache_dir()
   results <- list()
 
   for (sid in series_id) {
@@ -158,8 +165,10 @@ fred_series <- function(series_id, from = NULL, to = NULL,
 #' @family series
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_info("GDP")
+#' options(op)
 #' }
 fred_info <- function(series_id) {
   if (!is.character(series_id) || length(series_id) != 1L) {
@@ -186,8 +195,10 @@ fred_info <- function(series_id) {
 #' @family series
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_vintages("GDP")
+#' options(op)
 #' }
 fred_vintages <- function(series_id) {
   if (!is.character(series_id) || length(series_id) != 1L) {

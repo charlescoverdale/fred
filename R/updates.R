@@ -11,8 +11,10 @@
 #' @family series
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_updates()
+#' options(op)
 #' }
 fred_updates <- function(limit = 100L) {
   resp <- fred_request("series/updates", limit = min(as.integer(limit), 100L))

@@ -16,9 +16,11 @@ A data frame of series metadata.
 Returns all series belonging to a given release.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # GDP release
 fred_release_series(53)
+options(op)
 }
 }
 \seealso{

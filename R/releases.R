@@ -11,8 +11,10 @@
 #' @family releases
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_releases()
+#' options(op)
 #' }
 fred_releases <- function() {
   items <- fred_fetch_all("releases", result_key = "releases",
@@ -32,9 +34,11 @@ fred_releases <- function() {
 #' @family releases
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # GDP release
 #' fred_release_series(53)
+#' options(op)
 #' }
 fred_release_series <- function(release_id) {
   items <- fred_fetch_all(
@@ -59,8 +63,10 @@ fred_release_series <- function(release_id) {
 #' @family releases
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_release_dates(53)
+#' options(op)
 #' }
 fred_release_dates <- function(release_id) {
   items <- fred_fetch_all(

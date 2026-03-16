@@ -15,12 +15,14 @@
 #' @family categories
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # Root category
 #' fred_category()
 #'
 #' # National Accounts (category 32992)
 #' fred_category(32992)
+#' options(op)
 #' }
 fred_category <- function(category_id = 0L) {
   resp <- fred_request("category", category_id = as.integer(category_id))
@@ -39,9 +41,11 @@ fred_category <- function(category_id = 0L) {
 #' @family categories
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # Top-level categories
 #' fred_category_children()
+#' options(op)
 #' }
 fred_category_children <- function(category_id = 0L) {
   resp <- fred_request("category/children", category_id = as.integer(category_id))
@@ -62,8 +66,10 @@ fred_category_children <- function(category_id = 0L) {
 #' @family categories
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_category_series(32992)
+#' options(op)
 #' }
 fred_category_series <- function(category_id, limit = 1000L) {
   items <- fred_fetch_all(

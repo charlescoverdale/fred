@@ -21,9 +21,11 @@ keywords used to categorise series (e.g. "gdp", "monthly", "usa",
 "seasonally adjusted").
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_tags()
 fred_tags("inflation")
+options(op)
 }
 }
 \seealso{

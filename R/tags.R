@@ -15,9 +15,11 @@
 #' @family tags
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_tags()
 #' fred_tags("inflation")
+#' options(op)
 #' }
 fred_tags <- function(query = NULL, limit = 1000L) {
   params <- list()
@@ -44,8 +46,10 @@ fred_tags <- function(query = NULL, limit = 1000L) {
 #' @family tags
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' fred_related_tags("gdp")
+#' options(op)
 #' }
 fred_related_tags <- function(tag_names) {
   if (!is.character(tag_names) || length(tag_names) != 1L) {

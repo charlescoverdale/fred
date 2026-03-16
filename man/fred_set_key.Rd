@@ -22,8 +22,10 @@ Register for a free API key at
 \url{https://fredaccount.stlouisfed.org/apikeys}.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_set_key("your_api_key_here")
+options(op)
 }
 }
 \seealso{

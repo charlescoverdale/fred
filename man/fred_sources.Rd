@@ -16,8 +16,10 @@ the Bureau of Labor Statistics, Bureau of Economic Analysis, Federal
 Reserve Board, U.S. Census Bureau, and over 100 others.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_sources()
+options(op)
 }
 }
 \seealso{

@@ -17,8 +17,10 @@ A data frame of related tags.
 Returns tags that are frequently used together with the specified tag.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_related_tags("gdp")
+options(op)
 }
 }
 \seealso{

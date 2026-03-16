@@ -16,9 +16,11 @@ A data frame of releases.
 Returns all releases published by a given data source.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # Bureau of Labor Statistics
 fred_source_releases(22)
+options(op)
 }
 }
 \seealso{

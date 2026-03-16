@@ -17,8 +17,10 @@ Returns the dates on which data for a release were published. Useful for
 understanding the data calendar and when revisions occurred.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_release_dates(53)
+options(op)
 }
 }
 \seealso{

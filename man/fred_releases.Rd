@@ -15,8 +15,10 @@ Returns all data releases available on FRED. A release is a collection of
 related series published together (e.g. "Employment Situation", "GDP").
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_releases()
+options(op)
 }
 }
 \seealso{

@@ -29,7 +29,8 @@
 #' @family series
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' op <- options(fred.cache_dir = tempdir())
 #' # Keyword search
 #' fred_search("unemployment rate")
 #'
@@ -39,6 +40,7 @@
 #'
 #' # Search by series ID pattern
 #' fred_search("GDP*", type = "series_id")
+#' options(op)
 #' }
 fred_search <- function(query, type = "full_text", limit = 100L,
                         order_by = "search_rank",

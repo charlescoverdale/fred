@@ -14,8 +14,10 @@ Returns the API key set via \code{\link[=fred_set_key]{fred_set_key()}} or the \
 environment variable. Raises an error if no key is found.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 fred_get_key()
+options(op)
 }
 }
 \seealso{

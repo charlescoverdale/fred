@@ -20,12 +20,14 @@ Accounts; Production & Business Activity; Prices; International Data; U.S.
 Regional Data; and Academic Data.
 }
 \examples{
-\dontrun{
+\donttest{
+op <- options(fred.cache_dir = tempdir())
 # Root category
 fred_category()
 
 # National Accounts (category 32992)
 fred_category(32992)
+options(op)
 }
 }
 \seealso{
