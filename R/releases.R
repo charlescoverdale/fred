@@ -36,8 +36,8 @@ fred_releases <- function() {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # GDP release
-#' fred_release_series(53)
+#' # G.19 Consumer Credit release
+#' fred_release_series(14)
 #' options(op)
 #' }
 fred_release_series <- function(release_id) {
