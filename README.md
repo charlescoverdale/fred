@@ -235,18 +235,17 @@ fred_info("UNRATE")
 
 ## Related packages
 
-The **fred** package is part of a suite of R packages for economic and financial data:
+This package is part of a family of R packages for economic and financial data. They share a consistent interface - named functions, tidy data frames, local caching - and are designed to work together.
 
-| Package | Source | Status |
-|---|---|---|
-| [ons](https://github.com/charlescoverdale/ons) | UK Office for National Statistics | On CRAN |
-| [boe](https://github.com/charlescoverdale/boe) | Bank of England | On CRAN |
-| [hmrc](https://github.com/charlescoverdale/hmrc) | HM Revenue & Customs | On CRAN |
-| [obr](https://github.com/charlescoverdale/obr) | Office for Budget Responsibility | On CRAN |
-| [readecb](https://github.com/charlescoverdale/readecb) | European Central Bank | On CRAN |
-| [readoecd](https://github.com/charlescoverdale/readoecd) | OECD | On CRAN |
-| [readnoaa](https://github.com/charlescoverdale/readnoaa) | NOAA climate and weather data | On CRAN |
-| [inflateR](https://github.com/charlescoverdale/inflateR) | Inflation adjustment | On CRAN |
+| Package | What it covers |
+|---|---|
+| [`ons`](https://github.com/charlescoverdale/ons) | ONS data (GDP, inflation, unemployment, wages, trade, house prices, population) |
+| [`boe`](https://github.com/charlescoverdale/boe) | Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates) |
+| [`hmrc`](https://github.com/charlescoverdale/hmrc) | HMRC tax receipts, corporation tax, stamp duty, R&D credits, and tax gap data |
+| [`obr`](https://github.com/charlescoverdale/obr) | OBR fiscal forecasts and the Public Finances Databank |
+| [`readecb`](https://github.com/charlescoverdale/readecb) | European Central Bank data (policy rates, HICP, exchange rates, yield curves) |
+| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD data (GDP, unemployment, inflation, trade across 38 member countries) |
+| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data |
 
 ## Attribution
 
