@@ -209,11 +209,96 @@ fred_info("UNRATE")
 #>   UNRATE   Unemployment Rate                   Monthly     %   Seasonally Adjusted
 ```
 
+### Wide format
+
+For multi-series analysis it's often easier to have one column per series. Pass `format = "wide"`:
+
+```r
+macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"),
+                     from = "2020-01-01", format = "wide")
+head(macro)
+#> # FRED: 3 series · 60 obs · format=wide
+#>         date       GDP UNRATE CPIAUCSL
+#>   2020-01-01  21561.14    3.5  259.037
+#>   2020-02-01        NA    3.5  259.250
+#>   2020-03-01  21289.27    4.4  258.115
+#>   ...
+```
+
+The header at the top is a one-line summary of the query (series count, observations, transform, frequency, vintage). Downstream code can treat the result as a normal data frame.
+
+### Readable transformation names
+
+The raw FRED units codes (`pch`, `pc1`, `cca`, etc.) work fine, but they're not always memorable. You can pass `transform =` instead:
+
+```r
+# Year-on-year percent change in CPI
+fred_series("CPIAUCSL", transform = "yoy_pct")
+
+# Continuously compounded annual rate
+fred_series("GDP", transform = "log_diff_annualised")
+
+# Quarter-on-quarter level change
+fred_series("GDP", transform = "diff")
+```
+
+Available aliases: `level`, `raw`, `diff`, `change`, `yoy_diff`, `qoq_pct`, `mom_pct`, `pop_pct`, `yoy_pct`, `annualised`, `qoq_annualised`, `log`, `log_diff`, `log_diff_annualised`. The `units` and `transform` arguments are mutually exclusive.
+
+### Real-time and vintage data
+
+FRED keeps the full revision history for most series via its sister database, ALFRED. **fred** exposes this through four helpers, all of which add `realtime_start` and `realtime_end` columns to the returned data frame.
+
+```r
+# 1. The series as it appeared on a specific date
+gdp_then <- fred_as_of("GDP", date = "2020-03-01")
+
+# 2. Only the first release of each observation, never revised
+gdp_first <- fred_first_release("GDP", from = "2010-01-01")
+
+# 3. Every vintage in the revision history
+#    (potentially large - narrow with from/to for long series)
+gdp_all <- fred_all_vintages("GDP", from = "2020-01-01")
+
+# 4. A panel of selected vintage snapshots
+gdp_panel <- fred_real_time_panel(
+  "GDP",
+  vintages = c("2020-04-30", "2020-07-31", "2020-10-31", "2021-01-31")
+)
+```
+
+These are the building blocks for pseudo-real-time forecasting backtests and revision studies. They cache separately from the default (latest-vintage) cache, so calling `fred_series("GDP")` and `fred_as_of("GDP", "2020-03-01")` keep distinct cache entries.
+
+### Inspect the local cache
+
+```r
+fred_cache_info()
+#> $dir
+#> [1] "/Users/.../R/fred/cache"
+#>
+#> $n_files
+#> [1] 27
+#>
+#> $size_human
+#> [1] "412.3 KB"
+#>
+#> $files
+#>                                  name size_bytes            modified
+#>   obs_GDP_lin_avg.rds                    18234   2026-04-09 11:02:13
+#>   obs_UNRATE_lin_avg.rds                 16711   2026-04-09 11:02:14
+#>   ...
+```
+
+`clear_cache()` wipes everything; `fred_cache_info()` lets you check what's there before you do.
+
 ## Functions
 
 | Function | Description |
 |---|---|
-| `fred_series()` | Fetch observations for one or more series |
+| `fred_series()` | Fetch observations for one or more series (long or wide) |
+| `fred_as_of()` | Fetch a series as it appeared on a specific vintage date |
+| `fred_first_release()` | Fetch only the initial release of each observation |
+| `fred_all_vintages()` | Fetch every vintage in the revision history |
+| `fred_real_time_panel()` | Fetch a panel of selected vintage snapshots |
 | `fred_search()` | Search for series by keyword or ID |
 | `fred_info()` | Get series metadata |
 | `fred_vintages()` | Get revision dates for a series |
@@ -231,6 +316,7 @@ fred_info("UNRATE")
 | `fred_request()` | Raw API request (power users) |
 | `fred_set_key()` | Set API key for session |
 | `fred_get_key()` | Get current API key |
+| `fred_cache_info()` | Inspect the local cache |
 | `clear_cache()` | Clear local cache |
 
 ## Related packages
@@ -245,7 +331,9 @@ This package is part of a family of R packages for economic and financial data. 
 | [`obr`](https://github.com/charlescoverdale/obr) | OBR fiscal forecasts and the Public Finances Databank |
 | [`readecb`](https://github.com/charlescoverdale/readecb) | European Central Bank data (policy rates, HICP, exchange rates, yield curves) |
 | [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD data (GDP, unemployment, inflation, trade across 38 member countries) |
+| [`comtrade`](https://github.com/charlescoverdale/comtrade) | UN Comtrade bilateral trade flows |
 | [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data |
+| [`nowcast`](https://github.com/charlescoverdale/nowcast) | Bridge equations and pseudo-real-time backtesting |
 
 ## Attribution
 

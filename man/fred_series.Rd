@@ -9,8 +9,10 @@ fred_series(
   from = NULL,
   to = NULL,
   units = "lin",
+  transform = NULL,
   frequency = NULL,
   aggregation = "avg",
+  format = c("long", "wide"),
   cache = TRUE
 )
 }
@@ -22,8 +24,10 @@ fred_series(
 
 \item{to}{Optional end date. Character (\code{"YYYY-MM-DD"}) or Date.}
 
-\item{units}{Character. Unit transformation to apply. Default \code{"lin"}
-(levels). See Details.}
+\item{units}{Character. Raw FRED units code. Default \code{"lin"} (levels).
+Mutually exclusive with \code{transform}.}
+
+\item{transform}{Character. Readable transformation name. See Details.}
 
 \item{frequency}{Character. Frequency aggregation. One of \code{"d"} (daily),
 \code{"w"} (weekly), \code{"bw"} (biweekly), \code{"m"} (monthly), \code{"q"} (quarterly),
@@ -33,38 +37,42 @@ the default).}
 \item{aggregation}{Character. Aggregation method when \code{frequency} is
 specified. One of \code{"avg"} (default), \code{"sum"}, or \code{"eop"} (end of period).}
 
+\item{format}{Character. \code{"long"} (default) returns one row per
+\verb{(series_id, date)}. \code{"wide"} returns one row per date with one column
+per series.}
+
 \item{cache}{Logical. If \code{TRUE} (the default), results are cached locally
 and returned from the cache on subsequent calls. Set to \code{FALSE} to force
 a fresh download from the API.}
 }
 \value{
-A data frame with columns:
-\describe{
-\item{date}{Date. The observation date.}
-\item{series_id}{Character. The FRED series identifier.}
-\item{value}{Numeric. The observation value.}
-}
+A \code{fred_tbl} (a \code{data.frame} subclass that prints with a
+one-line provenance header). In long format, columns are \code{date},
+\code{series_id}, \code{value}. In wide format, columns are \code{date} plus one
+numeric column per series.
 }
 \description{
 The main function in the package. Downloads time series observations from
 FRED and returns a tidy data frame. Multiple series can be fetched in a
-single call.
+single call, in either long or wide format.
 }
 \details{
 FRED supports server-side unit transformations via the \code{units} argument.
 This avoids the need to compute growth rates or log transforms locally.
-Supported values:
+For readability you can pass \code{transform} instead of \code{units}:
 \itemize{
-\item \code{"lin"} -levels (no transformation, the default)
-\item \code{"chg"} -change from previous period
-\item \code{"ch1"} -change from one year ago
-\item \code{"pch"} -percent change from previous period
-\item \code{"pc1"} -percent change from one year ago
-\item \code{"pca"} -compounded annual rate of change
-\item \code{"cch"} -continuously compounded rate of change
-\item \code{"cca"} -continuously compounded annual rate of change
+\item \code{"level"}, \code{"raw"} -levels (the default)
+\item \code{"diff"}, \code{"change"} -change from previous period
+\item \code{"yoy_diff"} -change from one year ago
+\item \code{"qoq_pct"}, \code{"mom_pct"}, \code{"pop_pct"} -percent change from previous period
+\item \code{"yoy_pct"} -percent change from one year ago
+\item \code{"annualised"}, \code{"qoq_annualised"} -compounded annual rate of change
 \item \code{"log"} -natural log
+\item \code{"log_diff"} -continuously compounded rate of change
+\item \code{"log_diff_annualised"} -continuously compounded annual rate
 }
+Raw FRED \code{units} codes (\code{"lin"}, \code{"chg"}, \code{"ch1"}, \code{"pch"}, \code{"pc1"},
+\code{"pca"}, \code{"cch"}, \code{"cca"}, \code{"log"}) are also accepted.
 }
 \examples{
 \donttest{
@@ -72,11 +80,14 @@ op <- options(fred.cache_dir = tempdir())
 # Single series
 gdp <- fred_series("GDP")
 
-# Multiple series
+# Multiple series, long format
 macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
 
-# With transformation: year-on-year percent change
-gdp_growth <- fred_series("GDP", units = "pc1")
+# Multiple series, wide format
+macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
+
+# Readable transformation: year-on-year percent change
+gdp_growth <- fred_series("GDP", transform = "yoy_pct")
 
 # Aggregate daily to monthly
 rates <- fred_series("DGS10", frequency = "m")

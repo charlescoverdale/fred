@@ -19,10 +19,8 @@ fred_env <- new.env(parent = emptyenv())
 #' @family configuration
 #' @export
 #' @examples
-#' \donttest{
-#' op <- options(fred.cache_dir = tempdir())
+#' \dontrun{
 #' fred_set_key("your_api_key_here")
-#' options(op)
 #' }
 fred_set_key <- function(key) {
   if (!is.character(key) || length(key) != 1L || nchar(key) == 0L) {

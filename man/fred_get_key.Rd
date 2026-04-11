@@ -23,6 +23,7 @@ options(op)
 \seealso{
 Other configuration: 
 \code{\link{clear_cache}()},
+\code{\link{fred_cache_info}()},
 \code{\link{fred_request}()},
 \code{\link{fred_set_key}()}
 }
