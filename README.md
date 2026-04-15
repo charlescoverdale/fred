@@ -34,6 +34,9 @@ There is an existing R package called [fredr](https://cran.r-project.org/package
 ## Installation
 
 ```r
+install.packages("fred")
+
+# Or install the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("charlescoverdale/fred")
 ```
