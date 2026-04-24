@@ -32,12 +32,17 @@ jobs:
           needs: website
       - name: Build site
         run: |
-          # Pre-seed downlit cache for base R packages that have no pkgdown site
-          cache_dir <- file.path(tempdir(), "downlit")
+          # Resolve downlit cache dir (R_user_dir in newer R, tempdir in older)
+          cache_dir <- tryCatch(
+            tools::R_user_dir("downlit", "cache"),
+            error = function(e) file.path(tempdir(), "downlit")
+          )
           dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
-          for (pkg in c("base","stats","utils","methods","grDevices","graphics","datasets","tools")) {
-            cache_file <- file.path(cache_dir, pkg)
-            if (!file.exists(cache_file)) saveRDS(NULL, cache_file)
+          options(downlit.cache_dir = cache_dir)
+          # Pre-seed base R packages that have no pkgdown site
+          for (pkg in c("base","stats","utils","methods","grDevices","graphics","datasets","tools","grid","compiler","splines")) {
+            f <- file.path(cache_dir, pkg)
+            if (!file.exists(f)) saveRDS(NULL, f)
           }
           pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
