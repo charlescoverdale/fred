@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fred</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/charlescoverdale/fred"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/charlescoverdale/fred" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -33,6 +33,41 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="fred-020">fred 0.2.0<a class="anchor" aria-label="anchor" href="#fred-020"></a></h2><p class="text-muted">CRAN release: 2026-04-11</p>
+<div class="section level3">
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/fred_series.html">fred_series()</a></code> gains a <code>format</code> argument. Pass <code>format = "wide"</code> to get one row per date with a column per series, instead of the default long layout.</li>
+<li>
+<code><a href="../reference/fred_series.html">fred_series()</a></code> gains a <code>transform</code> argument with readable aliases for the FRED <code>units</code> codes: <code>"level"</code>, <code>"diff"</code>, <code>"yoy_diff"</code>, <code>"qoq_pct"</code>, <code>"yoy_pct"</code>, <code>"annualised"</code>, <code>"log"</code>, <code>"log_diff"</code>, and more. The raw <code>units</code> codes still work; <code>transform</code> and <code>units</code> are mutually exclusive.</li>
+<li>New real-time and vintage helpers built on the ALFRED endpoint:
+<ul><li>
+<code><a href="../reference/fred_as_of.html">fred_as_of()</a></code> returns a series as it appeared on a chosen vintage date.</li>
+<li>
+<code><a href="../reference/fred_first_release.html">fred_first_release()</a></code> returns only the initial release of each observation, with no subsequent revisions.</li>
+<li>
+<code><a href="../reference/fred_all_vintages.html">fred_all_vintages()</a></code> returns the full revision history.</li>
+<li>
+<code><a href="../reference/fred_real_time_panel.html">fred_real_time_panel()</a></code> returns the values that were available on each of a chosen set of vintage dates.</li>
+</ul></li>
+<li>New <code><a href="../reference/fred_cache_info.html">fred_cache_info()</a></code> reports the cache directory, file count, total size, and per-file metadata. Useful for debugging stale results.</li>
+<li>All observation results are now returned as <code>fred_tbl</code>, a thin <code>data.frame</code> subclass with a one-line provenance header showing the query (series count, observation count, units, transform, frequency, vintage). The header is informational; downstream code can keep treating the result as a plain data frame.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internals-0-2-0">Internals<a class="anchor" aria-label="anchor" href="#internals-0-2-0"></a></h3>
+<ul><li>The cache key format is unchanged for default arguments, so caches built under 0.1.x are still picked up after upgrade. Realtime, output-type, and vintage requests are cached under distinct keys.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.2" id="fred-012">fred 0.1.2<a class="anchor" aria-label="anchor" href="#fred-012"></a></h2><p class="text-muted">CRAN release: 2026-03-19</p>
+<ul><li>Removed non-existent pkgdown URL from DESCRIPTION.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="fred-011">fred 0.1.1<a class="anchor" aria-label="anchor" href="#fred-011"></a></h2>
+<ul><li>Examples now use <code>\donttest</code> with <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> cache instead of <code>\dontrun</code>, fixing CRAN policy compliance.</li>
+<li>Cache directory is now configurable via <code>options(fred.cache_dir = ...)</code>.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="fred-010">fred 0.1.0<a class="anchor" aria-label="anchor" href="#fred-010"></a></h2>
 <ul><li>Initial CRAN release.</li>
 <li>Core function <code><a href="../reference/fred_series.html">fred_series()</a></code> for fetching one or more FRED time series.</li>
@@ -40,7 +75,8 @@
 <li>Local caching of downloaded data.</li>
 <li>Search, category, release, source, tag, and vintage endpoints.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

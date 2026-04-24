@@ -1,9 +1,11 @@
 # fred
 
-[![R-CMD-check](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/fred)](https://CRAN.R-project.org/package=fred)
-[![Downloads](https://cranlogs.r-pkg.org/badges/fred)](https://CRAN.R-project.org/package=fred)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/fred)](https://CRAN.R-project.org/package=fred)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/fred)](https://CRAN.R-project.org/package=fred)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License:
@@ -92,6 +94,9 @@ but it hasn’t been updated since August 2021.
 ## Installation
 
 ``` r
+install.packages("fred")
+
+# Or install the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("charlescoverdale/fred")
 ```
@@ -294,45 +299,149 @@ fred_info("UNRATE")
 #>   UNRATE   Unemployment Rate                   Monthly     %   Seasonally Adjusted
 ```
 
+### Wide format
+
+For multi-series analysis it’s often easier to have one column per
+series. Pass `format = "wide"`:
+
+``` r
+macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"),
+                     from = "2020-01-01", format = "wide")
+head(macro)
+#> # FRED: 3 series · 60 obs · format=wide
+#>         date       GDP UNRATE CPIAUCSL
+#>   2020-01-01  21561.14    3.5  259.037
+#>   2020-02-01        NA    3.5  259.250
+#>   2020-03-01  21289.27    4.4  258.115
+#>   ...
+```
+
+The header at the top is a one-line summary of the query (series count,
+observations, transform, frequency, vintage). Downstream code can treat
+the result as a normal data frame.
+
+### Readable transformation names
+
+The raw FRED units codes (`pch`, `pc1`, `cca`, etc.) work fine, but
+they’re not always memorable. You can pass `transform =` instead:
+
+``` r
+# Year-on-year percent change in CPI
+fred_series("CPIAUCSL", transform = "yoy_pct")
+
+# Continuously compounded annual rate
+fred_series("GDP", transform = "log_diff_annualised")
+
+# Quarter-on-quarter level change
+fred_series("GDP", transform = "diff")
+```
+
+Available aliases: `level`, `raw`, `diff`, `change`, `yoy_diff`,
+`qoq_pct`, `mom_pct`, `pop_pct`, `yoy_pct`, `annualised`,
+`qoq_annualised`, `log`, `log_diff`, `log_diff_annualised`. The `units`
+and `transform` arguments are mutually exclusive.
+
+### Real-time and vintage data
+
+FRED keeps the full revision history for most series via its sister
+database, ALFRED. **fred** exposes this through four helpers, all of
+which add `realtime_start` and `realtime_end` columns to the returned
+data frame.
+
+``` r
+# 1. The series as it appeared on a specific date
+gdp_then <- fred_as_of("GDP", date = "2020-03-01")
+
+# 2. Only the first release of each observation, never revised
+gdp_first <- fred_first_release("GDP", from = "2010-01-01")
+
+# 3. Every vintage in the revision history
+#    (potentially large - narrow with from/to for long series)
+gdp_all <- fred_all_vintages("GDP", from = "2020-01-01")
+
+# 4. A panel of selected vintage snapshots
+gdp_panel <- fred_real_time_panel(
+  "GDP",
+  vintages = c("2020-04-30", "2020-07-31", "2020-10-31", "2021-01-31")
+)
+```
+
+These are the building blocks for pseudo-real-time forecasting backtests
+and revision studies. They cache separately from the default
+(latest-vintage) cache, so calling `fred_series("GDP")` and
+`fred_as_of("GDP", "2020-03-01")` keep distinct cache entries.
+
+### Inspect the local cache
+
+``` r
+fred_cache_info()
+#> $dir
+#> [1] "/Users/.../R/fred/cache"
+#>
+#> $n_files
+#> [1] 27
+#>
+#> $size_human
+#> [1] "412.3 KB"
+#>
+#> $files
+#>                                  name size_bytes            modified
+#>   obs_GDP_lin_avg.rds                    18234   2026-04-09 11:02:13
+#>   obs_UNRATE_lin_avg.rds                 16711   2026-04-09 11:02:14
+#>   ...
+```
+
+[`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)
+wipes everything;
+[`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md)
+lets you check what’s there before you do.
+
 ## Functions
 
-| Function                                                                                                  | Description                               |
-|-----------------------------------------------------------------------------------------------------------|-------------------------------------------|
-| [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)                       | Fetch observations for one or more series |
-| [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)                       | Search for series by keyword or ID        |
-| [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md)                           | Get series metadata                       |
-| [`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)                   | Get revision dates for a series           |
-| [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.md)                   | Get category information                  |
-| [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.md) | List child categories                     |
-| [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.md)     | List series in a category                 |
-| [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.md)                   | List all data releases                    |
-| [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.md)       | List series in a release                  |
-| [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.md)         | Get release publication dates             |
-| [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.md)                     | List all data sources                     |
-| [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.md)     | List releases from a source               |
-| [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.md)                           | List or search tags                       |
-| [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.md)           | Find related tags                         |
-| [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md)                     | List recently updated series              |
-| [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md)                     | Raw API request (power users)             |
-| [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.md)                     | Set API key for session                   |
-| [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)                     | Get current API key                       |
-| [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)                       | Clear local cache                         |
+| Function                                                                                                  | Description                                              |
+|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)                       | Fetch observations for one or more series (long or wide) |
+| [`fred_as_of()`](https://charlescoverdale.github.io/fred/reference/fred_as_of.md)                         | Fetch a series as it appeared on a specific vintage date |
+| [`fred_first_release()`](https://charlescoverdale.github.io/fred/reference/fred_first_release.md)         | Fetch only the initial release of each observation       |
+| [`fred_all_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_all_vintages.md)           | Fetch every vintage in the revision history              |
+| [`fred_real_time_panel()`](https://charlescoverdale.github.io/fred/reference/fred_real_time_panel.md)     | Fetch a panel of selected vintage snapshots              |
+| [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)                       | Search for series by keyword or ID                       |
+| [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md)                           | Get series metadata                                      |
+| [`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)                   | Get revision dates for a series                          |
+| [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.md)                   | Get category information                                 |
+| [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.md) | List child categories                                    |
+| [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.md)     | List series in a category                                |
+| [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.md)                   | List all data releases                                   |
+| [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.md)       | List series in a release                                 |
+| [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.md)         | Get release publication dates                            |
+| [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.md)                     | List all data sources                                    |
+| [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.md)     | List releases from a source                              |
+| [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.md)                           | List or search tags                                      |
+| [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.md)           | Find related tags                                        |
+| [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md)                     | List recently updated series                             |
+| [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md)                     | Raw API request (power users)                            |
+| [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.md)                     | Set API key for session                                  |
+| [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)                     | Get current API key                                      |
+| [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md)               | Inspect the local cache                                  |
+| [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)                       | Clear local cache                                        |
 
 ## Related packages
 
-The **fred** package is part of a suite of R packages for economic and
-financial data:
+This package is part of a family of R packages for economic and
+financial data. They share a consistent interface - named functions,
+tidy data frames, local caching - and are designed to work together.
 
-| Package                                                  | Source                            | Status    |
-|----------------------------------------------------------|-----------------------------------|-----------|
-| [ons](https://github.com/charlescoverdale/ons)           | UK Office for National Statistics | On CRAN   |
-| [boe](https://github.com/charlescoverdale/boe)           | Bank of England                   | On CRAN   |
-| [hmrc](https://github.com/charlescoverdale/hmrc)         | HM Revenue & Customs              | On CRAN   |
-| [obr](https://github.com/charlescoverdale/obr)           | Office for Budget Responsibility  | On CRAN   |
-| [readecb](https://github.com/charlescoverdale/readecb)   | European Central Bank             | On CRAN   |
-| [readoecd](https://github.com/charlescoverdale/readoecd) | OECD                              | On CRAN   |
-| [readnoaa](https://github.com/charlescoverdale/readnoaa) | NOAA climate and weather data     | On GitHub |
-| [inflateR](https://github.com/charlescoverdale/inflateR) | Inflation adjustment              | On CRAN   |
+| Package                                                    | What it covers                                                                       |
+|------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| [`ons`](https://github.com/charlescoverdale/ons)           | ONS data (GDP, inflation, unemployment, wages, trade, house prices, population)      |
+| [`boe`](https://github.com/charlescoverdale/boe)           | Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates) |
+| [`hmrc`](https://github.com/charlescoverdale/hmrc)         | HMRC tax receipts, corporation tax, stamp duty, R&D credits, and tax gap data        |
+| [`obr`](https://github.com/charlescoverdale/obr)           | OBR fiscal forecasts and the Public Finances Databank                                |
+| [`readecb`](https://github.com/charlescoverdale/readecb)   | European Central Bank data (policy rates, HICP, exchange rates, yield curves)        |
+| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD data (GDP, unemployment, inflation, trade across 38 member countries)           |
+| [`comtrade`](https://github.com/charlescoverdale/comtrade) | UN Comtrade bilateral trade flows                                                    |
+| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data                           |
+| [`nowcast`](https://github.com/charlescoverdale/nowcast)   | Bridge equations and pseudo-real-time backtesting                                    |
 
 ## Attribution
 

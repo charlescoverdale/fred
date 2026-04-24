@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Access Federal Reserve Economic Data">
-<meta name="description" content="Provides clean, tidy access to economic data from the Federal Reserve Economic Data (FRED) API &lt;https://fred.stlouisfed.org/docs/api/fred/&gt;. FRED is maintained by the Federal Reserve Bank of St. Louis and contains over 800,000 time series from 118 sources covering GDP, employment, inflation, interest rates, trade, and more. Dedicated functions fetch series observations, search for series, browse categories, releases, and tags, and retrieve series metadata. Multiple series can be fetched in a single call. Server-side unit transformations (percent change, log, etc.) and frequency aggregation are supported. Data is cached locally for subsequent calls. This product uses the FRED API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.">
-<meta property="og:description" content="Provides clean, tidy access to economic data from the Federal Reserve Economic Data (FRED) API &lt;https://fred.stlouisfed.org/docs/api/fred/&gt;. FRED is maintained by the Federal Reserve Bank of St. Louis and contains over 800,000 time series from 118 sources covering GDP, employment, inflation, interest rates, trade, and more. Dedicated functions fetch series observations, search for series, browse categories, releases, and tags, and retrieve series metadata. Multiple series can be fetched in a single call. Server-side unit transformations (percent change, log, etc.) and frequency aggregation are supported. Data is cached locally for subsequent calls. This product uses the FRED API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.">
+<meta name="description" content="Provides clean, tidy access to economic data from the Federal Reserve Economic Data (FRED) API &lt;https://fred.stlouisfed.org/docs/api/fred/&gt;. FRED is maintained by the Federal Reserve Bank of St. Louis and contains over 800,000 time series from 118 sources covering GDP, employment, inflation, interest rates, trade, and more. Dedicated functions fetch series observations, search for series, browse categories, releases, and tags, and retrieve series metadata. Multiple series can be fetched in a single call, in long or wide format. Server-side unit transformations (percent change, log, etc.) and frequency aggregation are supported, with readable transform aliases such as yoy_pct and log_diff. Real-time and vintage helpers (built on ALFRED) return a series as it appeared on a given date, the first-release version, every revision, or a panel of selected vintages. Data is cached locally for subsequent calls. This product uses the FRED API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.">
+<meta property="og:description" content="Provides clean, tidy access to economic data from the Federal Reserve Economic Data (FRED) API &lt;https://fred.stlouisfed.org/docs/api/fred/&gt;. FRED is maintained by the Federal Reserve Bank of St. Louis and contains over 800,000 time series from 118 sources covering GDP, employment, inflation, interest rates, trade, and more. Dedicated functions fetch series observations, search for series, browse categories, releases, and tags, and retrieve series metadata. Multiple series can be fetched in a single call, in long or wide format. Server-side unit transformations (percent change, log, etc.) and frequency aggregation are supported, with readable transform aliases such as yoy_pct and log_diff. Real-time and vintage helpers (built on ALFRED) return a series as it appeared on a given date, the first-release version, every revision, or a panel of selected vintages. Data is cached locally for subsequent calls. This product uses the FRED API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">fred</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/charlescoverdale/fred"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/charlescoverdale/fred" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -49,7 +49,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="fred">fred<a class="anchor" aria-label="anchor" href="#fred"></a>
 </h1></div>
-<p><a href="https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/charlescoverdale/fred/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=fred" class="external-link"><img src="https://www.r-pkg.org/badges/version/fred" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=fred" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/fred" alt="Downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></p>
+<p><a href="https://CRAN.R-project.org/package=fred" class="external-link"><img src="https://www.r-pkg.org/badges/version/fred" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=fred" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/fred" alt="CRAN downloads"></a> <a href="https://CRAN.R-project.org/package=fred" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/fred" alt="Total Downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></p>
 <p><strong>fred</strong> provides clean, tidy access to economic data from the <a href="https://fred.stlouisfed.org/" class="external-link">Federal Reserve Economic Data (FRED)</a> API directly from R.</p>
 <div class="section level2">
 <h2 id="what-is-fred">What is FRED?<a class="anchor" aria-label="anchor" href="#what-is-fred"></a>
@@ -90,7 +90,10 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fred"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or install the development version from GitHub</span></span>
+<span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"charlescoverdale/fred"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -266,11 +269,89 @@
 <span><span class="co">#&gt;       id                                title frequency units  seasonal_adjustment</span></span>
 <span><span class="co">#&gt;   UNRATE   Unemployment Rate                   Monthly     %   Seasonally Adjusted</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="wide-format">Wide format<a class="anchor" aria-label="anchor" href="#wide-format"></a>
+</h3>
+<p>For multi-series analysis it’s often easier to have one column per series. Pass <code>format = "wide"</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">macro</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fred_series.html">fred_series</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GDP"</span>, <span class="st">"UNRATE"</span>, <span class="st">"CPIAUCSL"</span><span class="op">)</span>,</span>
+<span>                     from <span class="op">=</span> <span class="st">"2020-01-01"</span>, format <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">macro</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # FRED: 3 series · 60 obs · format=wide</span></span>
+<span><span class="co">#&gt;         date       GDP UNRATE CPIAUCSL</span></span>
+<span><span class="co">#&gt;   2020-01-01  21561.14    3.5  259.037</span></span>
+<span><span class="co">#&gt;   2020-02-01        NA    3.5  259.250</span></span>
+<span><span class="co">#&gt;   2020-03-01  21289.27    4.4  258.115</span></span>
+<span><span class="co">#&gt;   ...</span></span></code></pre></div>
+<p>The header at the top is a one-line summary of the query (series count, observations, transform, frequency, vintage). Downstream code can treat the result as a normal data frame.</p>
+</div>
+<div class="section level3">
+<h3 id="readable-transformation-names">Readable transformation names<a class="anchor" aria-label="anchor" href="#readable-transformation-names"></a>
+</h3>
+<p>The raw FRED units codes (<code>pch</code>, <code>pc1</code>, <code>cca</code>, etc.) work fine, but they’re not always memorable. You can pass <code>transform =</code> instead:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Year-on-year percent change in CPI</span></span>
+<span><span class="fu"><a href="reference/fred_series.html">fred_series</a></span><span class="op">(</span><span class="st">"CPIAUCSL"</span>, transform <span class="op">=</span> <span class="st">"yoy_pct"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Continuously compounded annual rate</span></span>
+<span><span class="fu"><a href="reference/fred_series.html">fred_series</a></span><span class="op">(</span><span class="st">"GDP"</span>, transform <span class="op">=</span> <span class="st">"log_diff_annualised"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Quarter-on-quarter level change</span></span>
+<span><span class="fu"><a href="reference/fred_series.html">fred_series</a></span><span class="op">(</span><span class="st">"GDP"</span>, transform <span class="op">=</span> <span class="st">"diff"</span><span class="op">)</span></span></code></pre></div>
+<p>Available aliases: <code>level</code>, <code>raw</code>, <code>diff</code>, <code>change</code>, <code>yoy_diff</code>, <code>qoq_pct</code>, <code>mom_pct</code>, <code>pop_pct</code>, <code>yoy_pct</code>, <code>annualised</code>, <code>qoq_annualised</code>, <code>log</code>, <code>log_diff</code>, <code>log_diff_annualised</code>. The <code>units</code> and <code>transform</code> arguments are mutually exclusive.</p>
+</div>
+<div class="section level3">
+<h3 id="real-time-and-vintage-data">Real-time and vintage data<a class="anchor" aria-label="anchor" href="#real-time-and-vintage-data"></a>
+</h3>
+<p>FRED keeps the full revision history for most series via its sister database, ALFRED. <strong>fred</strong> exposes this through four helpers, all of which add <code>realtime_start</code> and <code>realtime_end</code> columns to the returned data frame.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 1. The series as it appeared on a specific date</span></span>
+<span><span class="va">gdp_then</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fred_as_of.html">fred_as_of</a></span><span class="op">(</span><span class="st">"GDP"</span>, date <span class="op">=</span> <span class="st">"2020-03-01"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 2. Only the first release of each observation, never revised</span></span>
+<span><span class="va">gdp_first</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fred_first_release.html">fred_first_release</a></span><span class="op">(</span><span class="st">"GDP"</span>, from <span class="op">=</span> <span class="st">"2010-01-01"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. Every vintage in the revision history</span></span>
+<span><span class="co">#    (potentially large - narrow with from/to for long series)</span></span>
+<span><span class="va">gdp_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fred_all_vintages.html">fred_all_vintages</a></span><span class="op">(</span><span class="st">"GDP"</span>, from <span class="op">=</span> <span class="st">"2020-01-01"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 4. A panel of selected vintage snapshots</span></span>
+<span><span class="va">gdp_panel</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fred_real_time_panel.html">fred_real_time_panel</a></span><span class="op">(</span></span>
+<span>  <span class="st">"GDP"</span>,</span>
+<span>  vintages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-04-30"</span>, <span class="st">"2020-07-31"</span>, <span class="st">"2020-10-31"</span>, <span class="st">"2021-01-31"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>These are the building blocks for pseudo-real-time forecasting backtests and revision studies. They cache separately from the default (latest-vintage) cache, so calling <code>fred_series("GDP")</code> and <code>fred_as_of("GDP", "2020-03-01")</code> keep distinct cache entries.</p>
+</div>
+<div class="section level3">
+<h3 id="inspect-the-local-cache">Inspect the local cache<a class="anchor" aria-label="anchor" href="#inspect-the-local-cache"></a>
+</h3>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fred_cache_info.html">fred_cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $dir</span></span>
+<span><span class="co">#&gt; [1] "/Users/.../R/fred/cache"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $n_files</span></span>
+<span><span class="co">#&gt; [1] 27</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $size_human</span></span>
+<span><span class="co">#&gt; [1] "412.3 KB"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $files</span></span>
+<span><span class="co">#&gt;                                  name size_bytes            modified</span></span>
+<span><span class="co">#&gt;   obs_GDP_lin_avg.rds                    18234   2026-04-09 11:02:13</span></span>
+<span><span class="co">#&gt;   obs_UNRATE_lin_avg.rds                 16711   2026-04-09 11:02:14</span></span>
+<span><span class="co">#&gt;   ...</span></span></code></pre></div>
+<p><code><a href="reference/clear_cache.html">clear_cache()</a></code> wipes everything; <code><a href="reference/fred_cache_info.html">fred_cache_info()</a></code> lets you check what’s there before you do.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
 <table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
 <thead><tr class="header">
 <th>Function</th>
 <th>Description</th>
@@ -278,7 +359,23 @@
 <tbody>
 <tr class="odd">
 <td><code><a href="reference/fred_series.html">fred_series()</a></code></td>
-<td>Fetch observations for one or more series</td>
+<td>Fetch observations for one or more series (long or wide)</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/fred_as_of.html">fred_as_of()</a></code></td>
+<td>Fetch a series as it appeared on a specific vintage date</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/fred_first_release.html">fred_first_release()</a></code></td>
+<td>Fetch only the initial release of each observation</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/fred_all_vintages.html">fred_all_vintages()</a></code></td>
+<td>Fetch every vintage in the revision history</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/fred_real_time_panel.html">fred_real_time_panel()</a></code></td>
+<td>Fetch a panel of selected vintage snapshots</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/fred_search.html">fred_search()</a></code></td>
@@ -349,6 +446,10 @@
 <td>Get current API key</td>
 </tr>
 <tr class="odd">
+<td><code><a href="reference/fred_cache_info.html">fred_cache_info()</a></code></td>
+<td>Inspect the local cache</td>
+</tr>
+<tr class="even">
 <td><code><a href="reference/clear_cache.html">clear_cache()</a></code></td>
 <td>Clear local cache</td>
 </tr>
@@ -358,58 +459,52 @@
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
 </h2>
-<p>The <strong>fred</strong> package is part of a suite of R packages for economic and financial data:</p>
+<p>This package is part of a family of R packages for economic and financial data. They share a consistent interface - named functions, tidy data frames, local caching - and are designed to work together.</p>
 <table class="table">
 <colgroup>
-<col width="33%">
-<col width="33%">
-<col width="33%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
 <th>Package</th>
-<th>Source</th>
-<th>Status</th>
+<th>What it covers</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://github.com/charlescoverdale/ons" class="external-link">ons</a></td>
-<td>UK Office for National Statistics</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/ons" class="external-link"><code>ons</code></a></td>
+<td>ONS data (GDP, inflation, unemployment, wages, trade, house prices, population)</td>
 </tr>
 <tr class="even">
-<td><a href="https://github.com/charlescoverdale/boe" class="external-link">boe</a></td>
-<td>Bank of England</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/boe" class="external-link"><code>boe</code></a></td>
+<td>Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates)</td>
 </tr>
 <tr class="odd">
-<td><a href="https://github.com/charlescoverdale/hmrc" class="external-link">hmrc</a></td>
-<td>HM Revenue &amp; Customs</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/hmrc" class="external-link"><code>hmrc</code></a></td>
+<td>HMRC tax receipts, corporation tax, stamp duty, R&amp;D credits, and tax gap data</td>
 </tr>
 <tr class="even">
-<td><a href="https://github.com/charlescoverdale/obr" class="external-link">obr</a></td>
-<td>Office for Budget Responsibility</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/obr" class="external-link"><code>obr</code></a></td>
+<td>OBR fiscal forecasts and the Public Finances Databank</td>
 </tr>
 <tr class="odd">
-<td><a href="https://github.com/charlescoverdale/readecb" class="external-link">readecb</a></td>
-<td>European Central Bank</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/readecb" class="external-link"><code>readecb</code></a></td>
+<td>European Central Bank data (policy rates, HICP, exchange rates, yield curves)</td>
 </tr>
 <tr class="even">
-<td><a href="https://github.com/charlescoverdale/readoecd" class="external-link">readoecd</a></td>
-<td>OECD</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/readoecd" class="external-link"><code>readoecd</code></a></td>
+<td>OECD data (GDP, unemployment, inflation, trade across 38 member countries)</td>
 </tr>
 <tr class="odd">
-<td><a href="https://github.com/charlescoverdale/readnoaa" class="external-link">readnoaa</a></td>
-<td>NOAA climate and weather data</td>
-<td>On GitHub</td>
+<td><a href="https://github.com/charlescoverdale/comtrade" class="external-link"><code>comtrade</code></a></td>
+<td>UN Comtrade bilateral trade flows</td>
 </tr>
 <tr class="even">
-<td><a href="https://github.com/charlescoverdale/inflateR" class="external-link">inflateR</a></td>
-<td>Inflation adjustment</td>
-<td>On CRAN</td>
+<td><a href="https://github.com/charlescoverdale/inflateR" class="external-link"><code>inflateR</code></a></td>
+<td>Adjust values for inflation using CPI or GDP deflator data</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/nowcast" class="external-link"><code>nowcast</code></a></td>
+<td>Bridge equations and pseudo-real-time backtesting</td>
 </tr>
 </tbody>
 </table>
@@ -428,6 +523,7 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=fred" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/charlescoverdale/fred/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/charlescoverdale/fred/issues" class="external-link">Report a bug</a></li>
 </ul>

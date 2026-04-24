@@ -62,18 +62,37 @@ A data frame of matching series with columns including `id`, `title`,
 `frequency`, `units`, `seasonal_adjustment`, `last_updated`,
 `popularity`, and `notes`.
 
+## See also
+
+Other series:
+[`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md),
+[`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md),
+[`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md),
+[`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)
+
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
+op <- options(fred.cache_dir = tempdir())
 # Keyword search
 fred_search("unemployment rate")
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 
 # Filter to monthly series only
 fred_search("consumer price index", filter_variable = "frequency",
             filter_value = "Monthly")
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 
 # Search by series ID pattern
 fred_search("GDP*", type = "series_id")
-} # }
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+options(op)
+# }
 ```

@@ -2,7 +2,7 @@
 
 The main function in the package. Downloads time series observations
 from FRED and returns a tidy data frame. Multiple series can be fetched
-in a single call.
+in a single call, in either long or wide format.
 
 ## Usage
 
@@ -12,8 +12,10 @@ fred_series(
   from = NULL,
   to = NULL,
   units = "lin",
+  transform = NULL,
   frequency = NULL,
   aggregation = "avg",
+  format = c("long", "wide"),
   cache = TRUE
 )
 ```
@@ -35,8 +37,12 @@ fred_series(
 
 - units:
 
-  Character. Unit transformation to apply. Default `"lin"` (levels). See
-  Details.
+  Character. Raw FRED units code. Default `"lin"` (levels). Mutually
+  exclusive with `transform`.
+
+- transform:
+
+  Character. Readable transformation name. See Details.
 
 - frequency:
 
@@ -50,6 +56,11 @@ fred_series(
   Character. Aggregation method when `frequency` is specified. One of
   `"avg"` (default), `"sum"`, or `"eop"` (end of period).
 
+- format:
+
+  Character. `"long"` (default) returns one row per `(series_id, date)`.
+  `"wide"` returns one row per date with one column per series.
+
 - cache:
 
   Logical. If `TRUE` (the default), results are cached locally and
@@ -58,58 +69,81 @@ fred_series(
 
 ## Value
 
-A data frame with columns:
-
-- date:
-
-  Date. The observation date.
-
-- series_id:
-
-  Character. The FRED series identifier.
-
-- value:
-
-  Numeric. The observation value.
+A `fred_tbl` (a `data.frame` subclass that prints with a one-line
+provenance header). In long format, columns are `date`, `series_id`,
+`value`. In wide format, columns are `date` plus one numeric column per
+series.
 
 ## Details
 
 FRED supports server-side unit transformations via the `units` argument.
 This avoids the need to compute growth rates or log transforms locally.
-Supported values:
+For readability you can pass `transform` instead of `units`:
 
-- `"lin"` -levels (no transformation, the default)
+- `"level"`, `"raw"` -levels (the default)
 
-- `"chg"` -change from previous period
+- `"diff"`, `"change"` -change from previous period
 
-- `"ch1"` -change from one year ago
+- `"yoy_diff"` -change from one year ago
 
-- `"pch"` -percent change from previous period
+- `"qoq_pct"`, `"mom_pct"`, `"pop_pct"` -percent change from previous
+  period
 
-- `"pc1"` -percent change from one year ago
+- `"yoy_pct"` -percent change from one year ago
 
-- `"pca"` -compounded annual rate of change
-
-- `"cch"` -continuously compounded rate of change
-
-- `"cca"` -continuously compounded annual rate of change
+- `"annualised"`, `"qoq_annualised"` -compounded annual rate of change
 
 - `"log"` -natural log
+
+- `"log_diff"` -continuously compounded rate of change
+
+- `"log_diff_annualised"` -continuously compounded annual rate
+
+Raw FRED `units` codes (`"lin"`, `"chg"`, `"ch1"`, `"pch"`, `"pc1"`,
+`"pca"`, `"cch"`, `"cca"`, `"log"`) are also accepted.
+
+## See also
+
+Other series:
+[`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md),
+[`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md),
+[`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md),
+[`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
+op <- options(fred.cache_dir = tempdir())
 # Single series
 gdp <- fred_series("GDP")
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 
-# Multiple series
+# Multiple series, long format
 macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 
-# With transformation: year-on-year percent change
-gdp_growth <- fred_series("GDP", units = "pc1")
+# Multiple series, wide format
+macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+
+# Readable transformation: year-on-year percent change
+gdp_growth <- fred_series("GDP", transform = "yoy_pct")
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 
 # Aggregate daily to monthly
 rates <- fred_series("DGS10", frequency = "m")
-} # }
+#> Error in fred_get_key(): No FRED API key found.
+#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
+#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+options(op)
+# }
 ```

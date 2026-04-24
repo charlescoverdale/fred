@@ -72,3 +72,31 @@ Low-level API access and cache management
   : Make a raw request to the FRED API
 - [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)
   : Clear the fred cache
+
+## Vintage Data (ALFRED)
+
+Real-time and vintage data via ALFRED
+
+- [`fred_as_of()`](https://charlescoverdale.github.io/fred/reference/fred_as_of.md)
+  : Fetch a series as it appeared on a given vintage date
+- [`fred_first_release()`](https://charlescoverdale.github.io/fred/reference/fred_first_release.md)
+  : Fetch the first-release ("real-time") version of a series
+- [`fred_all_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_all_vintages.md)
+  : Fetch every vintage of a series
+- [`fred_real_time_panel()`](https://charlescoverdale.github.io/fred/reference/fred_real_time_panel.md)
+  : Fetch a real-time panel of a series across selected vintages
+- [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md)
+  : Inspect the local fred cache
+
+## S3 Methods
+
+Print methods for fred_tbl objects
+
+- [`print(`*`<fred_tbl>`*`)`](https://charlescoverdale.github.io/fred/reference/print.fred_tbl.md)
+  : Print method for fred_tbl
+
+## Package
+
+- [`fred`](https://charlescoverdale.github.io/fred/reference/fred-package.md)
+  [`fred-package`](https://charlescoverdale.github.io/fred/reference/fred-package.md)
+  : fred: Access 'Federal Reserve Economic Data'

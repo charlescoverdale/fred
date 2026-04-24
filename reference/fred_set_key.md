@@ -25,6 +25,14 @@ Invisible `NULL`.
 Register for a free API key at
 <https://fredaccount.stlouisfed.org/apikeys>.
 
+## See also
+
+Other configuration:
+[`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md),
+[`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md),
+[`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md),
+[`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md)
+
 ## Examples
 
 ``` r
