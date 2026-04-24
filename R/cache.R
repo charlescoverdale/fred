@@ -16,7 +16,8 @@
 clear_cache <- function() {
   cache_dir <- fred_cache_dir()
   if (dir.exists(cache_dir)) {
-    unlink(cache_dir, recursive = TRUE)
+    files <- list.files(cache_dir, full.names = TRUE)
+    if (length(files)) unlink(files, recursive = TRUE)
     cli::cli_inform("Cache cleared.")
   } else {
     cli::cli_inform("No cache to clear.")

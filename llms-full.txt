@@ -1,0 +1,836 @@
+# fred — full API reference
+
+> Provides clean, tidy access to economic data from the 'Federal Reserve Economic Data' ('FRED') API.
+
+- Version: 0.2.0
+- Install: `install.packages("fred")`
+- CRAN: https://CRAN.R-project.org/package=fred
+- GitHub: https://github.com/charlescoverdale/fred
+- Reference site: https://charlescoverdale.github.io/fred/
+
+This file is a self-contained reference for LLM agents: every exported
+function with its signature, arguments, return value, and example.
+
+---
+
+## `clear_cache()`
+
+**Clear the fred cache**
+
+Deletes all locally cached FRED data files. The next call to any data function will re-download from the FRED API.
+
+**Usage**
+
+```r
+clear_cache()
+```
+
+**Returns**
+
+Invisible `NULL`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+clear_cache()
+options(op)
+```
+
+---
+
+## `fred_all_vintages()`
+
+**Fetch every vintage of a series**
+
+Returns the full revision history: one row per (observation date, realtime range) combination. This is the FRED API's `output_type = 2` mode. The result can be reshaped into a vintage matrix or used to compute revision statistics.
+
+**Usage**
+
+```r
+fred_all_vintages(
+  series_id,
+  from = NULL,
+  to = NULL,
+  units = "lin",
+  frequency = NULL,
+  aggregation = "avg",
+  cache = TRUE
+)
+```
+
+**Arguments**
+
+- `series_id` — Character. One or more FRED series IDs.
+- `from, to` — Optional observation date range.
+- `units` — Character. Raw FRED units code. Default `"lin"`.
+- `frequency, aggregation` — Optional frequency aggregation arguments (see `fred_series()`).
+- `cache` — Logical. Cache results locally. Default `TRUE`.
+
+**Returns**
+
+A `fred_tbl` with columns `date`, `series_id`, `value`, `realtime_start`, `realtime_end`. The `realtime_start` and `realtime_end` columns identify the vintage window for each row.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# All vintages of recent GDP releases
+gdp_vint <- fred_all_vintages("GDP", from = "2020-01-01")
+options(op)
+```
+
+---
+
+## `fred_as_of()`
+
+**Fetch a series as it appeared on a given vintage date**
+
+Returns the values that were available in FRED on `date`, before any subsequent revisions. This is the standard real-time data access pattern: set `realtime_start = realtime_end = date`. Useful for backtesting forecasting models against the data that was actually available at the time, not the revised series we see today.
+
+**Usage**
+
+```r
+fred_as_of(
+  series_id,
+  date,
+  from = NULL,
+  to = NULL,
+  units = "lin",
+  frequency = NULL,
+  aggregation = "avg",
+  cache = TRUE
+)
+```
+
+**Arguments**
+
+- `series_id` — Character. One or more FRED series IDs.
+- `date` — Character or Date. The vintage date (`"YYYY-MM-DD"`).
+- `from, to` — Optional observation date range.
+- `units` — Character. Raw FRED units code. Default `"lin"`.
+- `frequency, aggregation` — Optional frequency aggregation arguments (see `fred_series()`).
+- `cache` — Logical. Cache results locally. Default `TRUE`.
+
+**Returns**
+
+A `fred_tbl` with columns `date`, `series_id`, `value`, `realtime_start`, `realtime_end`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# GDP as it looked on 1 March 2020
+gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+options(op)
+```
+
+---
+
+## `fred_cache_info()`
+
+**Inspect the local fred cache**
+
+Returns information about the local cache: where it lives, how many files it contains, and how much disk space they take. Useful when debugging stale results or deciding whether to call `clear_cache()`.
+
+**Usage**
+
+```r
+fred_cache_info()
+```
+
+**Returns**
+
+A list with elements `dir`, `n_files`, `size_bytes`, `size_human`, and `files` (a data frame with `name`, `size_bytes`, and `modified` columns). Returns the same shape with zero counts if the cache directory does not yet exist.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_cache_info()
+options(op)
+```
+
+---
+
+## `fred_category()`
+
+**Get a FRED category**
+
+Returns information about a single category. The FRED category tree starts at category 0 (the root) and branches into 8 top-level categories: Money, Banking & Finance; Population, Employment & Labor Markets; National Accounts; Production & Business Activity; Prices; International Data; U.S. Regional Data; and Academic Data.
+
+**Usage**
+
+```r
+fred_category(category_id = 0L)
+```
+
+**Arguments**
+
+- `category_id` — Integer. The category ID. Default `0` (root).
+
+**Returns**
+
+A data frame with category metadata.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Root category
+fred_category()
+
+# National Accounts (category 32992)
+fred_category(32992)
+options(op)
+```
+
+---
+
+## `fred_category_children()`
+
+**List child categories**
+
+Returns the child categories for a given parent category.
+
+**Usage**
+
+```r
+fred_category_children(category_id = 0L)
+```
+
+**Arguments**
+
+- `category_id` — Integer. The parent category ID. Default `0` (root).
+
+**Returns**
+
+A data frame of child categories.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Top-level categories
+fred_category_children()
+options(op)
+```
+
+---
+
+## `fred_category_series()`
+
+**List series in a category**
+
+Returns all series belonging to a given category. Automatically paginates through all results.
+
+**Usage**
+
+```r
+fred_category_series(category_id, limit = 1000L)
+```
+
+**Arguments**
+
+- `category_id` — Integer. The category ID.
+- `limit` — Integer. Maximum number of results to return. Default 1000.
+
+**Returns**
+
+A data frame of series metadata.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_category_series(32992)
+options(op)
+```
+
+---
+
+## `fred_first_release()`
+
+**Fetch the first-release ("real-time") version of a series**
+
+Returns only the value that was published when each observation first appeared in FRED, with no subsequent revisions. Internally this fetches the full revision history and keeps the earliest `realtime_start` row for each observation date. Useful when you want a clean comparison between what policymakers saw at the time versus what the data look like after revisions.
+
+**Usage**
+
+```r
+fred_first_release(
+  series_id,
+  from = NULL,
+  to = NULL,
+  units = "lin",
+  frequency = NULL,
+  aggregation = "avg",
+  cache = TRUE
+)
+```
+
+**Arguments**
+
+- `series_id` — Character. One or more FRED series IDs.
+- `from, to` — Optional observation date range.
+- `units` — Character. Raw FRED units code. Default `"lin"`.
+- `frequency, aggregation` — Optional frequency aggregation arguments (see `fred_series()`).
+- `cache` — Logical. Cache results locally. Default `TRUE`.
+
+**Returns**
+
+A `fred_tbl` with columns `date`, `series_id`, `value`, `realtime_start`, `realtime_end`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Initial-release GDP, never revised
+gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+options(op)
+```
+
+---
+
+## `fred_get_key()`
+
+**Get the current FRED API key**
+
+Returns the API key set via `fred_set_key()` or the `FRED_API_KEY` environment variable. Raises an error if no key is found.
+
+**Usage**
+
+```r
+fred_get_key()
+```
+
+**Returns**
+
+Character. The API key.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_get_key()
+options(op)
+```
+
+---
+
+## `fred_info()`
+
+**Get metadata for a FRED series**
+
+Returns descriptive information about a series, including its title, units, frequency, seasonal adjustment, and notes.
+
+**Usage**
+
+```r
+fred_info(series_id)
+```
+
+**Arguments**
+
+- `series_id` — Character. A single FRED series ID.
+
+**Returns**
+
+A data frame with one row containing series metadata.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_info("GDP")
+options(op)
+```
+
+---
+
+## `fred_real_time_panel()`
+
+**Fetch a real-time panel of a series across selected vintages**
+
+Returns the values that were available on each of a chosen set of vintage dates. This is the FRED API's `vintage_dates` parameter: instead of asking for every revision (potentially huge), you ask for only the snapshots you care about, e.g. quarterly vintages aligned to GDP release dates.
+
+**Usage**
+
+```r
+fred_real_time_panel(
+  series_id,
+  vintages,
+  from = NULL,
+  to = NULL,
+  units = "lin",
+  frequency = NULL,
+  aggregation = "avg",
+  cache = TRUE
+)
+```
+
+**Arguments**
+
+- `series_id` — Character. One or more FRED series IDs.
+- `vintages` — Character or Date vector. Vintage dates to fetch.
+- `from, to` — Optional observation date range.
+- `units` — Character. Raw FRED units code. Default `"lin"`.
+- `frequency, aggregation` — Optional frequency aggregation arguments (see `fred_series()`).
+- `cache` — Logical. Cache results locally. Default `TRUE`.
+
+**Returns**
+
+A `fred_tbl` with columns `date`, `series_id`, `value`, `realtime_start`, `realtime_end`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# GDP as published at three quarterly snapshots
+gdp_panel <- fred_real_time_panel(
+  "GDP",
+  vintages = c("2023-04-30", "2023-07-31", "2023-10-31")
+)
+options(op)
+```
+
+---
+
+## `fred_related_tags()`
+
+**Find tags related to a given tag**
+
+Returns tags that are frequently used together with the specified tag.
+
+**Usage**
+
+```r
+fred_related_tags(tag_names)
+```
+
+**Arguments**
+
+- `tag_names` — Character. One or more tag names, separated by semicolons (e.g. `"gdp"`, `"usa;quarterly"`).
+
+**Returns**
+
+A data frame of related tags.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_related_tags("gdp")
+options(op)
+```
+
+---
+
+## `fred_release_dates()`
+
+**Get release dates**
+
+Returns the dates on which data for a release were published. Useful for understanding the data calendar and when revisions occurred.
+
+**Usage**
+
+```r
+fred_release_dates(release_id)
+```
+
+**Arguments**
+
+- `release_id` — Integer. The release ID.
+
+**Returns**
+
+A data frame with columns `release_id` and `date`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_release_dates(53)
+options(op)
+```
+
+---
+
+## `fred_release_series()`
+
+**List series in a release**
+
+Returns all series belonging to a given release.
+
+**Usage**
+
+```r
+fred_release_series(release_id)
+```
+
+**Arguments**
+
+- `release_id` — Integer. The release ID.
+
+**Returns**
+
+A data frame of series metadata.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# GDP release
+fred_release_series(53)
+options(op)
+```
+
+---
+
+## `fred_releases()`
+
+**List all FRED releases**
+
+Returns all data releases available on FRED. A release is a collection of related series published together (e.g. "Employment Situation", "GDP").
+
+**Usage**
+
+```r
+fred_releases()
+```
+
+**Returns**
+
+A data frame of releases with columns including `id`, `name`, `press_release`, and `link`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_releases()
+options(op)
+```
+
+---
+
+## `fred_request()`
+
+**Make a raw request to the FRED API**
+
+Low-level function that sends a request to any FRED API endpoint and returns the parsed JSON as a list. Most users should use the higher-level functions such as `fred_series()` or `fred_search()`.
+
+**Usage**
+
+```r
+fred_request(endpoint, ...)
+```
+
+**Arguments**
+
+- `endpoint` — Character. The API endpoint path (e.g. `"series/observations"`).
+- `...` — Named parameters passed as query string arguments to the API.
+
+**Returns**
+
+A list parsed from the JSON response.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_request("series", series_id = "GDP")
+options(op)
+```
+
+---
+
+## `fred_search()`
+
+**Search for FRED series**
+
+Searches the FRED database by keywords or series ID substring. Returns matching series with their metadata, ordered by relevance.
+
+**Usage**
+
+```r
+fred_search(
+  query,
+  type = "full_text",
+  limit = 100L,
+  order_by = "search_rank",
+  filter_variable = NULL,
+  filter_value = NULL,
+  tag_names = NULL
+)
+```
+
+**Arguments**
+
+- `query` — Character. Search terms (e.g. `"GDP"`, `"unemployment rate"`).
+- `type` — Character. Either `"full_text"` (default) for keyword search or `"series_id"` for series ID substring matching (supports `*` wildcards).
+- `limit` — Integer. Maximum number of results to return. Default 100, maximum 1000.
+- `order_by` — Character. How to order results. One of `"search_rank"` (default), `"series_id"`, `"title"`, `"units"`, `"frequency"`, `"seasonal_adjustment"`, `"last_updated"`, `"popularity"`, `"group_popularity"`.
+- `filter_variable` — Character. Optional variable to filter by. One of `"frequency"`, `"units"`, or `"seasonal_adjustment"`.
+- `filter_value` — Character. The value to filter on (e.g. `"Monthly"`, `"Quarterly"`). Required if `filter_variable` is specified.
+- `tag_names` — Character. Optional comma-separated tag names to filter results (e.g. `"gdp"`, `"usa;quarterly"`).
+
+**Returns**
+
+A data frame of matching series with columns including `id`, `title`, `frequency`, `units`, `seasonal_adjustment`, `last_updated`, `popularity`, and `notes`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Keyword search
+fred_search("unemployment rate")
+
+# Filter to monthly series only
+fred_search("consumer price index", filter_variable = "frequency",
+            filter_value = "Monthly")
+
+# Search by series ID pattern
+fred_search("GDP*", type = "series_id")
+options(op)
+```
+
+---
+
+## `fred_series()`
+
+**Fetch observations for one or more FRED series**
+
+The main function in the package. Downloads time series observations from FRED and returns a tidy data frame. Multiple series can be fetched in a single call, in either long or wide format.
+
+**Usage**
+
+```r
+fred_series(
+  series_id,
+  from = NULL,
+  to = NULL,
+  units = "lin",
+  transform = NULL,
+  frequency = NULL,
+  aggregation = "avg",
+  format = c("long", "wide"),
+  cache = TRUE
+)
+```
+
+**Arguments**
+
+- `series_id` — Character. One or more FRED series IDs (e.g. `"GDP"`, `c("GDP", "UNRATE", "CPIAUCSL")`).
+- `from` — Optional start date. Character (`"YYYY-MM-DD"`) or Date.
+- `to` — Optional end date. Character (`"YYYY-MM-DD"`) or Date.
+- `units` — Character. Raw FRED units code. Default `"lin"` (levels). Mutually exclusive with `transform`.
+- `transform` — Character. Readable transformation name. See Details.
+- `frequency` — Character. Frequency aggregation. One of `"d"` (daily), `"w"` (weekly), `"bw"` (biweekly), `"m"` (monthly), `"q"` (quarterly), `"sa"` (semiannual), `"a"` (annual), or `NULL` (native frequency, the default).
+- `aggregation` — Character. Aggregation method when `frequency` is specified. One of `"avg"` (default), `"sum"`, or `"eop"` (end of period).
+- `format` — Character. `"long"` (default) returns one row per (series_id, date). `"wide"` returns one row per date with one column per series.
+- `cache` — Logical. If `TRUE` (the default), results are cached locally and returned from the cache on subsequent calls. Set to `FALSE` to force a fresh download from the API.
+
+**Returns**
+
+A `fred_tbl` (a `data.frame` subclass that prints with a one-line provenance header). In long format, columns are `date`, `series_id`, `value`. In wide format, columns are `date` plus one numeric column per series.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Single series
+gdp <- fred_series("GDP")
+
+# Multiple series, long format
+macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
+
+# Multiple series, wide format
+macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
+
+# Readable transformation: year-on-year percent change
+gdp_growth <- fred_series("GDP", transform = "yoy_pct")
+
+# Aggregate daily to monthly
+rates <- fred_series("DGS10", frequency = "m")
+options(op)
+```
+
+---
+
+## `fred_set_key()`
+
+**Set the FRED API key**
+
+Sets the API key used to authenticate requests to the FRED API. The key persists for the current R session. Alternatively, set the `FRED_API_KEY` environment variable in your `.Renviron` file.
+
+**Usage**
+
+```r
+fred_set_key(key)
+```
+
+**Arguments**
+
+- `key` — Character. A 32-character FRED API key.
+
+**Returns**
+
+Invisible `NULL`.
+
+**Example**
+
+```r
+fred_set_key("your_api_key_here")
+```
+
+---
+
+## `fred_source_releases()`
+
+**List releases from a source**
+
+Returns all releases published by a given data source.
+
+**Usage**
+
+```r
+fred_source_releases(source_id)
+```
+
+**Arguments**
+
+- `source_id` — Integer. The source ID.
+
+**Returns**
+
+A data frame of releases.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+# Bureau of Labor Statistics
+fred_source_releases(22)
+options(op)
+```
+
+---
+
+## `fred_sources()`
+
+**List all FRED data sources**
+
+Returns all data sources that contribute series to FRED. Sources include the Bureau of Labor Statistics, Bureau of Economic Analysis, Federal Reserve Board, U.S. Census Bureau, and over 100 others.
+
+**Usage**
+
+```r
+fred_sources()
+```
+
+**Returns**
+
+A data frame of sources with columns including `id`, `name`, and `link`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_sources()
+options(op)
+```
+
+---
+
+## `fred_tags()`
+
+**List or search FRED tags**
+
+Returns FRED tags, optionally filtered by a search query. Tags are keywords used to categorise series (e.g. "gdp", "monthly", "usa", "seasonally adjusted").
+
+**Usage**
+
+```r
+fred_tags(query = NULL, limit = 1000L)
+```
+
+**Arguments**
+
+- `query` — Character. Optional search string to filter tags.
+- `limit` — Integer. Maximum number of results. Default 1000.
+
+**Returns**
+
+A data frame of tags with columns including `name`, `group_id`, `notes`, `popularity`, and `series_count`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_tags()
+fred_tags("inflation")
+options(op)
+```
+
+---
+
+## `fred_updates()`
+
+**List recently updated FRED series**
+
+Returns series that have been recently updated or revised.
+
+**Usage**
+
+```r
+fred_updates(limit = 100L)
+```
+
+**Arguments**
+
+- `limit` — Integer. Maximum number of results. Default 100, maximum 100.
+
+**Returns**
+
+A data frame of recently updated series.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_updates()
+options(op)
+```
+
+---
+
+## `fred_vintages()`
+
+**Get vintage dates for a FRED series**
+
+Returns the dates on which data for a series were revised. This is useful for real-time analysis and understanding data revisions.
+
+**Usage**
+
+```r
+fred_vintages(series_id)
+```
+
+**Arguments**
+
+- `series_id` — Character. A single FRED series ID.
+
+**Returns**
+
+A data frame with columns `series_id` and `vintage_date`.
+
+**Example**
+
+```r
+op <- options(fred.cache_dir = tempdir())
+fred_vintages("GDP")
+options(op)
+```
+
+---
+

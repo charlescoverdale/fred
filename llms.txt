@@ -2,6 +2,8 @@
 
 > Provides clean, tidy access to economic data from the 'Federal Reserve Economic Data' ('FRED') API. Install with `install.packages("fred")`.
 
+Full API reference (for agents): https://raw.githubusercontent.com/charlescoverdale/fred/main/llms-full.txt
+
 Version: 0.2.0. License: MIT.
 
 ## Functions

@@ -31,10 +31,7 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
       - name: Build site
-        run: |
-          # Disable downlit remote URL lookups to prevent network failures on CI
-          assignInNamespace("remote_urls", function(package) NULL, ns = "downlit")
-          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'
