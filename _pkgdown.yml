@@ -60,6 +60,21 @@ reference:
       - fred_request
       - clear_cache
 
+
+  - title: "Vintage Data (ALFRED)"
+    desc: "Real-time and vintage data via ALFRED"
+    contents:
+      - fred_as_of
+      - fred_first_release
+      - fred_all_vintages
+      - fred_real_time_panel
+      - fred_cache_info
+
+  - title: "S3 Methods"
+    desc: "Print methods for fred_tbl objects"
+    contents:
+      - print.fred_tbl
+
   - title: "Package"
     contents:
       - fred-package
