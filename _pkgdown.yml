@@ -59,3 +59,7 @@ reference:
     contents:
       - fred_request
       - clear_cache
+
+  - title: "Package"
+    contents:
+      - fred-package
