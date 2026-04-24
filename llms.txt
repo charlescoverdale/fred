@@ -1,0 +1,39 @@
+# fred
+
+> Provides clean, tidy access to economic data from the 'Federal Reserve Economic Data' ('FRED') API. Install with `install.packages("fred")`.
+
+Version: 0.2.0. License: MIT.
+
+## Functions
+
+- [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.html): Clear the fred cache
+- [`fred_all_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_all_vintages.html): Fetch every vintage of a series
+- [`fred_as_of()`](https://charlescoverdale.github.io/fred/reference/fred_as_of.html): Fetch a series as it appeared on a given vintage date
+- [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.html): Inspect the local fred cache
+- [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.html): Get a FRED category
+- [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.html): List child categories
+- [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.html): List series in a category
+- [`fred_first_release()`](https://charlescoverdale.github.io/fred/reference/fred_first_release.html): Fetch the first-release ("real-time") version of a series
+- [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.html): Get the current FRED API key
+- [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.html): Get metadata for a FRED series
+- [`fred_real_time_panel()`](https://charlescoverdale.github.io/fred/reference/fred_real_time_panel.html): Fetch a real-time panel of a series across selected vintages
+- [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.html): Find tags related to a given tag
+- [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.html): Get release dates
+- [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.html): List series in a release
+- [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.html): List all FRED releases
+- [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.html): Make a raw request to the FRED API
+- [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.html): Search for FRED series
+- [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.html): Fetch observations for one or more FRED series
+- [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.html): Set the FRED API key
+- [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.html): List releases from a source
+- [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.html): List all FRED data sources
+- [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.html): List or search FRED tags
+- [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.html): List recently updated FRED series
+- [`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.html): Get vintage dates for a FRED series
+
+## Documentation
+
+- [Full reference](https://charlescoverdale.github.io/fred/reference/)
+- [GitHub](https://github.com/charlescoverdale/fred)
+- [CRAN](https://CRAN.R-project.org/package=fred)
+
