@@ -5,7 +5,7 @@ template:
 
 navbar:
   structure:
-    left:  [intro, reference, news]
+    left:  [intro, reference, articles, news]
     right: [search, github]
   components:
     github:
@@ -18,13 +18,27 @@ reference:
     desc: "Fetch time series observations from FRED"
     contents:
       - fred_series
-
-  - title: "Search & Discovery"
-    desc: "Search for series and retrieve metadata"
-    contents:
-      - fred_search
       - fred_info
+      - fred_request
+
+  - title: "Vintage Data (ALFRED)"
+    desc: "Real-time and vintage data via ALFRED"
+    contents:
+      - fred_as_of
+      - fred_first_release
+      - fred_all_vintages
+      - fred_real_time_panel
       - fred_vintages
+      - fred_vintage_revisions
+
+  - title: "Discoverability"
+    desc: "Find series and browse the FRED structure"
+    contents:
+      - fred_catalogue
+      - fred_browse
+      - fred_search
+      - fred_recession_dates
+      - fred_fomc_dates
 
   - title: "Categories"
     desc: "Browse the FRED category tree"
@@ -47,34 +61,37 @@ reference:
     contents:
       - fred_tags
       - fred_related_tags
+      - fred_updates
+
+  - title: "Workflow Utilities"
+    desc: "Event windows, aggregation, interpolation"
+    contents:
+      - fred_event_window
+      - fred_aggregate
+      - fred_interpolate
+
+  - title: "Reproducibility"
+    desc: "Citations and manifests for paper-ready workflows"
+    contents:
+      - fred_cite_series
+      - fred_manifest
+
+  - title: "S3 Methods"
+    desc: "Methods for fred_tbl and fred_manifest"
+    contents:
+      - print.fred_tbl
+      - summary.fred_tbl
+      - plot.fred_tbl
+      - "[.fred_tbl"
+      - print.fred_manifest
 
   - title: "Configuration"
-    desc: "Manage API key and recently updated series"
+    desc: "API key and cache management"
     contents:
       - fred_set_key
       - fred_get_key
-      - fred_updates
-
-  - title: "Utilities"
-    desc: "Low-level API access and cache management"
-    contents:
-      - fred_request
-      - clear_cache
-
-
-  - title: "Vintage Data (ALFRED)"
-    desc: "Real-time and vintage data via ALFRED"
-    contents:
-      - fred_as_of
-      - fred_first_release
-      - fred_all_vintages
-      - fred_real_time_panel
       - fred_cache_info
-
-  - title: "S3 Methods"
-    desc: "Print methods for fred_tbl objects"
-    contents:
-      - print.fred_tbl
+      - clear_cache
 
   - title: "Package"
     contents:
