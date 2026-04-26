@@ -26,7 +26,9 @@
 #' }
 fred_category <- function(category_id = 0L) {
   resp <- fred_request("category", category_id = as.integer(category_id))
-  list_to_df(resp[["categories"]])
+  new_fred_tbl(list_to_df(resp[["categories"]]), query = list(
+    endpoint = "category", category_id = as.integer(category_id)
+  ))
 }
 
 
@@ -49,7 +51,9 @@ fred_category <- function(category_id = 0L) {
 #' }
 fred_category_children <- function(category_id = 0L) {
   resp <- fred_request("category/children", category_id = as.integer(category_id))
-  list_to_df(resp[["categories"]])
+  new_fred_tbl(list_to_df(resp[["categories"]]), query = list(
+    endpoint = "category/children", category_id = as.integer(category_id)
+  ))
 }
 
 
@@ -78,5 +82,7 @@ fred_category_series <- function(category_id, limit = 1000L) {
     page_limit = min(as.integer(limit), 1000L),
     category_id = as.integer(category_id)
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "category/series", category_id = as.integer(category_id)
+  ))
 }

@@ -9,3 +9,8 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^CITATION\.cff$
+^llms-full\.txt$
+^llms\.txt$
+^doc$
+^Meta$

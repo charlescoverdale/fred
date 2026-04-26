@@ -1,0 +1,137 @@
+---
+title: "Multi-series macro panels: fetch, transform, widen, plot"
+author: "Charles Coverdale"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Multi-series macro panels: fetch, transform, widen, plot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+key_available <- nzchar(Sys.getenv("FRED_API_KEY"))
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4.5,
+  eval = key_available
+)
+```
+
+This vignette walks through the most common starting workflow with `fred`:
+fetching several series in one call, applying a server-side transformation,
+pivoting to wide format for cross-series analysis, and producing a default
+plot with recession shading.
+
+The chunks below require an API key (set via `fred_set_key()` or the
+`FRED_API_KEY` environment variable). If no key is set, code is shown but
+not executed.
+
+## Setup
+
+```{r}
+library(fred)
+```
+
+## A core macro panel
+
+A typical first move is to grab GDP, unemployment, and headline CPI together,
+on a long format that is easy to iterate over.
+
+```{r}
+panel <- fred_series(
+  c("GDPC1", "UNRATE", "CPIAUCSL"),
+  from = "2000-01-01"
+)
+panel
+```
+
+The print header tells you immediately what you are looking at: three series,
+how many rows, which transformation was applied, the frequency, and any
+vintage information. Underneath, `panel` is a plain data frame.
+
+## Transformations
+
+For inflation and growth analyses, raw levels are usually less useful than
+year-on-year percent change. Pass a readable `transform` rather than the raw
+FRED `units` code:
+
+```{r}
+growth_panel <- fred_series(
+  c("GDPC1", "CPIAUCSL"),
+  from = "2010-01-01",
+  transform = "yoy_pct"
+)
+growth_panel
+```
+
+`transform` and `units` are mutually exclusive. The full list of readable
+aliases lives in `?fred_series`. Server-side transforms avoid a manual
+`diff(log(x))` step and ensure the result matches what FRED itself shows.
+
+## Wide format for cross-series work
+
+For correlation matrices, scatter plots, or regression input, wide is more
+convenient than long.
+
+```{r}
+wide <- fred_series(
+  c("UNRATE", "CIVPART", "EMRATIO"),
+  from = "2000-01-01",
+  format = "wide"
+)
+head(wide)
+```
+
+## Default plot
+
+The default `plot.fred_tbl()` method handles long and wide format
+automatically and shades NBER recessions when the date range overlaps one.
+
+```{r}
+plot(growth_panel, ylab = "% YoY")
+```
+
+```{r}
+plot(wide, ylab = "%", main = "US labour market")
+```
+
+Pass `recessions = FALSE` to switch off shading. Pass a `col =` vector of
+length equal to the number of series to override the default palette.
+
+## A starting catalogue
+
+If you cannot remember a series ID, `fred_catalogue()` ships a curated
+offline reference of around 50 widely used series:
+
+```{r, eval = TRUE}
+fred_catalogue(category = "Inflation")
+```
+
+Filtering with `query =` does a case-insensitive substring match against the
+ID, title, and description:
+
+```{r, eval = TRUE}
+fred_catalogue(query = "mortgage")
+```
+
+For the FRED category tree, use `fred_browse()`. With no arguments it shows
+the eight top-level categories from a static reference (no API call):
+
+```{r, eval = TRUE}
+fred_browse()
+```
+
+Pass a category ID to drill into its children (this hits the API and is
+cached).
+
+## Where to next
+
+* **Real-time and vintages:** see `vignette("nowcasting-with-fred")` for a
+  pseudo-real-time GDP nowcasting backtest.
+* **Inflation revisions:** see `vignette("inflation-revisions")` for tracking
+  how core inflation estimates change with revisions.
+* **Reproducibility:** combine `fred_cite_series()` and `fred_manifest()` to
+  pin every series your analysis depends on.

@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use the fred R package in your research, please cite it as below."
+type: software
+title: "fred: Access Federal Reserve Economic Data"
+abstract: >
+  An R package providing clean, tidy access to economic data from the Federal
+  Reserve Economic Data (FRED) API maintained by the Federal Reserve Bank of
+  St. Louis. Supports multi-series fetching, server-side transformations,
+  vintage-aware real-time data, local caching, and an S3 class with provenance
+  metadata for reproducible macroeconomic research.
+authors:
+  - family-names: Coverdale
+    given-names: Charles
+    email: charles.f.coverdale@gmail.com
+repository-code: "https://github.com/charlescoverdale/fred"
+url: "https://charlescoverdale.github.io/fred/"
+license: MIT
+version: 0.3.0
+date-released: "2026-04-26"
+keywords:
+  - R
+  - macroeconomics
+  - FRED
+  - Federal Reserve
+  - real-time data
+  - reproducibility
+  - vintages
+  - ALFRED
+  - econometrics
+identifiers:
+  - type: url
+    value: "https://github.com/charlescoverdale/fred"
+    description: "Source code repository"
+  - type: url
+    value: "https://cran.r-project.org/package=fred"
+    description: "CRAN package page"

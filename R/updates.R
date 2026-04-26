@@ -20,7 +20,7 @@ fred_updates <- function(limit = 100L) {
   resp <- fred_request("series/updates", limit = min(as.integer(limit), 100L))
   serieses <- resp[["seriess"]]
   if (is.null(serieses) || length(serieses) == 0L) {
-    return(data.frame())
+    return(new_fred_tbl(data.frame(), query = list(endpoint = "series/updates")))
   }
-  list_to_df(serieses)
+  new_fred_tbl(list_to_df(serieses), query = list(endpoint = "series/updates"))
 }

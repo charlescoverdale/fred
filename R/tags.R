@@ -30,7 +30,9 @@ fred_tags <- function(query = NULL, limit = 1000L) {
            page_limit = min(as.integer(limit), 1000L)),
       params)
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "tags", search_query = query
+  ))
 }
 
 
@@ -61,5 +63,7 @@ fred_related_tags <- function(tag_names) {
     page_limit = 1000L,
     tag_names = tag_names
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "related_tags", search_query = tag_names
+  ))
 }

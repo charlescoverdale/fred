@@ -20,7 +20,7 @@
 fred_sources <- function() {
   items <- fred_fetch_all("sources", result_key = "sources",
                           page_limit = 1000L)
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(endpoint = "sources"))
 }
 
 
@@ -48,5 +48,7 @@ fred_source_releases <- function(source_id) {
     page_limit = 1000L,
     source_id = as.integer(source_id)
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "source/releases", source_id = as.integer(source_id)
+  ))
 }

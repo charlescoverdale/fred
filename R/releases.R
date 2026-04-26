@@ -19,7 +19,7 @@
 fred_releases <- function() {
   items <- fred_fetch_all("releases", result_key = "releases",
                           page_limit = 1000L)
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(endpoint = "releases"))
 }
 
 
@@ -47,7 +47,9 @@ fred_release_series <- function(release_id) {
     page_limit = 1000L,
     release_id = as.integer(release_id)
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "release/series", release_id = as.integer(release_id)
+  ))
 }
 
 
@@ -75,5 +77,7 @@ fred_release_dates <- function(release_id) {
     page_limit = 1000L,
     release_id = as.integer(release_id)
   )
-  list_to_df(items)
+  new_fred_tbl(list_to_df(items), query = list(
+    endpoint = "release/dates", release_id = as.integer(release_id)
+  ))
 }

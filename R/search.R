@@ -79,8 +79,12 @@ fred_search <- function(query, type = "full_text", limit = 100L,
 
   if (is.null(serieses) || length(serieses) == 0L) {
     cli::cli_inform("No series found for query {.val {query}}.")
-    return(data.frame())
+    return(new_fred_tbl(data.frame(), query = list(
+      endpoint = "search", search_query = query, search_type = type
+    )))
   }
 
-  list_to_df(serieses)
+  new_fred_tbl(list_to_df(serieses), query = list(
+    endpoint = "search", search_query = query, search_type = type
+  ))
 }
