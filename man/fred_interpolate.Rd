@@ -14,7 +14,7 @@ value forward. \code{"linear"} does linear interpolation between adjacent
 non-\code{NA} values.}
 }
 \value{
-A \code{fred_tbl} with \code{NA}s filled.
+A \code{fred_tbl} with interior \code{NA}s filled (see boundary note above).
 }
 \description{
 Fills \code{NA} values in the \code{value} column (long format) or in numeric columns
@@ -23,7 +23,21 @@ Fills \code{NA} values in the \code{value} column (long format) or in numeric co
 (\code{"linear"}). Use this for mixed-frequency analysis where a low-frequency
 series needs to be interpolated to a higher frequency.
 }
+\details{
+Boundary behaviour: with \code{method = "locf"}, leading \code{NA}s remain \code{NA}
+because there is no prior observation to carry forward. With
+\code{method = "linear"}, neither leading nor trailing \code{NA}s are filled
+because \code{stats::approx()} is called with \code{rule = 1} (no extrapolation).
+If you need extrapolation, post-process the result.
+}
 \examples{
+# Synthetic example: fill interior NAs
+d <- seq(as.Date("2024-01-01"), by = "month", length.out = 6L)
+df <- data.frame(date = d, series_id = "X",
+                 value = c(NA, 2, NA, NA, 5, NA))
+fred_interpolate(df, method = "locf")
+fred_interpolate(df, method = "linear")
+
 \donttest{
 op <- options(fred.cache_dir = tempdir())
 \dontrun{

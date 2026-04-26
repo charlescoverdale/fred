@@ -32,6 +32,15 @@ server-side aggregation that mirrors FRED's own interpolation conventions,
 pass \code{frequency = "m"} to \code{\link[=fred_series]{fred_series()}} instead.
 }
 \examples{
+# Synthetic example: aggregate daily synthetic data to monthly means
+d <- seq(as.Date("2024-01-01"), as.Date("2024-06-30"), by = "day")
+daily <- data.frame(date = d, series_id = "X", value = rnorm(length(d)))
+fred_aggregate(daily, fun = "mean", by = "month")
+
+# Wide-format input also works
+wide <- data.frame(date = d, A = rnorm(length(d)), B = rnorm(length(d)))
+fred_aggregate(wide, fun = "sum", by = "quarter")
+
 \donttest{
 op <- options(fred.cache_dir = tempdir())
 \dontrun{

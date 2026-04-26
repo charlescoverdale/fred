@@ -31,9 +31,15 @@ days; for monthly or quarterly data, choose a window large enough to
 capture at least one observation.
 }
 \examples{
+# Synthetic example — works offline
+d <- seq(as.Date("2024-01-01"), as.Date("2024-12-31"), by = "month")
+df <- data.frame(date = d, value = seq_along(d))
+events <- as.Date(c("2024-03-15", "2024-09-15"))
+fred_event_window(df, events = events, window = c(-30L, 60L))
+
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Plot UNRATE around the last three FOMC SEP meetings
+# With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
 \dontrun{
   ur <- fred_series("UNRATE", from = "2023-01-01")
   sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)

@@ -70,8 +70,9 @@ fred_cite_series <- function(series_id, vintage_date = NULL,
           "  urldate      = {%s},",
           "  note         = {FRED, Federal Reserve Bank of St. Louis}",
           "}", sep = "\n"),
-        key, title, series_id, publisher, publisher, year, url,
-        format(accessed, "%Y-%m-%d")
+        key, .bibtex_escape(title), series_id,
+        .bibtex_escape(publisher), .bibtex_escape(publisher),
+        year, url, format(accessed, "%Y-%m-%d")
       )
     },
     text = {
@@ -85,6 +86,7 @@ fred_cite_series <- function(series_id, vintage_date = NULL,
         bibtype  = "Misc",
         key      = sprintf("FRED_%s_%d", series_id, year),
         title    = sprintf("%s [%s]", title, series_id),
+        # bibentry handles its own escaping; pass the unescaped title.
         author   = utils::person(family = publisher),
         year     = as.character(year),
         url      = url,
@@ -93,4 +95,23 @@ fred_cite_series <- function(series_id, vintage_date = NULL,
       )
     }
   )
+}
+
+
+#' Escape characters that have a special meaning in BibTeX
+#'
+#' Backslash must be substituted first to avoid double-escaping the
+#' replacement strings.
+#' @noRd
+.bibtex_escape <- function(x) {
+  if (is.null(x) || !nzchar(x)) return(x)
+  x <- gsub("\\", "\\textbackslash{}", x, fixed = TRUE)
+  x <- gsub("&",  "\\&",  x, fixed = TRUE)
+  x <- gsub("%",  "\\%",  x, fixed = TRUE)
+  x <- gsub("$",  "\\$",  x, fixed = TRUE)
+  x <- gsub("#",  "\\#",  x, fixed = TRUE)
+  x <- gsub("_",  "\\_",  x, fixed = TRUE)
+  x <- gsub("~",  "\\~{}",  x, fixed = TRUE)
+  x <- gsub("^",  "\\^{}",  x, fixed = TRUE)
+  x
 }

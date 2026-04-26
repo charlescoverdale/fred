@@ -24,6 +24,7 @@
 #'
 #' @return `x`, invisibly.
 #'
+#' @family fred_tbl methods
 #' @export
 #' @examples
 #' \donttest{

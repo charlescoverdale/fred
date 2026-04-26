@@ -1,55 +1,100 @@
-# CRAN submission comments — fred 0.2.0
+# CRAN submission comments — fred 0.3.0
 
 ## Summary of changes
 
-This is a feature release. Changes since 0.1.2 (see NEWS.md for full list):
+This is a feature release. Highlights since 0.2.0 (full list in NEWS.md):
 
-* New real-time / vintage helpers built on the ALFRED endpoint:
-  `fred_as_of()`, `fred_first_release()`, `fred_all_vintages()`, and
-  `fred_real_time_panel()`. These return a series as it appeared on a
-  chosen date, the first release of each observation, the full revision
-  history, or a panel of selected vintage snapshots.
-* `fred_series()` gains `format = "wide"` and a `transform =` argument
-  with readable aliases (`yoy_pct`, `log_diff`, `qoq_annualised`, etc.).
-  The raw `units` codes still work; the two arguments are mutually
-  exclusive.
-* New `fred_cache_info()` reports cache directory, file count, total
-  size, and per-file metadata for debugging stale results.
-* All observation results are now returned as `fred_tbl`, a thin
-  `data.frame` subclass with a one-line provenance header. Downstream
-  code can keep treating the result as a plain data frame.
-* Bug fix: the `fred_set_key()` example previously called
-  `fred_set_key("your_api_key_here")` inside `\donttest{}`, which
-  overwrote the real key for every alphabetically-later donttest
-  example. The example is now wrapped in `\dontrun{}`.
+* **Discoverability and reference data:**
+  * `fred_catalogue()`: an offline curated catalogue of around 50
+    widely used FRED series, filterable by category or free-text. No
+    API call.
+  * `fred_browse()`: pretty-prints the FRED category tree. The
+    eight top-level categories are offline; deeper levels hit the API.
+  * `fred_recession_dates()`: NBER business-cycle peaks and troughs
+    since 1857, with an optional vector-flag mode.
+  * `fred_fomc_dates()`: FOMC scheduled meeting decision dates 2017-2025
+    with SEP flags.
+  * `fred_tbl` now threads through every search/browse return value
+    (search, categories, releases, sources, tags, updates) with an
+    endpoint-aware print header.
+  * New `summary.fred_tbl()` and `[.fred_tbl()` S3 methods.
 
-The cache key format is unchanged for default arguments, so caches
-built under 0.1.x are still picked up after upgrade. Realtime,
-output-type, and vintage requests are cached under distinct keys.
+* **Workflow utilities and plotting:**
+  * `fred_event_window()`, `fred_aggregate()`, `fred_interpolate()`.
+  * `plot.fred_tbl()` default plot method with NBER recession shading
+    via base graphics (no `ggplot2` dependency).
+
+* **Reproducibility helpers:**
+  * `fred_cite_series()`: BibTeX, plain-text, or `bibentry` citation,
+    with vintage-date pinning. BibTeX escapes special characters in
+    titles.
+  * `fred_manifest()`: YAML snapshot of one or more `fred_tbl` objects
+    with query metadata, dimensions, date range, and an MD5 hash per
+    object.
+  * `fred_vintage_revisions()`: per-observation revision summary
+    statistics (n_vintages, first/final value, total revision, mean/SD
+    of inter-vintage changes, days to final).
+
+* **Vignettes (new):**
+  * `multi-series-workflows`: fetch, transform, widen, plot.
+  * `nowcasting-with-fred`: pseudo-real-time GDP nowcasting with monthly
+    indicators (pairs with the `nowcast` package).
+  * `inflation-revisions`: tracking core inflation revisions across FOMC
+    SEP meeting vintages.
+
+* **Other:**
+  * CITATION updated to v0.3.0 (was outdated against 0.1.0).
+  * New `CITATION.cff` at the repository root for GitHub citation widget
+    and Zenodo deposit.
+
+## Dependencies
+
+`Imports`: `cli`, `httr2`, `tools`, plus the base R recommended
+packages `graphics`, `grDevices`, `stats`, and `utils` used by the new
+plot, citation, and statistics helpers.
+
+`Suggests`: `knitr`, `nowcast`, `rmarkdown`, `testthat`, `withr`.
+`nowcast` is used in one vignette and is on CRAN.
+
+No third-party dependency added in this release.
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
 
+Local check: macOS Sequoia 15.6.1, R 4.5.2 (aarch64-apple-darwin20),
+`devtools::check(cran = TRUE)`.
+
 ## Test environments
 
 * macOS Sequoia 15.6.1, R 4.5.2 (aarch64-apple-darwin20) — local
-  `devtools::check(cran = TRUE)` with `--run-donttest`
+  `devtools::check(cran = TRUE)`.
+* win-builder devel and release (queued via `devtools::check_win_devel()`
+  / `check_win_release()` ahead of submission).
 
 ## Notes for CRAN reviewers
 
 * All functions that make network requests are wrapped in `\donttest{}`
-  in examples (and require `FRED_API_KEY` to be set in the environment),
-  and use `skip_if(Sys.getenv("FRED_API_KEY") == "")` in tests.
-* Data is fetched from the FRED API at `https://api.stlouisfed.org/fred/`.
-  A free API key is required (set via `fred_set_key()` or the
-  `FRED_API_KEY` environment variable).
+  in examples and require `FRED_API_KEY` to be set in the environment.
+  Tests that hit the live API use `skip_if(Sys.getenv("FRED_API_KEY") == "")`.
+* All offline functions (`fred_catalogue()`, `fred_browse()` at root,
+  `fred_recession_dates()`, `fred_fomc_dates()`, `fred_cite_series()` at
+  default `fetch_metadata = FALSE`, `fred_manifest()`, the S3 methods,
+  and the workflow utilities on synthetic data) have un-wrapped examples
+  that run during R CMD check.
 * Local caching uses `tools::R_user_dir("fred", "cache")` (base R, no
-  additional dependencies). In examples, caching is redirected to
-  `tempdir()` so that no files are written to the user's home filespace.
-* No new dependencies were added in 0.2.0. The package still imports
-  only `cli`, `httr2`, and `tools`.
+  additional dependency). In examples, caching is redirected to
+  `tempdir()` so no files are written outside the session.
+* The embedded NBER recession dataset (1857-2020) is from the NBER
+  Business Cycle Dating Committee
+  <https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions>.
+  The embedded FOMC scheduled-meeting dataset (2017-2025) is from the
+  Federal Reserve Board's `fomccalendars.htm` page. Both are static
+  reference frames and will be refreshed in future releases.
+* CITATION.cff at the repository root is `.Rbuildignore`'d so it does
+  not appear in the package tarball; it is purely for GitHub's
+  citation widget and Zenodo discoverability.
 
 ## Downstream dependencies
 
-There are currently no downstream dependencies for this package.
+`fred` has no reverse dependencies on CRAN at present.

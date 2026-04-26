@@ -62,3 +62,4 @@ op <- options(fred.cache_dir = tempdir())
 options(op)
 }
 }
+\concept{fred_tbl methods}

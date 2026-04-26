@@ -24,9 +24,15 @@
 #' @family utilities
 #' @export
 #' @examples
+#' # Synthetic example — works offline
+#' d <- seq(as.Date("2024-01-01"), as.Date("2024-12-31"), by = "month")
+#' df <- data.frame(date = d, value = seq_along(d))
+#' events <- as.Date(c("2024-03-15", "2024-09-15"))
+#' fred_event_window(df, events = events, window = c(-30L, 60L))
+#'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Plot UNRATE around the last three FOMC SEP meetings
+#' # With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
 #' \dontrun{
 #'   ur <- fred_series("UNRATE", from = "2023-01-01")
 #'   sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)
@@ -112,6 +118,15 @@ fred_event_window <- function(data, events, window = c(-30L, 90L)) {
 #' @family utilities
 #' @export
 #' @examples
+#' # Synthetic example: aggregate daily synthetic data to monthly means
+#' d <- seq(as.Date("2024-01-01"), as.Date("2024-06-30"), by = "day")
+#' daily <- data.frame(date = d, series_id = "X", value = rnorm(length(d)))
+#' fred_aggregate(daily, fun = "mean", by = "month")
+#'
+#' # Wide-format input also works
+#' wide <- data.frame(date = d, A = rnorm(length(d)), B = rnorm(length(d)))
+#' fred_aggregate(wide, fun = "sum", by = "quarter")
+#'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
 #' \dontrun{
@@ -196,16 +211,29 @@ fred_aggregate <- function(data, fun = "mean", by = "month") {
 #' (`"linear"`). Use this for mixed-frequency analysis where a low-frequency
 #' series needs to be interpolated to a higher frequency.
 #'
+#' Boundary behaviour: with `method = "locf"`, leading `NA`s remain `NA`
+#' because there is no prior observation to carry forward. With
+#' `method = "linear"`, neither leading nor trailing `NA`s are filled
+#' because `stats::approx()` is called with `rule = 1` (no extrapolation).
+#' If you need extrapolation, post-process the result.
+#'
 #' @param data A `fred_tbl` or `data.frame` with a `date` column.
 #' @param method Character. `"locf"` (default) carries the last observed
 #'   value forward. `"linear"` does linear interpolation between adjacent
 #'   non-`NA` values.
 #'
-#' @return A `fred_tbl` with `NA`s filled.
+#' @return A `fred_tbl` with interior `NA`s filled (see boundary note above).
 #'
 #' @family utilities
 #' @export
 #' @examples
+#' # Synthetic example: fill interior NAs
+#' d <- seq(as.Date("2024-01-01"), by = "month", length.out = 6L)
+#' df <- data.frame(date = d, series_id = "X",
+#'                  value = c(NA, 2, NA, NA, 5, NA))
+#' fred_interpolate(df, method = "locf")
+#' fred_interpolate(df, method = "linear")
+#'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
 #' \dontrun{
