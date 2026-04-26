@@ -28,7 +28,8 @@ There is an existing R package called [fredr](https://cran.r-project.org/package
 **What's better under the hood:**
 
 - **Modern HTTP stack** - fredr depends on `httr`, which has been superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit retries and graceful error handling when the API is unreachable.
-- **Fewer dependencies** - **fred** depends on 3 packages (`httr2`, `cli`, `tools`). fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`, and `purrr`.
+- **Fewer dependencies** - **fred** depends on 3 third-party packages (`cli`, `httr2`, `tools`) plus base R. fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`, and `purrr`.
+- **Research-grade infrastructure** - offline catalogue of ~50 popular series, NBER recession reference dates, FOMC meeting reference dates, vintage revision summaries, BibTeX/YAML reproducibility helpers, and a default `plot()` method with NBER recession shading.
 - **Actively maintained** - fredr has had no updates since August 2021.
 
 ## Installation
@@ -111,20 +112,46 @@ If that prints your key, you're good to go.
 
 Every dataset in FRED has a short series ID. For example, `GDP` is US quarterly GDP, `UNRATE` is the US unemployment rate, and `CPIAUCSL` is the Consumer Price Index. You need to know the series ID to pull data.
 
-There are two ways to find it:
+There are four ways to find it:
 
-**1. Search from R** using `fred_search()`:
+**1. Curated offline catalogue** using `fred_catalogue()`. Around 50 of the most-used series, grouped by category, with no API call needed:
+
+```r
+fred_catalogue(category = "Inflation")
+#> # FRED: catalogue · 6 rows
+#>          id                                                title  frequency  category
+#>   CPIAUCSL                CPI for All Urban Consumers: All Items          M Inflation
+#>   CPILFESL  CPI for All Urban Consumers: Less Food and Energy            M Inflation
+#>      PCEPI         PCE: Chain-type Price Index                            M Inflation
+#>      ...
+
+fred_catalogue(query = "mortgage")
+#> # FRED: catalogue · 1 row
+#>           id                                title frequency       category
+#>  MORTGAGE30US  30-Year Fixed Rate Mortgage Average         W Interest Rates
+```
+
+**2. Search from R** using `fred_search()` for the full FRED database (live API):
 
 ```r
 fred_search("consumer price index")
-#>            id                                          title frequency
-#>      CPIAUCSL   Consumer Price Index for All Urban Consumers   Monthly
-#>    CPILFESL     CPI Less Food and Energy (Core CPI)          Monthly
-#>    CPIENGSL     CPI: Energy                                  Monthly
-#>    ...
 ```
 
-**2. Browse the FRED website** at [fred.stlouisfed.org](https://fred.stlouisfed.org). Search or browse by category, and the series ID is shown at the top of every data page. This is often the easiest way to explore what's available if you're not sure what you're looking for.
+**3. Browse the category tree** using `fred_browse()` (top-level categories are offline; deeper levels hit the API):
+
+```r
+fred_browse()
+#> FRED top-level categories
+#> -------------------------
+#>   32991  Money, Banking, & Finance
+#>      10  Population, Employment, & Labor Markets
+#>   32992  National Accounts
+#>       1  Production & Business Activity
+#>   32455  Prices
+#>      ...
+```
+
+**4. Browse the FRED website** at [fred.stlouisfed.org](https://fred.stlouisfed.org).
 
 Once you have a series ID, pass it to `fred_series()`.
 
@@ -293,18 +320,117 @@ fred_cache_info()
 
 `clear_cache()` wipes everything; `fred_cache_info()` lets you check what's there before you do.
 
+### Default plot with NBER recession shading
+
+Every `fred_series()` result is a `fred_tbl`, so you can call `plot()` directly and get a sensible default:
+
+```r
+panel <- fred_series(c("UNRATE", "CIVPART"), from = "2000-01-01",
+                     format = "wide")
+plot(panel, ylab = "%", main = "US labour market")
+```
+
+Recession shading uses NBER reference dates from `fred_recession_dates()`. Pass `recessions = FALSE` to switch it off. No `ggplot2` dependency.
+
+### Reference dates: NBER recessions and FOMC meetings
+
+```r
+# All 34 NBER recessions since 1857
+fred_recession_dates()
+
+# Modern era only, with duration
+fred_recession_dates(from = "1948-01-01")
+
+# Flag a vector of dates as in/out of recession
+fred_recession_dates(flag = seq(as.Date("2007-01-01"),
+                                as.Date("2010-12-01"), by = "month"))
+
+# FOMC scheduled meeting dates 2017-2025, with SEP flag
+fred_fomc_dates(year = 2024, sep_only = TRUE)
+#> # FRED: fomc_dates · 4 rows
+#>          date    type   sep
+#>   2024-03-20 regular  TRUE
+#>   2024-06-12 regular  TRUE
+#>   2024-09-18 regular  TRUE
+#>   2024-12-18 regular  TRUE
+```
+
+### Workflow utilities
+
+```r
+# Aggregate daily to monthly with any summary
+yields_m <- fred_aggregate(fred_series("DGS10", from = "2023-01-01"),
+                           fun = "mean", by = "month")
+
+# Fill NAs with last-observation-carry-forward or linear interpolation
+filled <- fred_interpolate(fred_series("GDPC1"), method = "linear")
+
+# Extract data inside a window around event dates (e.g. FOMC meetings)
+ur <- fred_series("UNRATE", from = "2023-01-01")
+sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)
+fred_event_window(ur, events = sep$date, window = c(-60L, 60L))
+```
+
+### Reproducibility: cite series and snapshot manifests
+
+```r
+# BibTeX citation pinned to a vintage date
+fred_cite_series("GDPC1", vintage_date = "2024-12-18", format = "bibtex")
+
+# Plain text citation
+fred_cite_series("UNRATE", format = "text")
+
+# YAML manifest with MD5 hash per object - save alongside paper code
+gdp <- fred_series("GDPC1", from = "2020-01-01")
+ur  <- fred_series("UNRATE", from = "2020-01-01")
+m <- fred_manifest(gdp = gdp, unrate = ur,
+                   file = "data/manifest.yml")
+
+# Per-observation revision statistics
+fred_vintage_revisions("GDPC1", from = "2018-01-01")
+```
+
+## Vignettes
+
+* `vignette("multi-series-workflows", "fred")` - fetch, transform, widen, plot.
+* `vignette("nowcasting-with-fred", "fred")` - pseudo-real-time GDP nowcasting with monthly indicators (pairs with the `nowcast` package).
+* `vignette("inflation-revisions", "fred")` - tracking core inflation revisions across FOMC SEP meeting vintages.
+
 ## Functions
+
+**Data fetching**
 
 | Function | Description |
 |---|---|
 | `fred_series()` | Fetch observations for one or more series (long or wide) |
+| `fred_info()` | Get series metadata |
+| `fred_request()` | Raw API request (power users) |
+
+**Real-time and vintages (ALFRED)**
+
+| Function | Description |
+|---|---|
 | `fred_as_of()` | Fetch a series as it appeared on a specific vintage date |
 | `fred_first_release()` | Fetch only the initial release of each observation |
 | `fred_all_vintages()` | Fetch every vintage in the revision history |
 | `fred_real_time_panel()` | Fetch a panel of selected vintage snapshots |
-| `fred_search()` | Search for series by keyword or ID |
-| `fred_info()` | Get series metadata |
 | `fred_vintages()` | Get revision dates for a series |
+| `fred_vintage_revisions()` | Per-observation revision summary statistics |
+
+**Discoverability**
+
+| Function | Description |
+|---|---|
+| `fred_catalogue()` | Curated offline catalogue of ~50 popular series |
+| `fred_browse()` | Pretty-print the FRED category tree |
+| `fred_search()` | Search for series by keyword or ID |
+| `fred_recession_dates()` | NBER recession reference dates (1857-2020) + flagger |
+| `fred_fomc_dates()` | FOMC scheduled meeting dates 2017-2025 with SEP flags |
+
+**Catalogue browsing**
+
+| Function | Description |
+|---|---|
 | `fred_category()` | Get category information |
 | `fred_category_children()` | List child categories |
 | `fred_category_series()` | List series in a category |
@@ -316,7 +442,28 @@ fred_cache_info()
 | `fred_tags()` | List or search tags |
 | `fred_related_tags()` | Find related tags |
 | `fred_updates()` | List recently updated series |
-| `fred_request()` | Raw API request (power users) |
+
+**Workflow utilities**
+
+| Function | Description |
+|---|---|
+| `fred_event_window()` | Extract data around event dates |
+| `fred_aggregate()` | Collapse to coarser frequency (week/month/quarter/year) |
+| `fred_interpolate()` | Fill NAs via locf or linear interpolation |
+| `plot.fred_tbl()` | Default plot with NBER recession shading |
+| `summary.fred_tbl()` | Query metadata + dimensions + ranges |
+
+**Reproducibility**
+
+| Function | Description |
+|---|---|
+| `fred_cite_series()` | BibTeX, plain text, or `bibentry` citation, vintage-pinned |
+| `fred_manifest()` | YAML snapshot with MD5 hash per object |
+
+**Configuration**
+
+| Function | Description |
+|---|---|
 | `fred_set_key()` | Set API key for session |
 | `fred_get_key()` | Get current API key |
 | `fred_cache_info()` | Inspect the local cache |
