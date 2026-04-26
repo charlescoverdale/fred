@@ -86,9 +86,14 @@ but it hasn’t been updated since August 2021.
 - **Modern HTTP stack** - fredr depends on `httr`, which has been
   superseded by `httr2`. **fred** uses `httr2` with built-in rate-limit
   retries and graceful error handling when the API is unreachable.
-- **Fewer dependencies** - **fred** depends on 3 packages (`httr2`,
-  `cli`, `tools`). fredr pulls in `httr`, `jsonlite`, `rlang`, `tibble`,
-  and `purrr`.
+- **Fewer dependencies** - **fred** depends on 3 third-party packages
+  (`cli`, `httr2`, `tools`) plus base R. fredr pulls in `httr`,
+  `jsonlite`, `rlang`, `tibble`, and `purrr`.
+- **Research-grade infrastructure** - offline catalogue of ~50 popular
+  series, NBER recession reference dates, FOMC meeting reference dates,
+  vintage revision summaries, BibTeX/YAML reproducibility helpers, and a
+  default [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+  method with NBER recession shading.
 - **Actively maintained** - fredr has had no updates since August 2021.
 
 ## Installation
@@ -191,25 +196,54 @@ Every dataset in FRED has a short series ID. For example, `GDP` is US
 quarterly GDP, `UNRATE` is the US unemployment rate, and `CPIAUCSL` is
 the Consumer Price Index. You need to know the series ID to pull data.
 
-There are two ways to find it:
+There are four ways to find it:
 
-**1. Search from R** using
-[`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md):
+**1. Curated offline catalogue** using
+[`fred_catalogue()`](https://charlescoverdale.github.io/fred/reference/fred_catalogue.md).
+Around 50 of the most-used series, grouped by category, with no API call
+needed:
+
+``` r
+fred_catalogue(category = "Inflation")
+#> # FRED: catalogue · 6 rows
+#>          id                                                title  frequency  category
+#>   CPIAUCSL                CPI for All Urban Consumers: All Items          M Inflation
+#>   CPILFESL  CPI for All Urban Consumers: Less Food and Energy            M Inflation
+#>      PCEPI         PCE: Chain-type Price Index                            M Inflation
+#>      ...
+
+fred_catalogue(query = "mortgage")
+#> # FRED: catalogue · 1 row
+#>           id                                title frequency       category
+#>  MORTGAGE30US  30-Year Fixed Rate Mortgage Average         W Interest Rates
+```
+
+**2. Search from R** using
+[`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)
+for the full FRED database (live API):
 
 ``` r
 fred_search("consumer price index")
-#>            id                                          title frequency
-#>      CPIAUCSL   Consumer Price Index for All Urban Consumers   Monthly
-#>    CPILFESL     CPI Less Food and Energy (Core CPI)          Monthly
-#>    CPIENGSL     CPI: Energy                                  Monthly
-#>    ...
 ```
 
-**2. Browse the FRED website** at
-[fred.stlouisfed.org](https://fred.stlouisfed.org). Search or browse by
-category, and the series ID is shown at the top of every data page. This
-is often the easiest way to explore what’s available if you’re not sure
-what you’re looking for.
+**3. Browse the category tree** using
+[`fred_browse()`](https://charlescoverdale.github.io/fred/reference/fred_browse.md)
+(top-level categories are offline; deeper levels hit the API):
+
+``` r
+fred_browse()
+#> FRED top-level categories
+#> -------------------------
+#>   32991  Money, Banking, & Finance
+#>      10  Population, Employment, & Labor Markets
+#>   32992  National Accounts
+#>       1  Production & Business Activity
+#>   32455  Prices
+#>      ...
+```
+
+**4. Browse the FRED website** at
+[fred.stlouisfed.org](https://fred.stlouisfed.org).
 
 Once you have a series ID, pass it to
 [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md).
@@ -396,34 +430,164 @@ wipes everything;
 [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md)
 lets you check what’s there before you do.
 
+### Default plot with NBER recession shading
+
+Every
+[`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)
+result is a `fred_tbl`, so you can call
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) directly and
+get a sensible default:
+
+``` r
+panel <- fred_series(c("UNRATE", "CIVPART"), from = "2000-01-01",
+                     format = "wide")
+plot(panel, ylab = "%", main = "US labour market")
+```
+
+Recession shading uses NBER reference dates from
+[`fred_recession_dates()`](https://charlescoverdale.github.io/fred/reference/fred_recession_dates.md).
+Pass `recessions = FALSE` to switch it off. No `ggplot2` dependency.
+
+### Reference dates: NBER recessions and FOMC meetings
+
+``` r
+# All 34 NBER recessions since 1857
+fred_recession_dates()
+
+# Modern era only, with duration
+fred_recession_dates(from = "1948-01-01")
+
+# Flag a vector of dates as in/out of recession
+fred_recession_dates(flag = seq(as.Date("2007-01-01"),
+                                as.Date("2010-12-01"), by = "month"))
+
+# FOMC scheduled meeting dates 2017-2025, with SEP flag
+fred_fomc_dates(year = 2024, sep_only = TRUE)
+#> # FRED: fomc_dates · 4 rows
+#>          date    type   sep
+#>   2024-03-20 regular  TRUE
+#>   2024-06-12 regular  TRUE
+#>   2024-09-18 regular  TRUE
+#>   2024-12-18 regular  TRUE
+```
+
+### Workflow utilities
+
+``` r
+# Aggregate daily to monthly with any summary
+yields_m <- fred_aggregate(fred_series("DGS10", from = "2023-01-01"),
+                           fun = "mean", by = "month")
+
+# Fill NAs with last-observation-carry-forward or linear interpolation
+filled <- fred_interpolate(fred_series("GDPC1"), method = "linear")
+
+# Extract data inside a window around event dates (e.g. FOMC meetings)
+ur <- fred_series("UNRATE", from = "2023-01-01")
+sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)
+fred_event_window(ur, events = sep$date, window = c(-60L, 60L))
+```
+
+### Reproducibility: cite series and snapshot manifests
+
+``` r
+# BibTeX citation pinned to a vintage date
+fred_cite_series("GDPC1", vintage_date = "2024-12-18", format = "bibtex")
+
+# Plain text citation
+fred_cite_series("UNRATE", format = "text")
+
+# YAML manifest with MD5 hash per object - save alongside paper code
+gdp <- fred_series("GDPC1", from = "2020-01-01")
+ur  <- fred_series("UNRATE", from = "2020-01-01")
+m <- fred_manifest(gdp = gdp, unrate = ur,
+                   file = "data/manifest.yml")
+
+# Per-observation revision statistics
+fred_vintage_revisions("GDPC1", from = "2018-01-01")
+```
+
+## Vignettes
+
+- [`vignette("multi-series-workflows", "fred")`](https://charlescoverdale.github.io/fred/articles/multi-series-workflows.md) -
+  fetch, transform, widen, plot.
+- [`vignette("nowcasting-with-fred", "fred")`](https://charlescoverdale.github.io/fred/articles/nowcasting-with-fred.md) -
+  pseudo-real-time GDP nowcasting with monthly indicators (pairs with
+  the `nowcast` package).
+- [`vignette("inflation-revisions", "fred")`](https://charlescoverdale.github.io/fred/articles/inflation-revisions.md) -
+  tracking core inflation revisions across FOMC SEP meeting vintages.
+
 ## Functions
+
+**Data fetching**
+
+| Function                                                                              | Description                                              |
+|---------------------------------------------------------------------------------------|----------------------------------------------------------|
+| [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)   | Fetch observations for one or more series (long or wide) |
+| [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md)       | Get series metadata                                      |
+| [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md) | Raw API request (power users)                            |
+
+**Real-time and vintages (ALFRED)**
 
 | Function                                                                                                  | Description                                              |
 |-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)                       | Fetch observations for one or more series (long or wide) |
 | [`fred_as_of()`](https://charlescoverdale.github.io/fred/reference/fred_as_of.md)                         | Fetch a series as it appeared on a specific vintage date |
 | [`fred_first_release()`](https://charlescoverdale.github.io/fred/reference/fred_first_release.md)         | Fetch only the initial release of each observation       |
 | [`fred_all_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_all_vintages.md)           | Fetch every vintage in the revision history              |
 | [`fred_real_time_panel()`](https://charlescoverdale.github.io/fred/reference/fred_real_time_panel.md)     | Fetch a panel of selected vintage snapshots              |
-| [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)                       | Search for series by keyword or ID                       |
-| [`fred_info()`](https://charlescoverdale.github.io/fred/reference/fred_info.md)                           | Get series metadata                                      |
 | [`fred_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_vintages.md)                   | Get revision dates for a series                          |
-| [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.md)                   | Get category information                                 |
-| [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.md) | List child categories                                    |
-| [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.md)     | List series in a category                                |
-| [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.md)                   | List all data releases                                   |
-| [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.md)       | List series in a release                                 |
-| [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.md)         | Get release publication dates                            |
-| [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.md)                     | List all data sources                                    |
-| [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.md)     | List releases from a source                              |
-| [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.md)                           | List or search tags                                      |
-| [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.md)           | Find related tags                                        |
-| [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md)                     | List recently updated series                             |
-| [`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md)                     | Raw API request (power users)                            |
-| [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.md)                     | Set API key for session                                  |
-| [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)                     | Get current API key                                      |
-| [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md)               | Inspect the local cache                                  |
-| [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)                       | Clear local cache                                        |
+| [`fred_vintage_revisions()`](https://charlescoverdale.github.io/fred/reference/fred_vintage_revisions.md) | Per-observation revision summary statistics              |
+
+**Discoverability**
+
+| Function                                                                                              | Description                                           |
+|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| [`fred_catalogue()`](https://charlescoverdale.github.io/fred/reference/fred_catalogue.md)             | Curated offline catalogue of ~50 popular series       |
+| [`fred_browse()`](https://charlescoverdale.github.io/fred/reference/fred_browse.md)                   | Pretty-print the FRED category tree                   |
+| [`fred_search()`](https://charlescoverdale.github.io/fred/reference/fred_search.md)                   | Search for series by keyword or ID                    |
+| [`fred_recession_dates()`](https://charlescoverdale.github.io/fred/reference/fred_recession_dates.md) | NBER recession reference dates (1857-2020) + flagger  |
+| [`fred_fomc_dates()`](https://charlescoverdale.github.io/fred/reference/fred_fomc_dates.md)           | FOMC scheduled meeting dates 2017-2025 with SEP flags |
+
+**Catalogue browsing**
+
+| Function                                                                                                  | Description                   |
+|-----------------------------------------------------------------------------------------------------------|-------------------------------|
+| [`fred_category()`](https://charlescoverdale.github.io/fred/reference/fred_category.md)                   | Get category information      |
+| [`fred_category_children()`](https://charlescoverdale.github.io/fred/reference/fred_category_children.md) | List child categories         |
+| [`fred_category_series()`](https://charlescoverdale.github.io/fred/reference/fred_category_series.md)     | List series in a category     |
+| [`fred_releases()`](https://charlescoverdale.github.io/fred/reference/fred_releases.md)                   | List all data releases        |
+| [`fred_release_series()`](https://charlescoverdale.github.io/fred/reference/fred_release_series.md)       | List series in a release      |
+| [`fred_release_dates()`](https://charlescoverdale.github.io/fred/reference/fred_release_dates.md)         | Get release publication dates |
+| [`fred_sources()`](https://charlescoverdale.github.io/fred/reference/fred_sources.md)                     | List all data sources         |
+| [`fred_source_releases()`](https://charlescoverdale.github.io/fred/reference/fred_source_releases.md)     | List releases from a source   |
+| [`fred_tags()`](https://charlescoverdale.github.io/fred/reference/fred_tags.md)                           | List or search tags           |
+| [`fred_related_tags()`](https://charlescoverdale.github.io/fred/reference/fred_related_tags.md)           | Find related tags             |
+| [`fred_updates()`](https://charlescoverdale.github.io/fred/reference/fred_updates.md)                     | List recently updated series  |
+
+**Workflow utilities**
+
+| Function                                                                                        | Description                                             |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| [`fred_event_window()`](https://charlescoverdale.github.io/fred/reference/fred_event_window.md) | Extract data around event dates                         |
+| [`fred_aggregate()`](https://charlescoverdale.github.io/fred/reference/fred_aggregate.md)       | Collapse to coarser frequency (week/month/quarter/year) |
+| [`fred_interpolate()`](https://charlescoverdale.github.io/fred/reference/fred_interpolate.md)   | Fill NAs via locf or linear interpolation               |
+| [`plot.fred_tbl()`](https://charlescoverdale.github.io/fred/reference/plot.fred_tbl.md)         | Default plot with NBER recession shading                |
+| [`summary.fred_tbl()`](https://charlescoverdale.github.io/fred/reference/summary.fred_tbl.md)   | Query metadata + dimensions + ranges                    |
+
+**Reproducibility**
+
+| Function                                                                                      | Description                                                |
+|-----------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| [`fred_cite_series()`](https://charlescoverdale.github.io/fred/reference/fred_cite_series.md) | BibTeX, plain text, or `bibentry` citation, vintage-pinned |
+| [`fred_manifest()`](https://charlescoverdale.github.io/fred/reference/fred_manifest.md)       | YAML snapshot with MD5 hash per object                     |
+
+**Configuration**
+
+| Function                                                                                    | Description             |
+|---------------------------------------------------------------------------------------------|-------------------------|
+| [`fred_set_key()`](https://charlescoverdale.github.io/fred/reference/fred_set_key.md)       | Set API key for session |
+| [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)       | Get current API key     |
+| [`fred_cache_info()`](https://charlescoverdale.github.io/fred/reference/fred_cache_info.md) | Inspect the local cache |
+| [`clear_cache()`](https://charlescoverdale.github.io/fred/reference/clear_cache.md)         | Clear local cache       |
 
 ## Related packages
 

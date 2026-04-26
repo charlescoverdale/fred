@@ -2,7 +2,8 @@
 
 Adds a one-line provenance header above the data frame body. The header
 summarises the query: number of series, observation count,
-transformation in effect, and any vintage information.
+transformation in effect, vintage information, or for non-observation
+queries, the endpoint and result count.
 
 ## Usage
 

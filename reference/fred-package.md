@@ -13,9 +13,14 @@ log, etc.) and frequency aggregation are supported, with readable
 transform aliases such as 'yoy_pct' and 'log_diff'. Real-time and
 vintage helpers (built on 'ALFRED') return a series as it appeared on a
 given date, the first-release version, every revision, or a panel of
-selected vintages. Data is cached locally for subsequent calls. This
-product uses the 'FRED' API but is not endorsed or certified by the
-'Federal Reserve Bank of St. Louis'.
+selected vintages. An offline curated catalogue of around fifty popular
+series, NBER recession reference dates, and FOMC meeting dates support
+discoverability and event-study workflows. Default 'plot' method shades
+NBER recession periods. Reproducibility helpers produce BibTeX or
+plain-text citations and YAML manifests with per-object hashes. Data is
+cached locally for subsequent calls. This product uses the 'FRED' API
+but is not endorsed or certified by the 'Federal Reserve Bank of St.
+Louis'.
 
 ## See also
 
@@ -29,4 +34,4 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Charles Coverdale <charlesfcoverdale@gmail.com>
+**Maintainer**: Charles Coverdale <charles.f.coverdale@gmail.com>

@@ -1,0 +1,159 @@
+# Real-time GDP nowcasting with monthly indicators
+
+US GDP is published quarterly, with an advance release roughly four
+weeks after quarter-end. Monthly indicators (retail sales, employment,
+industrial production, financial conditions) are available much sooner,
+so analysts build *bridge equations* that map monthly indicators onto
+quarterly GDP. The challenge is doing this honestly: the data you have
+today has been revised many times, so an in-sample fit overstates
+real-time forecast skill.
+
+This vignette uses `fred` together with the
+[`nowcast`](https://github.com/charlescoverdale/nowcast) package to:
+
+1.  Pull the standard monthly indicator panel from FRED.
+2.  Estimate a bridge equation for quarterly GDP growth.
+3.  Backtest in pseudo-real-time using
+    [`fred_as_of()`](https://charlescoverdale.github.io/fred/reference/fred_as_of.md)
+    so each forecast only sees data that was actually available at the
+    time.
+4.  Compare in-sample fit to honest pseudo-real-time error.
+
+It needs both an API key and the `nowcast` package. Without them, the
+code is shown but not executed.
+
+## Setup
+
+``` r
+library(fred)
+library(nowcast)
+```
+
+## Step 1. The monthly indicator panel
+
+Start with a small, defensible set of monthly indicators that are
+themselves released early in the month for the previous month.
+Industrial production, retail sales, employment, ISM-style activity, and
+financial conditions are the standard choices.
+
+``` r
+indicators <- c(
+  "INDPRO",   # Industrial production (15th)
+  "RSAFS",    # Retail sales advance (mid-month)
+  "PAYEMS",   # Nonfarm payrolls (first Friday)
+  "NFCI",     # Chicago Fed financial conditions (weekly)
+  "UMCSENT"   # Michigan consumer sentiment (mid + late month)
+)
+
+monthly <- fred_series(indicators, from = "2000-01-01", format = "wide")
+head(monthly)
+```
+
+GDP itself, transformed to quarter-on-quarter annualised growth (FRED’s
+`pca` or `transform = "annualised"`):
+
+``` r
+gdp_growth <- fred_series(
+  "GDPC1",
+  from = "2000-01-01",
+  transform = "annualised"
+)
+plot(gdp_growth, main = "Real GDP, QoQ annualised growth")
+```
+
+## Step 2. Bridge equation, latest vintage
+
+The naive approach: regress GDP growth on aggregated monthly indicators
+using the latest data. This is what most ad-hoc nowcasts use.
+
+``` r
+# Aggregate monthlies to quarterly using fred_aggregate()
+monthly_long <- fred_series(indicators, from = "2000-01-01")
+quarterly <- fred_aggregate(monthly_long, fun = "mean", by = "quarter")
+head(quarterly)
+```
+
+To estimate a bridge equation with `nowcast`, the inputs need to be a
+single data frame with the target series and the indicators side by
+side. The sketch below is illustrative; see
+[`?nowcast::nc_bridge`](https://rdrr.io/pkg/nowcast/man/nc_bridge.html)
+for the actual formula interface.
+
+``` r
+# Pseudo-code: build a wide quarterly frame for nc_bridge(formula, data)
+panel <- merge(
+  fred_series("GDPC1", from = "2000-01-01", transform = "annualised"),
+  fred_aggregate(
+    fred_series(indicators, from = "2000-01-01", format = "wide"),
+    fun = "mean", by = "quarter"
+  ),
+  by = "date"
+)
+bridge <- nowcast::nc_bridge(value ~ INDPRO + RSAFS + PAYEMS, data = panel)
+summary(bridge)
+```
+
+The fit looks impressive because we are using *revised* indicator values
+that were not available in real time.
+
+## Step 3. Pseudo-real-time backtest
+
+Replace each indicator series with its first-release vintage and rerun.
+The discipline: at each forecast date, fetch only what was published as
+of that date.
+
+``` r
+forecast_dates <- seq(as.Date("2015-01-01"), as.Date("2024-12-01"),
+                      by = "quarter")
+
+backtest <- lapply(forecast_dates, function(d) {
+  ind_rt <- fred_real_time_panel(indicators, vintages = d, from = "2000-01-01")
+  gdp_rt <- fred_as_of("GDPC1", date = d, from = "2000-01-01",
+                       units = "pca")
+  list(date = d, ind = ind_rt, gdp = gdp_rt)
+})
+```
+
+You can now run the same bridge equation per forecast date and compare
+the real-time forecast to the eventual final-vintage GDP value. The
+`nowcast` package has helpers for this; see
+[`nowcast::nc_backtest()`](https://rdrr.io/pkg/nowcast/man/nc_backtest.html).
+
+## Step 4. Honest error
+
+The honest pseudo-real-time RMSE is typically 30-100% larger than the
+in-sample RMSE. This gap is the difference between “what your model
+would have said at the time” and “what your model says now, with
+hindsight”. For publication-grade nowcasting, the pseudo-real-time
+number is the one to report.
+
+## Pinning the run for reproducibility
+
+Save a manifest of every series your analysis used, with their hash and
+vintage dates, alongside the paper code. Reviewers can re-run and verify
+the data is unchanged.
+
+``` r
+m <- fred_manifest(
+  gdp = gdp_growth,
+  monthly = monthly,
+  quarterly = quarterly
+)
+print(m)
+```
+
+Cite each series in the paper itself:
+
+``` r
+fred_cite_series("GDPC1", vintage_date = "2024-12-01", format = "text")
+#> [1] "Federal Reserve Bank of St. Louis. (2024). GDPC1 [GDPC1]. FRED, Federal Reserve Bank of St. Louis. https://fred.stlouisfed.org/series/GDPC1. Accessed 01 December 2024."
+```
+
+## Further reading
+
+- [`vignette("inflation-revisions")`](https://charlescoverdale.github.io/fred/articles/inflation-revisions.md)
+  for revision analysis on the inflation side.
+- [`vignette("multi-series-workflows")`](https://charlescoverdale.github.io/fred/articles/multi-series-workflows.md)
+  for the basic fetch/transform/plot pattern.
+- `nowcast::vignette("introduction")` for the bridge-equation
+  methodology.

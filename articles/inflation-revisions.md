@@ -1,0 +1,165 @@
+# Tracking core inflation revisions
+
+CPI revisions look small in absolute terms but matter materially for
+inflation-targeting central banks. The Federal Reserve targets PCE;
+markets focus on CPI; the BLS revises seasonal factors annually. A
+nowcast or policy narrative built on revised numbers can look very
+different from the same narrative built on the data that was actually
+available at the time.
+
+This vignette uses
+[`fred_real_time_panel()`](https://charlescoverdale.github.io/fred/reference/fred_real_time_panel.md)
+to track how core inflation estimates have evolved across vintages, and
+[`fred_vintage_revisions()`](https://charlescoverdale.github.io/fred/reference/fred_vintage_revisions.md)
+to quantify the revision behaviour of headline series.
+
+The chunks below require an API key.
+
+## Setup
+
+``` r
+library(fred)
+```
+
+## Headline vs core, revised
+
+The simple comparison most analysts start with: headline CPI vs core CPI
+(food and energy excluded), as we see them today.
+
+``` r
+inflation_now <- fred_series(
+  c("CPIAUCSL", "CPILFESL"),
+  from = "2018-01-01",
+  transform = "yoy_pct",
+  format = "wide"
+)
+plot(inflation_now, ylab = "% YoY",
+     main = "Headline vs core CPI, latest vintage")
+```
+
+This is what shows up in most papers. But the *actual story*
+policymakers saw at each FOMC meeting is closer to the first-release
+values.
+
+## First-release inflation
+
+Use
+[`fred_first_release()`](https://charlescoverdale.github.io/fred/reference/fred_first_release.md)
+to get the value that was published at each release date, with no
+subsequent revisions:
+
+``` r
+core_first <- fred_first_release(
+  "CPILFESL",
+  from = "2018-01-01",
+  units = "pc1"   # YoY percent change
+)
+core_latest <- fred_series(
+  "CPILFESL",
+  from = "2018-01-01",
+  transform = "yoy_pct"
+)
+
+# Plot both on one chart
+plot(core_first$date, core_first$value, type = "l",
+     xlab = "", ylab = "% YoY",
+     main = "Core CPI: first release vs latest vintage",
+     ylim = range(c(core_first$value, core_latest$value), na.rm = TRUE))
+graphics::lines(core_latest$date, core_latest$value, col = "tomato")
+graphics::legend("topleft",
+                 legend = c("First release", "Latest vintage"),
+                 col = c("black", "tomato"), lty = 1, bty = "n")
+```
+
+The two lines diverge meaningfully across pivot points (early 2022, late
+2023). That divergence is the data revision.
+
+## Real-time panel at FOMC vintages
+
+Pull a panel of core CPI as it was seen on each FOMC SEP meeting in
+2024. This is the data that informed Summary of Economic Projections
+forecasts.
+
+``` r
+sep_meetings <- fred_fomc_dates(year = 2024, sep_only = TRUE)
+sep_meetings
+```
+
+``` r
+panel <- fred_real_time_panel(
+  "CPILFESL",
+  vintages = sep_meetings$date,
+  from = "2022-01-01"
+)
+head(panel)
+```
+
+The `realtime_start` column tells you which vintage each row belongs to.
+To visualise the four lines:
+
+``` r
+panel_wide <- stats::reshape(
+  panel[, c("date", "value", "realtime_start")],
+  idvar = "date", timevar = "realtime_start",
+  direction = "wide"
+)
+names(panel_wide) <- sub("^value\\.", "v", names(panel_wide))
+panel_wide <- panel_wide[order(panel_wide$date), ]
+
+cols <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728")
+plot(panel_wide$date, panel_wide[[2]], type = "l", col = cols[1],
+     ylim = range(unlist(panel_wide[, -1]), na.rm = TRUE),
+     xlab = "", ylab = "Core CPI level",
+     main = "Core CPI as seen at four 2024 SEP meetings")
+for (i in 3:ncol(panel_wide)) {
+  graphics::lines(panel_wide$date, panel_wide[[i]], col = cols[i - 1L])
+}
+graphics::legend("topleft",
+                 legend = format(sep_meetings$date, "%b %Y"),
+                 col = cols, lty = 1, bty = "n", cex = 0.8)
+```
+
+The vintage panel makes it visually obvious where revisions accumulated.
+
+## Quantifying revisions
+
+For a research-grade summary, use
+[`fred_vintage_revisions()`](https://charlescoverdale.github.io/fred/reference/fred_vintage_revisions.md):
+
+``` r
+rev <- fred_vintage_revisions("CPILFESL", from = "2020-01-01")
+head(rev)
+summary(rev$revision_total_pct)
+```
+
+The output gives, per observation date: how many vintages exist, the
+first and final value, total revision (in level and percent), mean and
+SD of inter-vintage revisions, and elapsed days from first publication
+to final.
+
+Use it to:
+
+- Pick low-revision series for nowcasting (small `revision_sd`).
+- Identify observation periods where revisions are unusually large
+  (typically structural-break or seasonal-factor years).
+
+## Reproducibility
+
+Pin the vintage in your citation, so a reviewer in 2027 sees the same
+data:
+
+``` r
+fred_cite_series(
+  "CPILFESL",
+  vintage_date = "2024-12-18",
+  format = "bibtex"
+)
+#> [1] "@misc{FRED_CPILFESL_2024,\n  title        = {CPILFESL [CPILFESL]},\n  author       = {{Federal Reserve Bank of St. Louis}},\n  publisher    = {Federal Reserve Bank of St. Louis},\n  year         = {2024},\n  url          = {https://fred.stlouisfed.org/series/CPILFESL},\n  urldate      = {2024-12-18},\n  note         = {FRED, Federal Reserve Bank of St. Louis}\n}"
+```
+
+## Further reading
+
+- [`vignette("nowcasting-with-fred")`](https://charlescoverdale.github.io/fred/articles/nowcasting-with-fred.md)
+  for using vintages in a nowcasting backtest.
+- [`vignette("multi-series-workflows")`](https://charlescoverdale.github.io/fred/articles/multi-series-workflows.md)
+  for the basic fetch/transform/plot pattern.

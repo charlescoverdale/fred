@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fred</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/inflation-revisions.html">Tracking core inflation revisions</a></li>
+    <li><a class="dropdown-item" href="../articles/multi-series-workflows.html">Multi-series macro panels: fetch, transform, widen, plot</a></li>
+    <li><a class="dropdown-item" href="../articles/nowcasting-with-fred.html">Real-time GDP nowcasting with monthly indicators</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -47,22 +53,6 @@
 
         </dt>
         <dd>Fetch observations for one or more FRED series</dd>
-      </dl></div><div class="section level2">
-      <h2 id="search-discovery">Search &amp; Discovery<a class="anchor" aria-label="anchor" href="#search-discovery"></a></h2>
-
-      <div class="section-desc"><p>Search for series and retrieve metadata</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="fred_search.html">fred_search()</a></code>
-
-        </dt>
-        <dd>Search for FRED series</dd>
 
         <dt>
 
@@ -73,10 +63,105 @@
 
         <dt>
 
+          <code><a href="fred_request.html">fred_request()</a></code>
+
+        </dt>
+        <dd>Make a raw request to the FRED API</dd>
+      </dl></div><div class="section level2">
+      <h2 id="vintage-data-alfred-">Vintage Data (ALFRED)<a class="anchor" aria-label="anchor" href="#vintage-data-alfred-"></a></h2>
+
+      <div class="section-desc"><p>Real-time and vintage data via ALFRED</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fred_as_of.html">fred_as_of()</a></code>
+
+        </dt>
+        <dd>Fetch a series as it appeared on a given vintage date</dd>
+
+        <dt>
+
+          <code><a href="fred_first_release.html">fred_first_release()</a></code>
+
+        </dt>
+        <dd>Fetch the first-release ("real-time") version of a series</dd>
+
+        <dt>
+
+          <code><a href="fred_all_vintages.html">fred_all_vintages()</a></code>
+
+        </dt>
+        <dd>Fetch every vintage of a series</dd>
+
+        <dt>
+
+          <code><a href="fred_real_time_panel.html">fred_real_time_panel()</a></code>
+
+        </dt>
+        <dd>Fetch a real-time panel of a series across selected vintages</dd>
+
+        <dt>
+
           <code><a href="fred_vintages.html">fred_vintages()</a></code>
 
         </dt>
         <dd>Get vintage dates for a FRED series</dd>
+
+        <dt>
+
+          <code><a href="fred_vintage_revisions.html">fred_vintage_revisions()</a></code>
+
+        </dt>
+        <dd>Summarise revision behaviour for a FRED series</dd>
+      </dl></div><div class="section level2">
+      <h2 id="discoverability">Discoverability<a class="anchor" aria-label="anchor" href="#discoverability"></a></h2>
+
+      <div class="section-desc"><p>Find series and browse the FRED structure</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fred_catalogue.html">fred_catalogue()</a></code>
+
+        </dt>
+        <dd>Browse a curated catalogue of popular FRED series</dd>
+
+        <dt>
+
+          <code><a href="fred_browse.html">fred_browse()</a></code>
+
+        </dt>
+        <dd>Browse the FRED category tree</dd>
+
+        <dt>
+
+          <code><a href="fred_search.html">fred_search()</a></code>
+
+        </dt>
+        <dd>Search for FRED series</dd>
+
+        <dt>
+
+          <code><a href="fred_recession_dates.html">fred_recession_dates()</a></code>
+
+        </dt>
+        <dd>NBER US business-cycle reference dates</dd>
+
+        <dt>
+
+          <code><a href="fred_fomc_dates.html">fred_fomc_dates()</a></code>
+
+        </dt>
+        <dd>FOMC scheduled meeting dates and decisions</dd>
       </dl></div><div class="section level2">
       <h2 id="categories">Categories<a class="anchor" aria-label="anchor" href="#categories"></a></h2>
 
@@ -174,10 +259,114 @@
 
         </dt>
         <dd>Find tags related to a given tag</dd>
+
+        <dt>
+
+          <code><a href="fred_updates.html">fred_updates()</a></code>
+
+        </dt>
+        <dd>List recently updated FRED series</dd>
+      </dl></div><div class="section level2">
+      <h2 id="workflow-utilities">Workflow Utilities<a class="anchor" aria-label="anchor" href="#workflow-utilities"></a></h2>
+
+      <div class="section-desc"><p>Event windows, aggregation, interpolation</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fred_event_window.html">fred_event_window()</a></code>
+
+        </dt>
+        <dd>Extract data windows around event dates</dd>
+
+        <dt>
+
+          <code><a href="fred_aggregate.html">fred_aggregate()</a></code>
+
+        </dt>
+        <dd>Aggregate FRED observations to a coarser frequency</dd>
+
+        <dt>
+
+          <code><a href="fred_interpolate.html">fred_interpolate()</a></code>
+
+        </dt>
+        <dd>Fill missing values in a FRED series</dd>
+      </dl></div><div class="section level2">
+      <h2 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a></h2>
+
+      <div class="section-desc"><p>Citations and manifests for paper-ready workflows</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fred_cite_series.html">fred_cite_series()</a></code>
+
+        </dt>
+        <dd>Generate a citation for a FRED series</dd>
+
+        <dt>
+
+          <code><a href="fred_manifest.html">fred_manifest()</a></code>
+
+        </dt>
+        <dd>Snapshot a session's FRED downloads as a YAML manifest</dd>
+      </dl></div><div class="section level2">
+      <h2 id="s-methods">S3 Methods<a class="anchor" aria-label="anchor" href="#s-methods"></a></h2>
+
+      <div class="section-desc"><p>Methods for fred_tbl and fred_manifest</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="print.fred_tbl.html">print(<i>&lt;fred_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print method for fred_tbl</dd>
+
+        <dt>
+
+          <code><a href="summary.fred_tbl.html">summary(<i>&lt;fred_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Summary method for fred_tbl</dd>
+
+        <dt>
+
+          <code><a href="plot.fred_tbl.html">plot(<i>&lt;fred_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot a fred_tbl</dd>
+
+        <dt>
+
+          <code><a href="sub-.fred_tbl.html">`[`(<i>&lt;fred_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Subset method for fred_tbl</dd>
+
+        <dt>
+
+          <code><a href="print.fred_manifest.html">print(<i>&lt;fred_manifest&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print method for fred_manifest</dd>
       </dl></div><div class="section level2">
       <h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
 
-      <div class="section-desc"><p>Manage API key and recently updated series</p></div>
+      <div class="section-desc"><p>API key and cache management</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -200,26 +389,10 @@
 
         <dt>
 
-          <code><a href="fred_updates.html">fred_updates()</a></code>
+          <code><a href="fred_cache_info.html">fred_cache_info()</a></code>
 
         </dt>
-        <dd>List recently updated FRED series</dd>
-      </dl></div><div class="section level2">
-      <h2 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a></h2>
-
-      <div class="section-desc"><p>Low-level API access and cache management</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="fred_request.html">fred_request()</a></code>
-
-        </dt>
-        <dd>Make a raw request to the FRED API</dd>
+        <dd>Inspect the local fred cache</dd>
 
         <dt>
 
@@ -227,66 +400,6 @@
 
         </dt>
         <dd>Clear the fred cache</dd>
-      </dl></div><div class="section level2">
-      <h2 id="vintage-data-alfred-">Vintage Data (ALFRED)<a class="anchor" aria-label="anchor" href="#vintage-data-alfred-"></a></h2>
-
-      <div class="section-desc"><p>Real-time and vintage data via ALFRED</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="fred_as_of.html">fred_as_of()</a></code>
-
-        </dt>
-        <dd>Fetch a series as it appeared on a given vintage date</dd>
-
-        <dt>
-
-          <code><a href="fred_first_release.html">fred_first_release()</a></code>
-
-        </dt>
-        <dd>Fetch the first-release ("real-time") version of a series</dd>
-
-        <dt>
-
-          <code><a href="fred_all_vintages.html">fred_all_vintages()</a></code>
-
-        </dt>
-        <dd>Fetch every vintage of a series</dd>
-
-        <dt>
-
-          <code><a href="fred_real_time_panel.html">fred_real_time_panel()</a></code>
-
-        </dt>
-        <dd>Fetch a real-time panel of a series across selected vintages</dd>
-
-        <dt>
-
-          <code><a href="fred_cache_info.html">fred_cache_info()</a></code>
-
-        </dt>
-        <dd>Inspect the local fred cache</dd>
-      </dl></div><div class="section level2">
-      <h2 id="s-methods">S3 Methods<a class="anchor" aria-label="anchor" href="#s-methods"></a></h2>
-
-      <div class="section-desc"><p>Print methods for fred_tbl objects</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="print.fred_tbl.html">print(<i>&lt;fred_tbl&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Print method for fred_tbl</dd>
       </dl></div><div class="section level2">
       <h2 id="package">Package<a class="anchor" aria-label="anchor" href="#package"></a></h2>
 

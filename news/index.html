@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fred</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/inflation-revisions.html">Tracking core inflation revisions</a></li>
+    <li><a class="dropdown-item" href="../articles/multi-series-workflows.html">Multi-series macro panels: fetch, transform, widen, plot</a></li>
+    <li><a class="dropdown-item" href="../articles/nowcasting-with-fred.html">Real-time GDP nowcasting with monthly indicators</a></li>
+  </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -32,6 +38,45 @@
       <small>Source: <a href="https://github.com/charlescoverdale/fred/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="fred-030">fred 0.3.0<a class="anchor" aria-label="anchor" href="#fred-030"></a></h2>
+<p>A research-grade upgrade in three logical blocks: (1) discoverability and reference data, (2) workflow utilities and the default plot method, and (3) reproducibility helpers. 35 exports + 4 S3 methods, 275 tests, three new vignettes.</p>
+<div class="section level3">
+<h3 id="discoverability-and-reference-data-0-3-0">Discoverability and reference data<a class="anchor" aria-label="anchor" href="#discoverability-and-reference-data-0-3-0"></a></h3>
+<ul><li>New <code><a href="../reference/fred_catalogue.html">fred_catalogue()</a></code> returns an offline curated catalogue of around 50 widely used FRED series (GDP, employment, inflation, rates, housing, financial, money/credit, trade/FX, consumer, fiscal). Filter by category or free-text. No API call required.</li>
+<li>New <code><a href="../reference/fred_browse.html">fred_browse()</a></code> pretty-prints the FRED category tree. With no arguments, shows the eight top-level categories from a static reference (no API call). Pass a <code>category_id</code> to drill into children.</li>
+<li>New <code><a href="../reference/fred_recession_dates.html">fred_recession_dates()</a></code> returns NBER business-cycle reference dates (peak, trough, duration) since 1857. Pass a vector of dates to <code>flag</code> to get back per-observation in-recession indicators for use as a regression covariate.</li>
+<li>New <code><a href="../reference/fred_fomc_dates.html">fred_fomc_dates()</a></code> returns FOMC scheduled meeting decision dates 2017 to 2025, including SEP-meeting flags. Selected unscheduled meetings during stress periods are included.</li>
+<li>
+<code>fred_tbl</code> now threads through <code><a href="../reference/fred_search.html">fred_search()</a></code>, <code><a href="../reference/fred_category.html">fred_category()</a></code>, <code><a href="../reference/fred_category_children.html">fred_category_children()</a></code>, <code><a href="../reference/fred_category_series.html">fred_category_series()</a></code>, <code><a href="../reference/fred_releases.html">fred_releases()</a></code>, <code><a href="../reference/fred_release_series.html">fred_release_series()</a></code>, <code><a href="../reference/fred_release_dates.html">fred_release_dates()</a></code>, <code><a href="../reference/fred_sources.html">fred_sources()</a></code>, <code><a href="../reference/fred_source_releases.html">fred_source_releases()</a></code>, <code><a href="../reference/fred_tags.html">fred_tags()</a></code>, <code><a href="../reference/fred_related_tags.html">fred_related_tags()</a></code>, and <code><a href="../reference/fred_updates.html">fred_updates()</a></code>. Their print headers now show the endpoint and search query (where applicable).</li>
+<li>New <code><a href="../reference/summary.fred_tbl.html">summary.fred_tbl()</a></code> prints query metadata, dimensions, date range, and value range before the standard <code>summary.data.frame</code> output.</li>
+<li>New <code>[.fred_tbl()</code> preserves the <code>fred_tbl</code> class and <code>fred_query</code> attribute when subsetting.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="workflow-utilities-and-plotting-0-3-0">Workflow utilities and plotting<a class="anchor" aria-label="anchor" href="#workflow-utilities-and-plotting-0-3-0"></a></h3>
+<ul><li>New <code><a href="../reference/fred_event_window.html">fred_event_window()</a></code> extracts data inside a <code>c(before, after)</code> day window around event dates. Works on both long and wide format. Handy for event studies around FOMC decisions, recession peaks, or release dates.</li>
+<li>New <code><a href="../reference/fred_aggregate.html">fred_aggregate()</a></code> aggregates long or wide format data to a coarser calendar frequency (week / month / quarter / year) using <code>mean</code>, <code>sum</code>, <code>first</code>, <code>last</code>, <code>median</code>, <code>min</code>, or <code>max</code>. Complements server-side aggregation in <code>fred_series(frequency = ...)</code>.</li>
+<li>New <code><a href="../reference/fred_interpolate.html">fred_interpolate()</a></code> fills <code>NA</code> values via last-observation-carry- forward (<code>"locf"</code>) or linear interpolation (<code>"linear"</code>). Useful for mixed-frequency analysis.</li>
+<li>New <code><a href="../reference/plot.fred_tbl.html">plot.fred_tbl()</a></code> default plot method. Detects long or wide format, draws one line per series, and shades NBER recession periods. Uses base graphics: no <code>ggplot2</code> dependency.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="reproducibility-helpers-0-3-0">Reproducibility helpers<a class="anchor" aria-label="anchor" href="#reproducibility-helpers-0-3-0"></a></h3>
+<ul><li>New <code><a href="../reference/fred_cite_series.html">fred_cite_series()</a></code> produces a citation for a FRED series in BibTeX, plain text, or <code>bibentry</code> form. Works offline (falls back to the series ID as the title); pass <code>fetch_metadata = TRUE</code> to use the official series title from <code><a href="../reference/fred_info.html">fred_info()</a></code>. Supports vintage-date pinning so cited data is reproducible even after revisions.</li>
+<li>New <code><a href="../reference/fred_manifest.html">fred_manifest()</a></code> snapshots one or more <code>fred_tbl</code> objects as a YAML manifest with query metadata, dimensions, date range, and an MD5 hash of each object. Saving the manifest alongside paper code lets reviewers verify that the underlying data is unchanged.</li>
+<li>New <code><a href="../reference/fred_vintage_revisions.html">fred_vintage_revisions()</a></code> returns per-observation revision summary statistics (n_vintages, first/final value, total revision, mean/SD of inter-vintage changes, days to final). Useful for choosing low-revision series for nowcasting and real-time analysis.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="vignettes-0-3-0">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes-0-3-0"></a></h3>
+<ul><li>New vignette <code>multi-series-workflows</code>: fetch, transform, widen, plot.</li>
+<li>New vignette <code>nowcasting-with-fred</code>: pseudo-real-time GDP nowcasting using monthly indicators, with vintage-aware backtesting (pairs with the <code>nowcast</code> package).</li>
+<li>New vignette <code>inflation-revisions</code>: tracking core inflation revisions using <code><a href="../reference/fred_real_time_panel.html">fred_real_time_panel()</a></code> aligned to FOMC SEP meeting dates.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-3-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-3-0"></a></h3>
+<ul><li>CITATION updated to v0.3.0 (was outdated against 0.1.0).</li>
+<li>New <code>CITATION.cff</code> file at the repository root for the GitHub citation widget and Zenodo deposit workflow.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="fred-020">fred 0.2.0<a class="anchor" aria-label="anchor" href="#fred-020"></a></h2><p class="text-muted">CRAN release: 2026-04-11</p>
 <div class="section level3">
