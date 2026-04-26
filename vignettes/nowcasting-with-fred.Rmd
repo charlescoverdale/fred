@@ -10,6 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+library(fred)
 key_available <- nzchar(Sys.getenv("FRED_API_KEY"))
 nowcast_available <- requireNamespace("nowcast", quietly = TRUE)
 knitr::opts_chunk$set(
