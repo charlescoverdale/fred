@@ -25,6 +25,7 @@ code is shown but not executed.
 ## Setup
 
 ``` r
+
 library(fred)
 library(nowcast)
 ```
@@ -37,6 +38,7 @@ Industrial production, retail sales, employment, ISM-style activity, and
 financial conditions are the standard choices.
 
 ``` r
+
 indicators <- c(
   "INDPRO",   # Industrial production (15th)
   "RSAFS",    # Retail sales advance (mid-month)
@@ -53,6 +55,7 @@ GDP itself, transformed to quarter-on-quarter annualised growth (FRED’s
 `pca` or `transform = "annualised"`):
 
 ``` r
+
 gdp_growth <- fred_series(
   "GDPC1",
   from = "2000-01-01",
@@ -67,6 +70,7 @@ The naive approach: regress GDP growth on aggregated monthly indicators
 using the latest data. This is what most ad-hoc nowcasts use.
 
 ``` r
+
 # Aggregate monthlies to quarterly using fred_aggregate()
 monthly_long <- fred_series(indicators, from = "2000-01-01")
 quarterly <- fred_aggregate(monthly_long, fun = "mean", by = "quarter")
@@ -80,6 +84,7 @@ side. The sketch below is illustrative; see
 for the actual formula interface.
 
 ``` r
+
 # Pseudo-code: build a wide quarterly frame for nc_bridge(formula, data)
 panel <- merge(
   fred_series("GDPC1", from = "2000-01-01", transform = "annualised"),
@@ -103,6 +108,7 @@ The discipline: at each forecast date, fetch only what was published as
 of that date.
 
 ``` r
+
 forecast_dates <- seq(as.Date("2015-01-01"), as.Date("2024-12-01"),
                       by = "quarter")
 
@@ -134,6 +140,7 @@ vintage dates, alongside the paper code. Reviewers can re-run and verify
 the data is unchanged.
 
 ``` r
+
 m <- fred_manifest(
   gdp = gdp_growth,
   monthly = monthly,
@@ -145,6 +152,7 @@ print(m)
 Cite each series in the paper itself:
 
 ``` r
+
 fred_cite_series("GDPC1", vintage_date = "2024-12-01", format = "text")
 #> [1] "Federal Reserve Bank of St. Louis. (2024). GDPC1 [GDPC1]. FRED, Federal Reserve Bank of St. Louis. https://fred.stlouisfed.org/series/GDPC1. Accessed 01 December 2024."
 ```

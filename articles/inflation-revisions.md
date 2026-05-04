@@ -18,6 +18,7 @@ The chunks below require an API key.
 ## Setup
 
 ``` r
+
 library(fred)
 ```
 
@@ -27,6 +28,7 @@ The simple comparison most analysts start with: headline CPI vs core CPI
 (food and energy excluded), as we see them today.
 
 ``` r
+
 inflation_now <- fred_series(
   c("CPIAUCSL", "CPILFESL"),
   from = "2018-01-01",
@@ -49,6 +51,7 @@ to get the value that was published at each release date, with no
 subsequent revisions:
 
 ``` r
+
 core_first <- fred_first_release(
   "CPILFESL",
   from = "2018-01-01",
@@ -81,11 +84,13 @@ Pull a panel of core CPI as it was seen on each FOMC SEP meeting in
 forecasts.
 
 ``` r
+
 sep_meetings <- fred_fomc_dates(year = 2024, sep_only = TRUE)
 sep_meetings
 ```
 
 ``` r
+
 panel <- fred_real_time_panel(
   "CPILFESL",
   vintages = sep_meetings$date,
@@ -98,6 +103,7 @@ The `realtime_start` column tells you which vintage each row belongs to.
 To visualise the four lines:
 
 ``` r
+
 panel_wide <- stats::reshape(
   panel[, c("date", "value", "realtime_start")],
   idvar = "date", timevar = "realtime_start",
@@ -127,6 +133,7 @@ For a research-grade summary, use
 [`fred_vintage_revisions()`](https://charlescoverdale.github.io/fred/reference/fred_vintage_revisions.md):
 
 ``` r
+
 rev <- fred_vintage_revisions("CPILFESL", from = "2020-01-01")
 head(rev)
 summary(rev$revision_total_pct)
@@ -149,6 +156,7 @@ Pin the vintage in your citation, so a reviewer in 2027 sees the same
 data:
 
 ``` r
+
 fred_cite_series(
   "CPILFESL",
   vintage_date = "2024-12-18",

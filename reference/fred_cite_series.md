@@ -61,7 +61,7 @@ Other reproducibility:
 ``` r
 # BibTeX without an API call
 fred_cite_series("GDPC1")
-#> [1] "@misc{FRED_GDPC1_2026,\n  title        = {GDPC1 [GDPC1]},\n  author       = {{Federal Reserve Bank of St. Louis}},\n  publisher    = {Federal Reserve Bank of St. Louis},\n  year         = {2026},\n  url          = {https://fred.stlouisfed.org/series/GDPC1},\n  urldate      = {2026-04-26},\n  note         = {FRED, Federal Reserve Bank of St. Louis}\n}"
+#> [1] "@misc{FRED_GDPC1_2026,\n  title        = {GDPC1 [GDPC1]},\n  author       = {{Federal Reserve Bank of St. Louis}},\n  publisher    = {Federal Reserve Bank of St. Louis},\n  year         = {2026},\n  url          = {https://fred.stlouisfed.org/series/GDPC1},\n  urldate      = {2026-05-04},\n  note         = {FRED, Federal Reserve Bank of St. Louis}\n}"
 
 # Plain-text citation pinned to a vintage date
 fred_cite_series("UNRATE", vintage_date = "2024-06-01", format = "text")

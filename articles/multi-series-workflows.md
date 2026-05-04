@@ -13,6 +13,7 @@ shown but not executed.
 ## Setup
 
 ``` r
+
 library(fred)
 ```
 
@@ -22,6 +23,7 @@ A typical first move is to grab GDP, unemployment, and headline CPI
 together, on a long format that is easy to iterate over.
 
 ``` r
+
 panel <- fred_series(
   c("GDPC1", "UNRATE", "CPIAUCSL"),
   from = "2000-01-01"
@@ -40,6 +42,7 @@ than year-on-year percent change. Pass a readable `transform` rather
 than the raw FRED `units` code:
 
 ``` r
+
 growth_panel <- fred_series(
   c("GDPC1", "CPIAUCSL"),
   from = "2010-01-01",
@@ -60,6 +63,7 @@ For correlation matrices, scatter plots, or regression input, wide is
 more convenient than long.
 
 ``` r
+
 wide <- fred_series(
   c("UNRATE", "CIVPART", "EMRATIO"),
   from = "2000-01-01",
@@ -76,10 +80,12 @@ method handles long and wide format automatically and shades NBER
 recessions when the date range overlaps one.
 
 ``` r
+
 plot(growth_panel, ylab = "% YoY")
 ```
 
 ``` r
+
 plot(wide, ylab = "%", main = "US labour market")
 ```
 
@@ -93,6 +99,7 @@ If you cannot remember a series ID,
 ships a curated offline reference of around 50 widely used series:
 
 ``` r
+
 fred_catalogue(category = "Inflation")
 #> # FRED: catalogue · 6 rows
 #>         id                                                     title frequency
@@ -115,6 +122,7 @@ Filtering with `query =` does a case-insensitive substring match against
 the ID, title, and description:
 
 ``` r
+
 fred_catalogue(query = "mortgage")
 #> # FRED: catalogue · 1 row
 #>             id                               title frequency   units
@@ -129,6 +137,7 @@ With no arguments it shows the eight top-level categories from a static
 reference (no API call):
 
 ``` r
+
 fred_browse()
 #> FRED top-level categories
 #> -------------------------
