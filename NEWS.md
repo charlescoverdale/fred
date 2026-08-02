@@ -19,7 +19,7 @@ new vignettes.
   get back per-observation in-recession indicators for use as a regression
   covariate.
 * New `fred_fomc_dates()` returns FOMC scheduled meeting decision dates
-  2017 to 2025, including SEP-meeting flags. Selected unscheduled meetings
+  2017 to 2026, including SEP-meeting flags. Selected unscheduled meetings
   during stress periods are included.
 * `fred_tbl` now threads through `fred_search()`, `fred_category()`,
   `fred_category_children()`, `fred_category_series()`, `fred_releases()`,

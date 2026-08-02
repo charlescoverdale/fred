@@ -12,7 +12,7 @@ This is a feature release. Highlights since 0.2.0 (full list in NEWS.md):
     eight top-level categories are offline; deeper levels hit the API.
   * `fred_recession_dates()`: NBER business-cycle peaks and troughs
     since 1857, with an optional vector-flag mode.
-  * `fred_fomc_dates()`: FOMC scheduled meeting decision dates 2017-2025
+  * `fred_fomc_dates()`: FOMC scheduled meeting decision dates 2017-2026
     with SEP flags.
   * `fred_tbl` now threads through every search/browse return value
     (search, categories, releases, sources, tags, updates) with an
@@ -88,7 +88,7 @@ Local check: macOS Sequoia 15.6.1, R 4.5.2 (aarch64-apple-darwin20),
 * The embedded NBER recession dataset (1857-2020) is from the NBER
   Business Cycle Dating Committee
   <https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions>.
-  The embedded FOMC scheduled-meeting dataset (2017-2025) is from the
+  The embedded FOMC scheduled-meeting dataset (2017-2026) is from the
   Federal Reserve Board's `fomccalendars.htm` page. Both are static
   reference frames and will be refreshed in future releases.
 * CITATION.cff at the repository root is `.Rbuildignore`'d so it does

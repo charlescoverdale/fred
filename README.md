@@ -345,7 +345,7 @@ fred_recession_dates(from = "1948-01-01")
 fred_recession_dates(flag = seq(as.Date("2007-01-01"),
                                 as.Date("2010-12-01"), by = "month"))
 
-# FOMC scheduled meeting dates 2017-2025, with SEP flag
+# FOMC scheduled meeting dates 2017-2026, with SEP flag
 fred_fomc_dates(year = 2024, sep_only = TRUE)
 #> # FRED: fomc_dates · 4 rows
 #>          date    type   sep
@@ -425,7 +425,7 @@ fred_vintage_revisions("GDPC1", from = "2018-01-01")
 | `fred_browse()` | Pretty-print the FRED category tree |
 | `fred_search()` | Search for series by keyword or ID |
 | `fred_recession_dates()` | NBER recession reference dates (1857-2020) + flagger |
-| `fred_fomc_dates()` | FOMC scheduled meeting dates 2017-2025 with SEP flags |
+| `fred_fomc_dates()` | FOMC scheduled meeting dates 2017-2026 with SEP flags |
 
 **Catalogue browsing**
 

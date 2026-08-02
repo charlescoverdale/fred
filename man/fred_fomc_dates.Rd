@@ -22,7 +22,7 @@ an SEP (typically four per year). Default \code{FALSE}.}
 A \code{fred_tbl} with columns \code{date}, \code{type}, \code{sep}.
 }
 \description{
-Returns scheduled regular FOMC meeting decision dates from 2017 to 2025,
+Returns scheduled regular FOMC meeting decision dates from 2017 to 2026,
 plus selected unscheduled meetings during stress periods (e.g. March 2020).
 Each row carries the decision date, meeting type, and a flag for whether
 a Summary of Economic Projections (SEP) was released. Useful as a left

@@ -78,7 +78,7 @@ fred_recession_dates <- function(from = NULL, to = NULL, flag = NULL) {
 
 #' FOMC scheduled meeting dates and decisions
 #'
-#' Returns scheduled regular FOMC meeting decision dates from 2017 to 2025,
+#' Returns scheduled regular FOMC meeting decision dates from 2017 to 2026,
 #' plus selected unscheduled meetings during stress periods (e.g. March 2020).
 #' Each row carries the decision date, meeting type, and a flag for whether
 #' a Summary of Economic Projections (SEP) was released. Useful as a left
@@ -218,7 +218,12 @@ fred_fomc_dates <- function(from = NULL, to = NULL, year = NULL,
     list("2025-01-29", "regular", FALSE), list("2025-03-19", "regular", TRUE),
     list("2025-05-07", "regular", FALSE), list("2025-06-18", "regular", TRUE),
     list("2025-07-30", "regular", FALSE), list("2025-09-17", "regular", TRUE),
-    list("2025-10-29", "regular", FALSE), list("2025-12-10", "regular", TRUE)
+    list("2025-10-29", "regular", FALSE), list("2025-12-10", "regular", TRUE),
+    # 2026
+    list("2026-01-28", "regular", FALSE), list("2026-03-18", "regular", TRUE),
+    list("2026-04-29", "regular", FALSE), list("2026-06-17", "regular", TRUE),
+    list("2026-07-29", "regular", FALSE), list("2026-09-16", "regular", TRUE),
+    list("2026-10-28", "regular", FALSE), list("2026-12-09", "regular", TRUE)
   )
 
   data.frame(
