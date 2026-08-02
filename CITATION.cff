@@ -11,7 +11,7 @@ abstract: >
 authors:
   - family-names: Coverdale
     given-names: Charles
-    email: charles.f.coverdale@gmail.com
+    email: charlesfcoverdale@gmail.com
 repository-code: "https://github.com/charlescoverdale/fred"
 url: "https://charlescoverdale.github.io/fred/"
 license: MIT

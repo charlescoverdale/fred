@@ -1,7 +1,7 @@
 Package: fred
 Title: Access 'Federal Reserve Economic Data'
 Version: 0.3.0
-Authors@R: person("Charles", "Coverdale", email = "charles.f.coverdale@gmail.com", role = c("aut", "cre"))
+Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to economic data from the 'Federal
     Reserve Economic Data' ('FRED') API <https://fred.stlouisfed.org/docs/api/fred/>.
     'FRED' is maintained by the 'Federal Reserve Bank of St. Louis' and contains over

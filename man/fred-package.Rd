@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Charles Coverdale \email{charles.f.coverdale@gmail.com}
+\strong{Maintainer}: Charles Coverdale \email{charlesfcoverdale@gmail.com}
 
 }
 \concept{FRED}
