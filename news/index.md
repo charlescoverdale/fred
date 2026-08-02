@@ -28,7 +28,7 @@ three new vignettes.
   covariate.
 - New
   [`fred_fomc_dates()`](https://charlescoverdale.github.io/fred/reference/fred_fomc_dates.md)
-  returns FOMC scheduled meeting decision dates 2017 to 2025, including
+  returns FOMC scheduled meeting decision dates 2017 to 2026, including
   SEP-meeting flags. Selected unscheduled meetings during stress periods
   are included.
 - `fred_tbl` now threads through

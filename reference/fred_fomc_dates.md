@@ -1,6 +1,6 @@
 # FOMC scheduled meeting dates and decisions
 
-Returns scheduled regular FOMC meeting decision dates from 2017 to 2025,
+Returns scheduled regular FOMC meeting decision dates from 2017 to 2026,
 plus selected unscheduled meetings during stress periods (e.g. March
 2020). Each row carries the decision date, meeting type, and a flag for
 whether a Summary of Economic Projections (SEP) was released. Useful as
@@ -51,7 +51,7 @@ Other dates:
 ``` r
 # All meetings since 2017
 fred_fomc_dates()
-#> # FRED: fomc_dates · 73 rows
+#> # FRED: fomc_dates · 81 rows
 #>          date        type   sep
 #> 1  2017-02-01     regular FALSE
 #> 2  2017-03-15     regular  TRUE
@@ -126,6 +126,14 @@ fred_fomc_dates()
 #> 71 2025-09-17     regular  TRUE
 #> 72 2025-10-29     regular FALSE
 #> 73 2025-12-10     regular  TRUE
+#> 74 2026-01-28     regular FALSE
+#> 75 2026-03-18     regular  TRUE
+#> 76 2026-04-29     regular FALSE
+#> 77 2026-06-17     regular  TRUE
+#> 78 2026-07-29     regular FALSE
+#> 79 2026-09-16     regular  TRUE
+#> 80 2026-10-28     regular FALSE
+#> 81 2026-12-09     regular  TRUE
 
 # 2022 hiking cycle
 fred_fomc_dates(year = 2022)
