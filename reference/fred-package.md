@@ -34,4 +34,4 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Charles Coverdale <charles.f.coverdale@gmail.com>
+**Maintainer**: Charles Coverdale <charlesfcoverdale@gmail.com>

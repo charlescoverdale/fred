@@ -33,7 +33,7 @@ Other configuration:
 op <- options(fred.cache_dir = tempdir())
 fred_cache_info()
 #> $dir
-#> [1] "/tmp/Rtmp978TuU"
+#> [1] "/tmp/RtmpaPIpSl"
 #> 
 #> $n_files
 #> [1] 1
@@ -46,7 +46,7 @@ fred_cache_info()
 #> 
 #> $files
 #>      name size_bytes            modified
-#> 1 downlit       4096 2026-05-04 19:14:19
+#> 1 downlit       4096 2026-08-02 06:54:21
 #> 
 options(op)
 # }
