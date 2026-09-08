@@ -29,8 +29,10 @@ Other tags:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_related_tags("gdp")
-#> Error in fred_get_key(): No FRED API key found.
+try({
+  fred_related_tags("gdp")
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

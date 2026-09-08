@@ -28,9 +28,11 @@ Other sources:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Bureau of Labor Statistics
-fred_source_releases(22)
-#> Error in fred_get_key(): No FRED API key found.
+try({
+  # Bureau of Labor Statistics
+  fred_source_releases(22)
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

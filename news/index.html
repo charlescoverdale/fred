@@ -42,6 +42,11 @@
 <h2 class="pkg-version" data-toc-text="0.3.0" id="fred-030">fred 0.3.0<a class="anchor" aria-label="anchor" href="#fred-030"></a></h2>
 <p>A research-grade upgrade in three logical blocks: (1) discoverability and reference data, (2) workflow utilities and the default plot method, and (3) reproducibility helpers. 35 exports + 4 S3 methods, 275 tests, three new vignettes.</p>
 <div class="section level3">
+<h3 id="examples-now-fail-gracefully-when-the-fred-api-is-unreachable-0-3-0">Examples now fail gracefully when the FRED API is unreachable<a class="anchor" aria-label="anchor" href="#examples-now-fail-gracefully-when-the-fred-api-is-unreachable-0-3-0"></a></h3>
+<p>Every <code>\donttest{}</code> example that reaches the FRED API is wrapped in <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code>. 14 blocks were affected. CRAN runs these in its additional-issues donttest check, on build machines the upstream host routinely refuses or rate-limits, and an example that could not reach it was an ERROR rather than a printed condition. The <code>options(op)</code> cache restore stays outside the <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code> so it runs either way.</p>
+<p>This is the CRAN Repository Policy requirement that a package using an internet resource fail gracefully when the resource is unavailable. It is the rule obr was archived under on 2026-08-22.</p>
+</div>
+<div class="section level3">
 <h3 id="discoverability-and-reference-data-0-3-0">Discoverability and reference data<a class="anchor" aria-label="anchor" href="#discoverability-and-reference-data-0-3-0"></a></h3>
 <ul><li>New <code><a href="../reference/fred_catalogue.html">fred_catalogue()</a></code> returns an offline curated catalogue of around 50 widely used FRED series (GDP, employment, inflation, rates, housing, financial, money/credit, trade/FX, consumer, fiscal). Filter by category or free-text. No API call required.</li>
 <li>New <code><a href="../reference/fred_browse.html">fred_browse()</a></code> pretty-prints the FRED category tree. With no arguments, shows the eight top-level categories from a static reference (no API call). Pass a <code>category_id</code> to drill into children.</li>

@@ -55,9 +55,11 @@ fred_browse()
 #> Use fred_browse(id) to drill into a category.
 
 op <- options(fred.cache_dir = tempdir())
-# Drill into "National Accounts" (id 32992)
-fred_browse(32992)
-#> Error in fred_get_key(): No FRED API key found.
+try({
+  # Drill into "National Accounts" (id 32992)
+  fred_browse(32992)
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)
