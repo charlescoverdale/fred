@@ -21,7 +21,9 @@ through all results.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_category_series(32992)
+try({
+  fred_category_series(32992)
+})
 options(op)
 }
 }

@@ -18,8 +18,10 @@ Returns all series belonging to a given release.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# G.19 Consumer Credit release
-fred_release_series(14)
+try({
+  # G.19 Consumer Credit release
+  fred_release_series(14)
+})
 options(op)
 }
 }

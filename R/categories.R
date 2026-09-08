@@ -17,11 +17,13 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Root category
-#' fred_category()
+#' try({
+#'   # Root category
+#'   fred_category()
 #'
-#' # National Accounts (category 32992)
-#' fred_category(32992)
+#'   # National Accounts (category 32992)
+#'   fred_category(32992)
+#' })
 #' options(op)
 #' }
 fred_category <- function(category_id = 0L) {
@@ -45,8 +47,10 @@ fred_category <- function(category_id = 0L) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Top-level categories
-#' fred_category_children()
+#' try({
+#'   # Top-level categories
+#'   fred_category_children()
+#' })
 #' options(op)
 #' }
 fred_category_children <- function(category_id = 0L) {
@@ -72,7 +76,9 @@ fred_category_children <- function(category_id = 0L) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_category_series(32992)
+#' try({
+#'   fred_category_series(32992)
+#' })
 #' options(op)
 #' }
 fred_category_series <- function(category_id, limit = 1000L) {

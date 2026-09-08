@@ -14,7 +14,9 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_sources()
+#' try({
+#'   fred_sources()
+#' })
 #' options(op)
 #' }
 fred_sources <- function() {
@@ -37,8 +39,10 @@ fred_sources <- function() {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Bureau of Labor Statistics
-#' fred_source_releases(22)
+#' try({
+#'   # Bureau of Labor Statistics
+#'   fred_source_releases(22)
+#' })
 #' options(op)
 #' }
 fred_source_releases <- function(source_id) {

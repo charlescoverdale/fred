@@ -23,7 +23,9 @@ functions such as \code{\link[=fred_series]{fred_series()}} or \code{\link[=fred
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_request("series", series_id = "GDP")
+try({
+  fred_request("series", series_id = "GDP")
+})
 options(op)
 }
 }

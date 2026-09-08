@@ -13,7 +13,9 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_releases()
+#' try({
+#'   fred_releases()
+#' })
 #' options(op)
 #' }
 fred_releases <- function() {
@@ -36,8 +38,10 @@ fred_releases <- function() {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # G.19 Consumer Credit release
-#' fred_release_series(14)
+#' try({
+#'   # G.19 Consumer Credit release
+#'   fred_release_series(14)
+#' })
 #' options(op)
 #' }
 fred_release_series <- function(release_id) {
@@ -67,7 +71,9 @@ fred_release_series <- function(release_id) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_release_dates(53)
+#' try({
+#'   fred_release_dates(53)
+#' })
 #' options(op)
 #' }
 fred_release_dates <- function(release_id) {

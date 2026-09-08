@@ -50,7 +50,9 @@ fred_tags <- function(query = NULL, limit = 1000L) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_related_tags("gdp")
+#' try({
+#'   fred_related_tags("gdp")
+#' })
 #' options(op)
 #' }
 fred_related_tags <- function(tag_names) {

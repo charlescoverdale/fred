@@ -30,8 +30,10 @@ inside a category with \code{\link[=fred_category_series]{fred_category_series()
 fred_browse()
 
 op <- options(fred.cache_dir = tempdir())
-# Drill into "National Accounts" (id 32992)
-fred_browse(32992)
+try({
+  # Drill into "National Accounts" (id 32992)
+  fred_browse(32992)
+})
 options(op)
 }
 }

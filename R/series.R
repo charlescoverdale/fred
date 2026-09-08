@@ -267,7 +267,9 @@ fred_series <- function(series_id, from = NULL, to = NULL,
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_info("GDP")
+#' try({
+#'   fred_info("GDP")
+#' })
 #' options(op)
 #' }
 fred_info <- function(series_id) {
@@ -297,7 +299,9 @@ fred_info <- function(series_id) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_vintages("GDP")
+#' try({
+#'   fred_vintages("GDP")
+#' })
 #' options(op)
 #' }
 fred_vintages <- function(series_id) {

@@ -17,7 +17,9 @@ related series published together (e.g. "Employment Situation", "GDP").
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_releases()
+try({
+  fred_releases()
+})
 options(op)
 }
 }

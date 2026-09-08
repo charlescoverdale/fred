@@ -18,8 +18,10 @@ Returns the child categories for a given parent category.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Top-level categories
-fred_category_children()
+try({
+  # Top-level categories
+  fred_category_children()
+})
 options(op)
 }
 }

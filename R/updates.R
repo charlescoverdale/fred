@@ -13,7 +13,9 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_updates()
+#' try({
+#'   fred_updates()
+#' })
 #' options(op)
 #' }
 fred_updates <- function(limit = 100L) {

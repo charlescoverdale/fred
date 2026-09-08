@@ -18,7 +18,9 @@ Returns series that have been recently updated or revised.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_updates()
+try({
+  fred_updates()
+})
 options(op)
 }
 }

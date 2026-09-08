@@ -19,7 +19,9 @@ understanding the data calendar and when revisions occurred.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_release_dates(53)
+try({
+  fred_release_dates(53)
+})
 options(op)
 }
 }

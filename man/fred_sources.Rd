@@ -18,7 +18,9 @@ Reserve Board, U.S. Census Bureau, and over 100 others.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_sources()
+try({
+  fred_sources()
+})
 options(op)
 }
 }

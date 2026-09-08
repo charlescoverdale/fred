@@ -19,7 +19,9 @@ for real-time analysis and understanding data revisions.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_vintages("GDP")
+try({
+  fred_vintages("GDP")
+})
 options(op)
 }
 }

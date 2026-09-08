@@ -19,7 +19,9 @@ Returns tags that are frequently used together with the specified tag.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_related_tags("gdp")
+try({
+  fred_related_tags("gdp")
+})
 options(op)
 }
 }

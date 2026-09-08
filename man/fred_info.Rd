@@ -19,7 +19,9 @@ frequency, seasonal adjustment, and notes.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_info("GDP")
+try({
+  fred_info("GDP")
+})
 options(op)
 }
 }

@@ -22,11 +22,13 @@ Regional Data; and Academic Data.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Root category
-fred_category()
+try({
+  # Root category
+  fred_category()
 
-# National Accounts (category 32992)
-fred_category(32992)
+  # National Accounts (category 32992)
+  fred_category(32992)
+})
 options(op)
 }
 }

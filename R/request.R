@@ -19,7 +19,9 @@ fred_base_url <- "https://api.stlouisfed.org/fred/"
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_request("series", series_id = "GDP")
+#' try({
+#'   fred_request("series", series_id = "GDP")
+#' })
 #' options(op)
 #' }
 fred_request <- function(endpoint, ...) {

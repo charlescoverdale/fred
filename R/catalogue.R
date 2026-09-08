@@ -100,8 +100,10 @@ fred_catalogue <- function(category = NULL, query = NULL) {
 #' fred_browse()
 #'
 #' op <- options(fred.cache_dir = tempdir())
-#' # Drill into "National Accounts" (id 32992)
-#' fred_browse(32992)
+#' try({
+#'   # Drill into "National Accounts" (id 32992)
+#'   fred_browse(32992)
+#' })
 #' options(op)
 #' }
 fred_browse <- function(category_id = 0L, depth = 1L) {

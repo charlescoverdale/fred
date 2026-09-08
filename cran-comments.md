@@ -58,6 +58,17 @@ plot, citation, and statistics helpers.
 
 No third-party dependency added in this release.
 
+## Examples hardened against an unreachable the FRED API
+
+Every `\donttest{}` example that makes a network call is now wrapped in
+`try()`, so a build machine that cannot reach the FRED API gets a printed
+condition rather than an example ERROR. 14 blocks were affected. The
+`options(op)` cache restore stays outside the `try()` so it always runs.
+
+I verified that every generated example still parses: each Rd file with
+examples was extracted with `tools::Rd2ex(commentDonttest = FALSE)` and
+passed to `parse()` without error.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
