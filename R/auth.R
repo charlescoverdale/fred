@@ -42,7 +42,9 @@ fred_set_key <- function(key) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_get_key()
+#' try({
+#'   fred_get_key()
+#' })
 #' options(op)
 #' }
 fred_get_key <- function() {

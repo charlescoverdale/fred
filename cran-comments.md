@@ -1,73 +1,25 @@
-# CRAN submission comments — fred 0.3.0
+# CRAN submission comments: fred 0.3.1
 
-## Summary of changes
+## This is a resubmission
 
-This is a feature release. Highlights since 0.2.0 (full list in NEWS.md):
+0.3.0 was rejected by the incoming checks on 2026-09-08 for two problems,
+both fixed here.
 
-* **Discoverability and reference data:**
-  * `fred_catalogue()`: an offline curated catalogue of around 50
-    widely used FRED series, filterable by category or free-text. No
-    API call.
-  * `fred_browse()`: pretty-prints the FRED category tree. The
-    eight top-level categories are offline; deeper levels hit the API.
-  * `fred_recession_dates()`: NBER business-cycle peaks and troughs
-    since 1857, with an optional vector-flag mode.
-  * `fred_fomc_dates()`: FOMC scheduled meeting decision dates 2017-2026
-    with SEP flags.
-  * `fred_tbl` now threads through every search/browse return value
-    (search, categories, releases, sources, tags, updates) with an
-    endpoint-aware print header.
-  * New `summary.fred_tbl()` and `[.fred_tbl()` S3 methods.
+**The donttest additional check errored.** `fred_all_vintages()` ran on a
+machine with no `FRED_API_KEY` and aborted rather than failing gracefully.
+0.3.0 wrapped 14 example blocks in `try()` but missed 14 more, including
+every vintage helper and `fred_get_key()` itself. All are wrapped now. I
+verified by extracting every generated example with
+`tools::Rd2ex(commentDonttest = FALSE)` and running all 35 of them with the
+API key unset: none errors.
 
-* **Workflow utilities and plotting:**
-  * `fred_event_window()`, `fred_aggregate()`, `fred_interpolate()`.
-  * `plot.fred_tbl()` default plot method with NBER recession shading
-    via base graphics (no `ggplot2` dependency).
+**An invalid DOI.** `inst/CITATION` carried `10.5281/zenodo.fred`, a
+placeholder never replaced with a real deposit. It 404s on both CrossRef and
+DataCite. There is no Zenodo record for this package, so the field is
+removed rather than corrected.
 
-* **Reproducibility helpers:**
-  * `fred_cite_series()`: BibTeX, plain-text, or `bibentry` citation,
-    with vintage-date pinning. BibTeX escapes special characters in
-    titles.
-  * `fred_manifest()`: YAML snapshot of one or more `fred_tbl` objects
-    with query metadata, dimensions, date range, and an MD5 hash per
-    object.
-  * `fred_vintage_revisions()`: per-observation revision summary
-    statistics (n_vintages, first/final value, total revision, mean/SD
-    of inter-vintage changes, days to final).
-
-* **Vignettes (new):**
-  * `multi-series-workflows`: fetch, transform, widen, plot.
-  * `nowcasting-with-fred`: pseudo-real-time GDP nowcasting with monthly
-    indicators (pairs with the `nowcast` package).
-  * `inflation-revisions`: tracking core inflation revisions across FOMC
-    SEP meeting vintages.
-
-* **Other:**
-  * CITATION updated to v0.3.0 (was outdated against 0.1.0).
-  * New `CITATION.cff` at the repository root for GitHub citation widget
-    and Zenodo deposit.
-
-## Dependencies
-
-`Imports`: `cli`, `httr2`, `tools`, plus the base R recommended
-packages `graphics`, `grDevices`, `stats`, and `utils` used by the new
-plot, citation, and statistics helpers.
-
-`Suggests`: `knitr`, `nowcast`, `rmarkdown`, `testthat`, `withr`.
-`nowcast` is used in one vignette and is on CRAN.
-
-No third-party dependency added in this release.
-
-## Examples hardened against an unreachable the FRED API
-
-Every `\donttest{}` example that makes a network call is now wrapped in
-`try()`, so a build machine that cannot reach the FRED API gets a printed
-condition rather than an example ERROR. 14 blocks were affected. The
-`options(op)` cache restore stays outside the `try()` so it always runs.
-
-I verified that every generated example still parses: each Rd file with
-examples was extracted with `tools::Rd2ex(commentDonttest = FALSE)` and
-passed to `parse()` without error.
+The remaining NOTE flags FOMC, NBER and "discoverability" as possibly
+misspelled. All three are correct.
 
 ## R CMD check results
 

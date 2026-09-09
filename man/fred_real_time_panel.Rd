@@ -43,11 +43,13 @@ GDP release dates.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# GDP as published at three quarterly snapshots
-gdp_panel <- fred_real_time_panel(
+try({
+  # GDP as published at three quarterly snapshots
+  gdp_panel <- fred_real_time_panel(
   "GDP",
   vintages = c("2023-04-30", "2023-07-31", "2023-10-31")
-)
+  )
+})
 options(op)
 }
 }

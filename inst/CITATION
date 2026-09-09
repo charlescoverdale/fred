@@ -3,7 +3,6 @@ bibentry(
   title   = "fred: Access Federal Reserve Economic Data",
   author  = person("Charles", "Coverdale"),
   year    = "2026",
-  note    = "R package version 0.3.0",
-  url     = "https://github.com/charlescoverdale/fred",
-  doi     = "10.5281/zenodo.fred"
+  note    = "R package version 0.3.1",
+  url     = "https://github.com/charlescoverdale/fred"
 )

@@ -41,8 +41,10 @@ like after revisions.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Initial-release GDP, never revised
-gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+try({
+  # Initial-release GDP, never revised
+  gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+})
 options(op)
 }
 }

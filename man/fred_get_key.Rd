@@ -16,7 +16,9 @@ environment variable. Raises an error if no key is found.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-fred_get_key()
+try({
+  fred_get_key()
+})
 options(op)
 }
 }

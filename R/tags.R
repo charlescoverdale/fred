@@ -17,8 +17,10 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' fred_tags()
-#' fred_tags("inflation")
+#' try({
+#'   fred_tags()
+#'   fred_tags("inflation")
+#' })
 #' options(op)
 #' }
 fred_tags <- function(query = NULL, limit = 1000L) {

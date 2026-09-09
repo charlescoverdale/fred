@@ -34,10 +34,12 @@ API call manageable.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-\dontrun{
+try({
+  \dontrun{
   rev <- fred_vintage_revisions("GDPC1", from = "2018-01-01")
   summary(rev$revision_total_pct)
-}
+  }
+})
 options(op)
 }
 }

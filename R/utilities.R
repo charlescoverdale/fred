@@ -32,12 +32,14 @@
 #'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
-#' \dontrun{
+#' try({
+#'   # With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
+#'   \dontrun{
 #'   ur <- fred_series("UNRATE", from = "2023-01-01")
 #'   sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)
 #'   fred_event_window(ur, events = sep$date, window = c(-60L, 60L))
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 fred_event_window <- function(data, events, window = c(-30L, 90L)) {
@@ -129,10 +131,12 @@ fred_event_window <- function(data, events, window = c(-30L, 90L)) {
 #'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' \dontrun{
+#' try({
+#'   \dontrun{
 #'   daily_yields <- fred_series("DGS10", from = "2023-01-01")
 #'   monthly_yields <- fred_aggregate(daily_yields, fun = "mean", by = "month")
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 fred_aggregate <- function(data, fun = "mean", by = "month") {
@@ -236,10 +240,12 @@ fred_aggregate <- function(data, fun = "mean", by = "month") {
 #'
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' \dontrun{
+#' try({
+#'   \dontrun{
 #'   gdp <- fred_series("GDPC1", from = "2020-01-01")
 #'   gdp_monthly <- fred_interpolate(gdp, method = "linear")
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 fred_interpolate <- function(data, method = c("locf", "linear")) {

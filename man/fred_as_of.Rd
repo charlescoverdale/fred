@@ -49,8 +49,10 @@ default (latest-vintage) cache, so calling \code{fred_series("GDP")} and
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# GDP as it looked on 1 March 2020
-gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+try({
+  # GDP as it looked on 1 March 2020
+  gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+})
 options(op)
 }
 }

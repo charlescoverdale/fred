@@ -29,14 +29,16 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' \dontrun{
+#' try({
+#'   \dontrun{
 #'   gdp <- fred_series("GDPC1", from = "2000-01-01")
 #'   plot(gdp)
 #'
 #'   panel <- fred_series(c("UNRATE", "CIVPART"), from = "2000-01-01",
-#'                        format = "wide")
+#'   format = "wide")
 #'   plot(panel)
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 plot.fred_tbl <- function(x, recessions = TRUE, legend = TRUE,

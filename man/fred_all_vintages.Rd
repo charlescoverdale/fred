@@ -45,8 +45,10 @@ indicators like GDP.
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-# All vintages of recent GDP releases
-gdp_vint <- fred_all_vintages("GDP", from = "2020-01-01")
+try({
+  # All vintages of recent GDP releases
+  gdp_vint <- fred_all_vintages("GDP", from = "2020-01-01")
+})
 options(op)
 }
 }

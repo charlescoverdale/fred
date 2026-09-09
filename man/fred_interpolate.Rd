@@ -40,10 +40,12 @@ fred_interpolate(df, method = "linear")
 
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-\dontrun{
+try({
+  \dontrun{
   gdp <- fred_series("GDPC1", from = "2020-01-01")
   gdp_monthly <- fred_interpolate(gdp, method = "linear")
-}
+  }
+})
 options(op)
 }
 }

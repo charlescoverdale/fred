@@ -35,8 +35,10 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # GDP as it looked on 1 March 2020
-#' gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+#' try({
+#'   # GDP as it looked on 1 March 2020
+#'   gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+#' })
 #' options(op)
 #' }
 fred_as_of <- function(series_id, date, from = NULL, to = NULL,
@@ -103,8 +105,10 @@ fred_as_of <- function(series_id, date, from = NULL, to = NULL,
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Initial-release GDP, never revised
-#' gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+#' try({
+#'   # Initial-release GDP, never revised
+#'   gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+#' })
 #' options(op)
 #' }
 fred_first_release <- function(series_id, from = NULL, to = NULL,
@@ -174,8 +178,10 @@ fred_first_release <- function(series_id, from = NULL, to = NULL,
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # All vintages of recent GDP releases
-#' gdp_vint <- fred_all_vintages("GDP", from = "2020-01-01")
+#' try({
+#'   # All vintages of recent GDP releases
+#'   gdp_vint <- fred_all_vintages("GDP", from = "2020-01-01")
+#' })
 #' options(op)
 #' }
 fred_all_vintages <- function(series_id, from = NULL, to = NULL,
@@ -242,11 +248,13 @@ fred_all_vintages <- function(series_id, from = NULL, to = NULL,
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # GDP as published at three quarterly snapshots
-#' gdp_panel <- fred_real_time_panel(
+#' try({
+#'   # GDP as published at three quarterly snapshots
+#'   gdp_panel <- fred_real_time_panel(
 #'   "GDP",
 #'   vintages = c("2023-04-30", "2023-07-31", "2023-10-31")
-#' )
+#'   )
+#' })
 #' options(op)
 #' }
 fred_real_time_panel <- function(series_id, vintages, from = NULL, to = NULL,

@@ -43,10 +43,12 @@ fred_aggregate(wide, fun = "sum", by = "quarter")
 
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-\dontrun{
+try({
+  \dontrun{
   daily_yields <- fred_series("DGS10", from = "2023-01-01")
   monthly_yields <- fred_aggregate(daily_yields, fun = "mean", by = "month")
-}
+  }
+})
 options(op)
 }
 }

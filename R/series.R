@@ -165,20 +165,22 @@ fred_obs_one <- function(sid, units = "lin", aggregation = "avg",
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Single series
-#' gdp <- fred_series("GDP")
+#' try({
+#'   # Single series
+#'   gdp <- fred_series("GDP")
 #'
-#' # Multiple series, long format
-#' macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
+#'   # Multiple series, long format
+#'   macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
 #'
-#' # Multiple series, wide format
-#' macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
+#'   # Multiple series, wide format
+#'   macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
 #'
-#' # Readable transformation: year-on-year percent change
-#' gdp_growth <- fred_series("GDP", transform = "yoy_pct")
+#'   # Readable transformation: year-on-year percent change
+#'   gdp_growth <- fred_series("GDP", transform = "yoy_pct")
 #'
-#' # Aggregate daily to monthly
-#' rates <- fred_series("DGS10", frequency = "m")
+#'   # Aggregate daily to monthly
+#'   rates <- fred_series("DGS10", frequency = "m")
+#' })
 #' options(op)
 #' }
 fred_series <- function(series_id, from = NULL, to = NULL,

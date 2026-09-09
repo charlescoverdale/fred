@@ -33,13 +33,15 @@ bare list, names from the list are used; otherwise objects are labelled
 \examples{
 \donttest{
 op <- options(fred.cache_dir = tempdir())
-\dontrun{
+try({
+  \dontrun{
   gdp <- fred_series("GDPC1", from = "2020-01-01")
   un  <- fred_series("UNRATE", from = "2020-01-01")
   m <- fred_manifest(gdp = gdp, unrate = un)
   print(m)
   fred_manifest(gdp = gdp, file = file.path(tempdir(), "manifest.yml"))
-}
+  }
+})
 options(op)
 }
 }

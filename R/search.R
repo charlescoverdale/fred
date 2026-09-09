@@ -31,15 +31,17 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' # Keyword search
-#' fred_search("unemployment rate")
+#' try({
+#'   # Keyword search
+#'   fred_search("unemployment rate")
 #'
-#' # Filter to monthly series only
-#' fred_search("consumer price index", filter_variable = "frequency",
-#'             filter_value = "Monthly")
+#'   # Filter to monthly series only
+#'   fred_search("consumer price index", filter_variable = "frequency",
+#'   filter_value = "Monthly")
 #'
-#' # Search by series ID pattern
-#' fred_search("GDP*", type = "series_id")
+#'   # Search by series ID pattern
+#'   fred_search("GDP*", type = "series_id")
+#' })
 #' options(op)
 #' }
 fred_search <- function(query, type = "full_text", limit = 100L,

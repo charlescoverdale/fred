@@ -27,13 +27,15 @@
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' \dontrun{
+#' try({
+#'   \dontrun{
 #'   gdp <- fred_series("GDPC1", from = "2020-01-01")
 #'   un  <- fred_series("UNRATE", from = "2020-01-01")
 #'   m <- fred_manifest(gdp = gdp, unrate = un)
 #'   print(m)
 #'   fred_manifest(gdp = gdp, file = file.path(tempdir(), "manifest.yml"))
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 fred_manifest <- function(..., file = NULL) {
@@ -153,10 +155,12 @@ print.fred_manifest <- function(x, ...) {
 #' @examples
 #' \donttest{
 #' op <- options(fred.cache_dir = tempdir())
-#' \dontrun{
+#' try({
+#'   \dontrun{
 #'   rev <- fred_vintage_revisions("GDPC1", from = "2018-01-01")
 #'   summary(rev$revision_total_pct)
-#' }
+#'   }
+#' })
 #' options(op)
 #' }
 fred_vintage_revisions <- function(series_id, from = NULL, to = NULL,
