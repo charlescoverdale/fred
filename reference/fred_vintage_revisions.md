@@ -50,10 +50,12 @@ Other reproducibility:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-if (FALSE) { # \dontrun{
+try({
+  if (FALSE) { # \dontrun{
   rev <- fred_vintage_revisions("GDPC1", from = "2018-01-01")
   summary(rev$revision_total_pct)
-} # }
+  } # }
+})
 options(op)
 # }
 ```

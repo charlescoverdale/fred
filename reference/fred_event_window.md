@@ -63,12 +63,14 @@ fred_event_window(df, events = events, window = c(-30L, 60L))
 
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
-if (FALSE) { # \dontrun{
+try({
+  # With live FRED data: UNRATE around 2024 SEP meetings (needs API key)
+  if (FALSE) { # \dontrun{
   ur <- fred_series("UNRATE", from = "2023-01-01")
   sep <- fred_fomc_dates(year = 2024, sep_only = TRUE)
   fred_event_window(ur, events = sep$date, window = c(-60L, 60L))
-} # }
+  } # }
+})
 options(op)
 # }
 ```

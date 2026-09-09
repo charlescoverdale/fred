@@ -1,5 +1,27 @@
 # Changelog
 
+## fred 0.3.1
+
+Resubmission of 0.3.0, which CRAN’s incoming checks rejected on
+2026-09-08. Two problems, both now fixed.
+
+- The `donttest` additional check ran
+  [`fred_all_vintages()`](https://charlescoverdale.github.io/fred/reference/fred_all_vintages.md)
+  on a machine with no `FRED_API_KEY` and it aborted rather than failing
+  gracefully. 0.3.0 wrapped 14 example blocks in
+  [`try()`](https://rdrr.io/r/base/try.html) but missed 14 more,
+  including every vintage helper and
+  [`fred_get_key()`](https://charlescoverdale.github.io/fred/reference/fred_get_key.md)
+  itself. All of them are wrapped now. Verified by extracting every
+  generated example with `tools::Rd2ex(commentDonttest = FALSE)` and
+  running all 35 with the API key unset: none errors.
+
+- `inst/CITATION` carried `doi = "10.5281/zenodo.fred"`, a placeholder
+  that was never replaced with a real deposit. It resolves to 404 on
+  both CrossRef and DataCite, which CRAN flagged as an invalid DOI.
+  There is no Zenodo record for this package, so the field has been
+  removed rather than corrected.
+
 ## fred 0.3.0
 
 A research-grade upgrade in three logical blocks: (1) discoverability

@@ -61,9 +61,11 @@ Other vintages:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Initial-release GDP, never revised
-gdp_first <- fred_first_release("GDP", from = "2018-01-01")
-#> Error in fred_get_key(): No FRED API key found.
+try({
+  # Initial-release GDP, never revised
+  gdp_first <- fred_first_release("GDP", from = "2018-01-01")
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

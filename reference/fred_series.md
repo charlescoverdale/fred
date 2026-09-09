@@ -115,33 +115,23 @@ Other series:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# Single series
-gdp <- fred_series("GDP")
-#> Error in fred_get_key(): No FRED API key found.
-#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
-#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+try({
+  # Single series
+  gdp <- fred_series("GDP")
 
-# Multiple series, long format
-macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
-#> Error in fred_get_key(): No FRED API key found.
-#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
-#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+  # Multiple series, long format
+  macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
 
-# Multiple series, wide format
-macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
-#> Error in fred_get_key(): No FRED API key found.
-#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
-#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+  # Multiple series, wide format
+  macro_w <- fred_series(c("GDP", "UNRATE"), format = "wide")
 
-# Readable transformation: year-on-year percent change
-gdp_growth <- fred_series("GDP", transform = "yoy_pct")
-#> Error in fred_get_key(): No FRED API key found.
-#> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
-#> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
+  # Readable transformation: year-on-year percent change
+  gdp_growth <- fred_series("GDP", transform = "yoy_pct")
 
-# Aggregate daily to monthly
-rates <- fred_series("DGS10", frequency = "m")
-#> Error in fred_get_key(): No FRED API key found.
+  # Aggregate daily to monthly
+  rates <- fred_series("DGS10", frequency = "m")
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

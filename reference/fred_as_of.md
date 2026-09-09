@@ -72,9 +72,11 @@ Other vintages:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# GDP as it looked on 1 March 2020
-gdp_2020 <- fred_as_of("GDP", "2020-03-01")
-#> Error in fred_get_key(): No FRED API key found.
+try({
+  # GDP as it looked on 1 March 2020
+  gdp_2020 <- fred_as_of("GDP", "2020-03-01")
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

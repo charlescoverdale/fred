@@ -65,12 +65,14 @@ Other vintages:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-# GDP as published at three quarterly snapshots
-gdp_panel <- fred_real_time_panel(
+try({
+  # GDP as published at three quarterly snapshots
+  gdp_panel <- fred_real_time_panel(
   "GDP",
   vintages = c("2023-04-30", "2023-07-31", "2023-10-31")
-)
-#> Error in fred_get_key(): No FRED API key found.
+  )
+})
+#> Error in fred_get_key() : No FRED API key found.
 #> ℹ Set one with `fred_set_key()` or the `FRED_API_KEY` environment variable.
 #> ℹ Register for a free key at <https://fredaccount.stlouisfed.org/apikeys>.
 options(op)

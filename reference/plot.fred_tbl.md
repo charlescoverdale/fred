@@ -73,14 +73,16 @@ series), one line per numeric column.
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-if (FALSE) { # \dontrun{
+try({
+  if (FALSE) { # \dontrun{
   gdp <- fred_series("GDPC1", from = "2000-01-01")
   plot(gdp)
 
   panel <- fred_series(c("UNRATE", "CIVPART"), from = "2000-01-01",
-                       format = "wide")
+  format = "wide")
   plot(panel)
-} # }
+  } # }
+})
 options(op)
 # }
 ```

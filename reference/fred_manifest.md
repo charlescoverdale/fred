@@ -46,13 +46,15 @@ Other reproducibility:
 ``` r
 # \donttest{
 op <- options(fred.cache_dir = tempdir())
-if (FALSE) { # \dontrun{
+try({
+  if (FALSE) { # \dontrun{
   gdp <- fred_series("GDPC1", from = "2020-01-01")
   un  <- fred_series("UNRATE", from = "2020-01-01")
   m <- fred_manifest(gdp = gdp, unrate = un)
   print(m)
   fred_manifest(gdp = gdp, file = file.path(tempdir(), "manifest.yml"))
-} # }
+  } # }
+})
 options(op)
 # }
 ```
