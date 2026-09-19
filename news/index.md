@@ -2,6 +2,8 @@
 
 ## fred 0.3.1
 
+CRAN release: 2026-09-09
+
 Resubmission of 0.3.0, which CRAN’s incoming checks rejected on
 2026-09-08. Two problems, both now fixed.
 

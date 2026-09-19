@@ -39,7 +39,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.1" id="fred-031">fred 0.3.1<a class="anchor" aria-label="anchor" href="#fred-031"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.1" id="fred-031">fred 0.3.1<a class="anchor" aria-label="anchor" href="#fred-031"></a></h2><p class="text-muted">CRAN release: 2026-09-09</p>
 <p>Resubmission of 0.3.0, which CRAN’s incoming checks rejected on 2026-09-08. Two problems, both now fixed.</p>
 <ul><li><p>The <code>donttest</code> additional check ran <code><a href="../reference/fred_all_vintages.html">fred_all_vintages()</a></code> on a machine with no <code>FRED_API_KEY</code> and it aborted rather than failing gracefully. 0.3.0 wrapped 14 example blocks in <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code> but missed 14 more, including every vintage helper and <code><a href="../reference/fred_get_key.html">fred_get_key()</a></code> itself. All of them are wrapped now. Verified by extracting every generated example with <code>tools::Rd2ex(commentDonttest = FALSE)</code> and running all 35 with the API key unset: none errors.</p></li>
 <li><p><code>inst/CITATION</code> carried <code>doi = "10.5281/zenodo.fred"</code>, a placeholder that was never replaced with a real deposit. It resolves to 404 on both CrossRef and DataCite, which CRAN flagged as an invalid DOI. There is no Zenodo record for this package, so the field has been removed rather than corrected.</p></li>
