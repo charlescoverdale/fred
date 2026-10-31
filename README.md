@@ -481,6 +481,7 @@ fred_vintage_revisions("GDPC1", from = "2018-01-01")
 | [`inflationkit`](https://github.com/charlescoverdale/inflationkit) | Inflation analysis (decomposition, persistence, Phillips curve) |
 | [`nowcast`](https://github.com/charlescoverdale/nowcast) | Economic nowcasting (bridge, MIDAS, DFM) |
 | [`debtkit`](https://github.com/charlescoverdale/debtkit) | Debt sustainability analysis |
+| [`readimf`](https://github.com/charlescoverdale/readimf) | IMF data (IFS, WEO, COFER, Direction of Trade) |
 
 ## Attribution
 
