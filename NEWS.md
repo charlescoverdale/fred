@@ -1,3 +1,15 @@
+# fred 0.3.2
+
+## Cached series now expire after 24 hours
+
+`fred_series()` cached each request under a key built from its arguments
+and returned that copy on every later call, with no expiry. A call such as
+`fred_series("UNRATE")` therefore kept returning the observations from the
+first time it ran, without new releases or revisions, until the cache was
+cleared or `cache = FALSE` was passed. Cached copies are now downloaded
+again once they are 24 hours old. Set `options(fred.cache_ttl = )` to a
+number of hours to change this (`Inf` restores the old behaviour).
+
 # fred 0.3.1
 
 Resubmission of 0.3.0, which CRAN's incoming checks rejected on 2026-09-08.

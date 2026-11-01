@@ -26,8 +26,8 @@ options(op)
 }
 }
 \seealso{
-Other categories: 
-\code{\link{fred_category}()},
-\code{\link{fred_category_series}()}
+Other categories:
+\code{\link[=fred_category]{fred_category()}},
+\code{\link[=fred_category_series]{fred_category_series()}}
 }
 \concept{categories}

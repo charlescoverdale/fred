@@ -50,8 +50,8 @@ fred_cite_series("UNRATE", vintage_date = "2024-06-01", format = "text")
 }
 }
 \seealso{
-Other reproducibility: 
-\code{\link{fred_manifest}()},
-\code{\link{fred_vintage_revisions}()}
+Other reproducibility:
+\code{\link[=fred_manifest]{fred_manifest()}},
+\code{\link[=fred_vintage_revisions]{fred_vintage_revisions()}}
 }
 \concept{reproducibility}

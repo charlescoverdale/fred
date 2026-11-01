@@ -24,8 +24,8 @@ options(op)
 }
 }
 \seealso{
-Other releases: 
-\code{\link{fred_release_dates}()},
-\code{\link{fred_release_series}()}
+Other releases:
+\code{\link[=fred_release_dates]{fred_release_dates()}},
+\code{\link[=fred_release_series]{fred_release_series()}}
 }
 \concept{releases}

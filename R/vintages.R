@@ -25,7 +25,8 @@
 #' @param units Character. Raw FRED units code. Default `"lin"`.
 #' @param frequency,aggregation Optional frequency aggregation arguments
 #'   (see [fred_series()]).
-#' @param cache Logical. Cache results locally. Default `TRUE`.
+#' @param cache Logical. Cache results locally for 24 hours (see the
+#'   `cache` argument of [fred_series()]). Default `TRUE`.
 #'
 #' @return A `fred_tbl` with columns `date`, `series_id`, `value`,
 #'   `realtime_start`, `realtime_end`.
@@ -238,7 +239,8 @@ fred_all_vintages <- function(series_id, from = NULL, to = NULL,
 #' @param units Character. Raw FRED units code. Default `"lin"`.
 #' @param frequency,aggregation Optional frequency aggregation arguments
 #'   (see [fred_series()]).
-#' @param cache Logical. Cache results locally. Default `TRUE`.
+#' @param cache Logical. Cache results locally for 24 hours (see the
+#'   `cache` argument of [fred_series()]). Default `TRUE`.
 #'
 #' @return A `fred_tbl` with columns `date`, `series_id`, `value`,
 #'   `realtime_start`, `realtime_end`.

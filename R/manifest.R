@@ -144,7 +144,8 @@ print.fred_manifest <- function(x, ...) {
 #'
 #' @param series_id Character. A single FRED series ID.
 #' @param from,to Optional observation date range.
-#' @param cache Logical. Cache the underlying vintage download. Default `TRUE`.
+#' @param cache Logical. Cache the underlying vintage download for 24
+#'   hours (see the `cache` argument of [fred_series()]). Default `TRUE`.
 #'
 #' @return A `fred_tbl` with columns `series_id`, `date`, `n_vintages`,
 #'   `first_value`, `final_value`, `revision_total`, `revision_total_pct`,

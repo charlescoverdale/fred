@@ -38,7 +38,7 @@ options(op)
 }
 }
 \seealso{
-Other catalogue: 
-\code{\link{fred_catalogue}()}
+Other catalogue:
+\code{\link[=fred_catalogue]{fred_catalogue()}}
 }
 \concept{catalogue}

@@ -50,8 +50,8 @@ options(op)
 }
 }
 \seealso{
-Other utilities: 
-\code{\link{fred_aggregate}()},
-\code{\link{fred_event_window}()}
+Other utilities:
+\code{\link[=fred_aggregate]{fred_aggregate()}},
+\code{\link[=fred_event_window]{fred_event_window()}}
 }
 \concept{utilities}

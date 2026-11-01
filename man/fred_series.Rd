@@ -42,8 +42,10 @@ specified. One of \code{"avg"} (default), \code{"sum"}, or \code{"eop"} (end of 
 per series.}
 
 \item{cache}{Logical. If \code{TRUE} (the default), results are cached locally
-and returned from the cache on subsequent calls. Set to \code{FALSE} to force
-a fresh download from the API.}
+and returned from the cache on subsequent calls for 24 hours, after
+which they are downloaded again (set \code{options(fred.cache_ttl = )} to a
+number of hours to change this). Set to \code{FALSE} to force a fresh
+download from the API.}
 }
 \value{
 A \code{fred_tbl} (a \code{data.frame} subclass that prints with a
@@ -97,10 +99,10 @@ options(op)
 }
 }
 \seealso{
-Other series: 
-\code{\link{fred_info}()},
-\code{\link{fred_search}()},
-\code{\link{fred_updates}()},
-\code{\link{fred_vintages}()}
+Other series:
+\code{\link[=fred_info]{fred_info()}},
+\code{\link[=fred_search]{fred_search()}},
+\code{\link[=fred_updates]{fred_updates()}},
+\code{\link[=fred_vintages]{fred_vintages()}}
 }
 \concept{series}

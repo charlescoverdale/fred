@@ -43,7 +43,7 @@ fred_catalogue(query = "mortgage")
 fred_catalogue(category = "Interest Rates", query = "treasury")
 }
 \seealso{
-Other catalogue: 
-\code{\link{fred_browse}()}
+Other catalogue:
+\code{\link[=fred_browse]{fred_browse()}}
 }
 \concept{catalogue}

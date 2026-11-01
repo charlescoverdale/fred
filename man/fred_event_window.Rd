@@ -51,8 +51,8 @@ options(op)
 }
 }
 \seealso{
-Other utilities: 
-\code{\link{fred_aggregate}()},
-\code{\link{fred_interpolate}()}
+Other utilities:
+\code{\link[=fred_aggregate]{fred_aggregate()}},
+\code{\link[=fred_interpolate]{fred_interpolate()}}
 }
 \concept{utilities}

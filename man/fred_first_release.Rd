@@ -24,7 +24,8 @@ fred_first_release(
 \item{frequency, aggregation}{Optional frequency aggregation arguments
 (see \code{\link[=fred_series]{fred_series()}}).}
 
-\item{cache}{Logical. Cache results locally. Default \code{TRUE}.}
+\item{cache}{Logical. Cache results locally for 24 hours (see the
+\code{cache} argument of \code{\link[=fred_series]{fred_series()}}). Default \code{TRUE}.}
 }
 \value{
 A \code{fred_tbl} with columns \code{date}, \code{series_id}, \code{value},
@@ -49,9 +50,9 @@ options(op)
 }
 }
 \seealso{
-Other vintages: 
-\code{\link{fred_all_vintages}()},
-\code{\link{fred_as_of}()},
-\code{\link{fred_real_time_panel}()}
+Other vintages:
+\code{\link[=fred_all_vintages]{fred_all_vintages()}},
+\code{\link[=fred_as_of]{fred_as_of()}},
+\code{\link[=fred_real_time_panel]{fred_real_time_panel()}}
 }
 \concept{vintages}

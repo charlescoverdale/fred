@@ -23,10 +23,10 @@ options(op)
 }
 }
 \seealso{
-Other configuration: 
-\code{\link{clear_cache}()},
-\code{\link{fred_cache_info}()},
-\code{\link{fred_request}()},
-\code{\link{fred_set_key}()}
+Other configuration:
+\code{\link[=clear_cache]{clear_cache()}},
+\code{\link[=fred_cache_info]{fred_cache_info()}},
+\code{\link[=fred_request]{fred_request()}},
+\code{\link[=fred_set_key]{fred_set_key()}}
 }
 \concept{configuration}

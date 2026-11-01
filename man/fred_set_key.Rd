@@ -27,10 +27,10 @@ fred_set_key("your_api_key_here")
 }
 }
 \seealso{
-Other configuration: 
-\code{\link{clear_cache}()},
-\code{\link{fred_cache_info}()},
-\code{\link{fred_get_key}()},
-\code{\link{fred_request}()}
+Other configuration:
+\code{\link[=clear_cache]{clear_cache()}},
+\code{\link[=fred_cache_info]{fred_cache_info()}},
+\code{\link[=fred_get_key]{fred_get_key()}},
+\code{\link[=fred_request]{fred_request()}}
 }
 \concept{configuration}

@@ -1,6 +1,6 @@
 Package: fred
 Title: Access 'Federal Reserve Economic Data'
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to economic data from the 'Federal
     Reserve Economic Data' ('FRED') API <https://fred.stlouisfed.org/docs/api/fred/>.
@@ -27,7 +27,6 @@ Language: en-US
 URL: https://charlescoverdale.github.io/fred/, https://github.com/charlescoverdale/fred
 BugReports: https://github.com/charlescoverdale/fred/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends: R (>= 4.1.0)
 Imports:
     cli (>= 3.6.0),
@@ -45,3 +44,4 @@ Suggests:
     withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

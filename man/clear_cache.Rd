@@ -21,10 +21,10 @@ options(op)
 }
 }
 \seealso{
-Other configuration: 
-\code{\link{fred_cache_info}()},
-\code{\link{fred_get_key}()},
-\code{\link{fred_request}()},
-\code{\link{fred_set_key}()}
+Other configuration:
+\code{\link[=fred_cache_info]{fred_cache_info()}},
+\code{\link[=fred_get_key]{fred_get_key()}},
+\code{\link[=fred_request]{fred_request()}},
+\code{\link[=fred_set_key]{fred_set_key()}}
 }
 \concept{configuration}

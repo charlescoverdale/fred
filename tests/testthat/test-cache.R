@@ -27,3 +27,34 @@ test_that("fred_cache_info reflects cached files", {
     expect_true("obs_TEST_lin_avg.rds" %in% info$files$name)
   })
 })
+
+test_that("fred_cache_ttl() defaults to 24 hours and rejects bad values", {
+  withr::local_options(fred.cache_ttl = NULL)
+  expect_equal(fred_cache_ttl(), 24)
+  withr::local_options(fred.cache_ttl = -1)
+  expect_error(fred_cache_ttl(), "non-negative")
+  withr::local_options(fred.cache_ttl = "1 day")
+  expect_error(fred_cache_ttl(), "non-negative")
+})
+
+test_that("a fresh cached series is served without the API", {
+  withr::local_options(fred.cache_dir = withr::local_tempdir(),
+                       fred.cache_ttl = 24)
+  withr::local_envvar(FRED_API_KEY = "")
+  cached <- data.frame(date = as.Date("2026-01-01"), series_id = "TEST",
+                       value = 1)
+  saveRDS(cached, file.path(fred_cache_dir(), "obs_TEST_lin_avg.rds"))
+  expect_equal(fred_obs_one("TEST"), cached)
+})
+
+test_that("an expired cached series is fetched again", {
+  withr::local_options(fred.cache_dir = withr::local_tempdir(),
+                       fred.cache_ttl = 0)
+  withr::local_envvar(FRED_API_KEY = "")
+  saveRDS(data.frame(date = as.Date("2026-01-01"), series_id = "TEST",
+                     value = 1),
+          file.path(fred_cache_dir(), "obs_TEST_lin_avg.rds"))
+  # With no API key, reaching the API is an error: the stale copy was not
+  # returned.
+  expect_error(fred_obs_one("TEST"))
+})

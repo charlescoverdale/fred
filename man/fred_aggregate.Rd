@@ -53,8 +53,8 @@ options(op)
 }
 }
 \seealso{
-Other utilities: 
-\code{\link{fred_event_window}()},
-\code{\link{fred_interpolate}()}
+Other utilities:
+\code{\link[=fred_event_window]{fred_event_window()}},
+\code{\link[=fred_interpolate]{fred_interpolate()}}
 }
 \concept{utilities}

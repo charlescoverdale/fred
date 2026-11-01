@@ -47,7 +47,7 @@ fred_recession_dates(flag = seq(as.Date("2007-01-01"), as.Date("2010-12-01"),
                                 by = "month"))
 }
 \seealso{
-Other dates: 
-\code{\link{fred_fomc_dates}()}
+Other dates:
+\code{\link[=fred_fomc_dates]{fred_fomc_dates()}}
 }
 \concept{dates}

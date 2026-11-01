@@ -33,7 +33,7 @@ uses a fixed six-colour qualitative palette, or HCL colours for >6 series.}
 
 \item{main, xlab, ylab}{Plot labels. Sensible defaults are inferred.}
 
-\item{...}{Other arguments passed to the initial \code{\link[graphics:plot.default]{graphics::plot()}} call.}
+\item{...}{Other arguments passed to the initial \code{\link[graphics:plot]{graphics::plot()}} call.}
 }
 \value{
 \code{x}, invisibly.

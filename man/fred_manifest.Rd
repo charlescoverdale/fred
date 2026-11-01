@@ -46,8 +46,8 @@ options(op)
 }
 }
 \seealso{
-Other reproducibility: 
-\code{\link{fred_cite_series}()},
-\code{\link{fred_vintage_revisions}()}
+Other reproducibility:
+\code{\link[=fred_cite_series]{fred_cite_series()}},
+\code{\link[=fred_vintage_revisions]{fred_vintage_revisions()}}
 }
 \concept{reproducibility}

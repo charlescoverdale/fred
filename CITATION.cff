@@ -15,8 +15,8 @@ authors:
 repository-code: "https://github.com/charlescoverdale/fred"
 url: "https://charlescoverdale.github.io/fred/"
 license: MIT
-version: 0.3.0
-date-released: "2026-04-26"
+version: 0.3.2
+date-released: "2026-11-01"
 keywords:
   - R
   - macroeconomics

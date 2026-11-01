@@ -31,7 +31,7 @@ options(op)
 }
 }
 \seealso{
-Other tags: 
-\code{\link{fred_related_tags}()}
+Other tags:
+\code{\link[=fred_related_tags]{fred_related_tags()}}
 }
 \concept{tags}

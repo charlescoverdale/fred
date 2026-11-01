@@ -6,6 +6,20 @@ fred_cache_dir <- function() {
 }
 
 
+#' Cache lifetime in hours, respecting the fred.cache_ttl option
+#'
+#' FRED series gain observations and are revised with every release, so a
+#' cached copy older than this is fetched again. The default is 24 hours.
+#' @noRd
+fred_cache_ttl <- function() {
+  ttl <- getOption("fred.cache_ttl", default = 24)
+  if (!is.numeric(ttl) || length(ttl) != 1L || is.na(ttl) || ttl < 0) {
+    cli::cli_abort("Option {.code fred.cache_ttl} must be a single non-negative number of hours.")
+  }
+  ttl
+}
+
+
 #' Build a cache key for one observation request
 #'
 #' Backwards compatible with v0.1.x: when realtime/output_type/vintage_dates
@@ -60,7 +74,8 @@ fred_obs_one <- function(sid, units = "lin", aggregation = "avg",
   cache_file <- file.path(cache_dir, paste0(cache_key, ".rds"))
 
   if (isTRUE(cache) && file.exists(cache_file)) {
-    return(readRDS(cache_file))
+    age <- difftime(Sys.time(), file.info(cache_file)$mtime, units = "hours")
+    if (as.numeric(age) < fred_cache_ttl()) return(readRDS(cache_file))
   }
 
   params <- list(
@@ -152,8 +167,10 @@ fred_obs_one <- function(sid, units = "lin", aggregation = "avg",
 #'   `(series_id, date)`. `"wide"` returns one row per date with one column
 #'   per series.
 #' @param cache Logical. If `TRUE` (the default), results are cached locally
-#'   and returned from the cache on subsequent calls. Set to `FALSE` to force
-#'   a fresh download from the API.
+#'   and returned from the cache on subsequent calls for 24 hours, after
+#'   which they are downloaded again (set `options(fred.cache_ttl = )` to a
+#'   number of hours to change this). Set to `FALSE` to force a fresh
+#'   download from the API.
 #'
 #' @return A `fred_tbl` (a `data.frame` subclass that prints with a
 #'   one-line provenance header). In long format, columns are `date`,

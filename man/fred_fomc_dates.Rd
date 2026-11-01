@@ -44,7 +44,7 @@ fred_fomc_dates(year = 2022)
 fred_fomc_dates(year = 2024, sep_only = TRUE)
 }
 \seealso{
-Other dates: 
-\code{\link{fred_recession_dates}()}
+Other dates:
+\code{\link[=fred_recession_dates]{fred_recession_dates()}}
 }
 \concept{dates}

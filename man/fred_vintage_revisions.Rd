@@ -11,7 +11,8 @@ fred_vintage_revisions(series_id, from = NULL, to = NULL, cache = TRUE)
 
 \item{from, to}{Optional observation date range.}
 
-\item{cache}{Logical. Cache the underlying vintage download. Default \code{TRUE}.}
+\item{cache}{Logical. Cache the underlying vintage download for 24
+hours (see the \code{cache} argument of \code{\link[=fred_series]{fred_series()}}). Default \code{TRUE}.}
 }
 \value{
 A \code{fred_tbl} with columns \code{series_id}, \code{date}, \code{n_vintages},
@@ -44,8 +45,8 @@ options(op)
 }
 }
 \seealso{
-Other reproducibility: 
-\code{\link{fred_cite_series}()},
-\code{\link{fred_manifest}()}
+Other reproducibility:
+\code{\link[=fred_cite_series]{fred_cite_series()}},
+\code{\link[=fred_manifest]{fred_manifest()}}
 }
 \concept{reproducibility}

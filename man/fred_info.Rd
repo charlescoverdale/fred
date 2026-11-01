@@ -26,10 +26,10 @@ options(op)
 }
 }
 \seealso{
-Other series: 
-\code{\link{fred_search}()},
-\code{\link{fred_series}()},
-\code{\link{fred_updates}()},
-\code{\link{fred_vintages}()}
+Other series:
+\code{\link[=fred_search]{fred_search()}},
+\code{\link[=fred_series]{fred_series()}},
+\code{\link[=fred_updates]{fred_updates()}},
+\code{\link[=fred_vintages]{fred_vintages()}}
 }
 \concept{series}

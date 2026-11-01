@@ -26,7 +26,7 @@ options(op)
 }
 }
 \seealso{
-Other tags: 
-\code{\link{fred_tags}()}
+Other tags:
+\code{\link[=fred_tags]{fred_tags()}}
 }
 \concept{tags}

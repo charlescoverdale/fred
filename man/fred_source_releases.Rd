@@ -26,7 +26,7 @@ options(op)
 }
 }
 \seealso{
-Other sources: 
-\code{\link{fred_sources}()}
+Other sources:
+\code{\link[=fred_sources]{fred_sources()}}
 }
 \concept{sources}
