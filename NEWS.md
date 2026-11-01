@@ -1,5 +1,11 @@
 # fred 0.3.2
 
+## `fred_cache_info()` sizes were 1,024 times too large
+
+`size_human` started counting from kilobytes and then stepped up a unit
+before reporting, so a 47 KB cache was reported as "47.1 MB". Sizes now
+use the right unit.
+
 ## API errors are no longer reported as connection failures
 
 `fred_request()`, which every data function goes through, let

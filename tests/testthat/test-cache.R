@@ -58,3 +58,10 @@ test_that("an expired cached series is fetched again", {
   # returned.
   expect_error(fred_obs_one("TEST"))
 })
+
+test_that("format_bytes() picks the right unit", {
+  expect_equal(format_bytes(500), "500 B")
+  expect_equal(format_bytes(48231), "47.1 KB")
+  expect_equal(format_bytes(5e6), "4.8 MB")
+  expect_equal(format_bytes(3e9), "2.8 GB")
+})

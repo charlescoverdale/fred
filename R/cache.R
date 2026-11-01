@@ -96,7 +96,7 @@ fred_cache_info <- function() {
 format_bytes <- function(x) {
   if (is.na(x) || x < 1024) return(paste0(x, " B"))
   units <- c("KB", "MB", "GB", "TB")
-  i <- 1L
+  i <- 0L
   while (x >= 1024 && i < length(units)) {
     x <- x / 1024
     i <- i + 1L
