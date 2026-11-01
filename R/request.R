@@ -40,10 +40,16 @@ fred_request <- function(endpoint, ...) {
     backoff = ~ 5
   )
   req <- httr2::req_user_agent(req, "fred R package (https://github.com/charlescoverdale/fred)")
+  # Return HTTP errors as responses. Without this, req_perform() raised on
+  # every 4xx, the handler below reported them all as a connection failure
+  # (a mistyped series ID or a bad key read "check your internet
+  # connection"), and the status checks after it were unreachable.
+  req <- httr2::req_error(req, is_error = function(resp) FALSE)
 
   resp <- tryCatch(
     httr2::req_perform(req),
     error = function(e) {
+      # Only transport failures reach here: no DNS, no route, a timeout.
       cli::cli_abort(c(
         "Failed to connect to the FRED API.",
         "i" = "Check your internet connection or try again later.",
@@ -54,8 +60,16 @@ fred_request <- function(endpoint, ...) {
 
   status <- httr2::resp_status(resp)
   if (status == 400L) {
+    # FRED explains a 400 in the body, e.g. "The series does not exist." or
+    # "The value for variable api_key is not registered."
+    detail <- tryCatch(
+      httr2::resp_body_json(resp)[["error_message"]],
+      error = function(e) NULL
+    )
+    if (!is.null(detail)) detail <- gsub("\\s+", " ", detail)
     cli::cli_abort(c(
       "FRED API returned a bad request (HTTP 400).",
+      "x" = if (!is.null(detail)) "{detail}",
       "i" = "Check your API key and parameters are valid."
     ))
   }

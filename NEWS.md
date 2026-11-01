@@ -1,5 +1,16 @@
 # fred 0.3.2
 
+## API errors are no longer reported as connection failures
+
+`fred_request()`, which every data function goes through, let
+`httr2::req_perform()` raise on any HTTP error and reported all of them
+as "Failed to connect to the FRED API. Check your internet connection".
+A mistyped series ID or an unregistered API key, both HTTP 400, sent
+users to check their network, and the status-specific handling for 400,
+404 and 429 below it was unreachable. HTTP errors now reach that
+handling, and a 400 quotes FRED's own explanation ("The series does not
+exist.", "The value for variable api_key is not registered.").
+
 ## Cached series now expire after 24 hours
 
 `fred_series()` cached each request under a key built from its arguments

@@ -3,7 +3,9 @@
 Bug-fix release. `fred_series()` returned a locally cached copy of each
 request indefinitely, so repeated calls never saw new observations or
 revisions. Cached copies now expire after 24 hours (configurable with an
-option). No other behaviour changes.
+option). Separately, every HTTP error from the API (a mistyped series ID,
+an unregistered key) was reported as a connection failure; errors now
+carry the status and FRED's own message.
 
 ## Test environments
 
