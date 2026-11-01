@@ -2,7 +2,7 @@
 
 > Provides clean, tidy access to economic data from the 'Federal Reserve Economic Data' ('FRED') API.
 
-- Version: 0.3.1
+- Version: 0.3.2
 - Install: `install.packages("fred")`
 - CRAN: https://CRAN.R-project.org/package=fred
 - GitHub: https://github.com/charlescoverdale/fred
@@ -112,7 +112,7 @@ fred_all_vintages(
 - `from, to`: Optional observation date range.
 - `units`: Character. Raw FRED units code. Default `"lin"`.
 - `frequency, aggregation`: Optional frequency aggregation arguments (see `fred_series()`).
-- `cache`: Logical. Cache results locally. Default `TRUE`.
+- `cache`: Logical. Cache results locally for 24 hours (see the `cache` argument of `fred_series()`). Default `TRUE`.
 
 **Returns**
 
@@ -159,7 +159,7 @@ fred_as_of(
 - `from, to`: Optional observation date range.
 - `units`: Character. Raw FRED units code. Default `"lin"`.
 - `frequency, aggregation`: Optional frequency aggregation arguments (see `fred_series()`).
-- `cache`: Logical. Cache results locally. Default `TRUE`.
+- `cache`: Logical. Cache results locally for 24 hours (see the `cache` argument of `fred_series()`). Default `TRUE`.
 
 **Returns**
 
@@ -498,7 +498,7 @@ fred_first_release(
 - `from, to`: Optional observation date range.
 - `units`: Character. Raw FRED units code. Default `"lin"`.
 - `frequency, aggregation`: Optional frequency aggregation arguments (see `fred_series()`).
-- `cache`: Logical. Cache results locally. Default `TRUE`.
+- `cache`: Logical. Cache results locally for 24 hours (see the `cache` argument of `fred_series()`). Default `TRUE`.
 
 **Returns**
 
@@ -726,7 +726,7 @@ fred_real_time_panel(
 - `from, to`: Optional observation date range.
 - `units`: Character. Raw FRED units code. Default `"lin"`.
 - `frequency, aggregation`: Optional frequency aggregation arguments (see `fred_series()`).
-- `cache`: Logical. Cache results locally. Default `TRUE`.
+- `cache`: Logical. Cache results locally for 24 hours (see the `cache` argument of `fred_series()`). Default `TRUE`.
 
 **Returns**
 
@@ -1030,7 +1030,7 @@ fred_series(
 - `frequency`: Character. Frequency aggregation. One of `"d"` (daily), `"w"` (weekly), `"bw"` (biweekly), `"m"` (monthly), `"q"` (quarterly), `"sa"` (semiannual), `"a"` (annual), or `NULL` (native frequency, the default).
 - `aggregation`: Character. Aggregation method when `frequency` is specified. One of `"avg"` (default), `"sum"`, or `"eop"` (end of period).
 - `format`: Character. `"long"` (default) returns one row per (series_id, date). `"wide"` returns one row per date with one column per series.
-- `cache`: Logical. If `TRUE` (the default), results are cached locally and returned from the cache on subsequent calls. Set to `FALSE` to force a fresh download from the API.
+- `cache`: Logical. If `TRUE` (the default), results are cached locally and returned from the cache on subsequent calls for 24 hours, after which they are downloaded again (set `options(fred.cache_ttl = )` to a number of hours to change this). Set to `FALSE` to force a fresh download from the API.
 
 **Returns**
 
@@ -1232,7 +1232,7 @@ fred_vintage_revisions(series_id, from = NULL, to = NULL, cache = TRUE)
 
 - `series_id`: Character. A single FRED series ID.
 - `from, to`: Optional observation date range.
-- `cache`: Logical. Cache the underlying vintage download. Default `TRUE`.
+- `cache`: Logical. Cache the underlying vintage download for 24 hours (see the `cache` argument of `fred_series()`). Default `TRUE`.
 
 **Returns**
 
