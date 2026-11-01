@@ -119,16 +119,18 @@ There are four ways to find it:
 ```r
 fred_catalogue(category = "Inflation")
 #> # FRED: catalogue · 6 rows
-#>          id                                                title  frequency  category
-#>   CPIAUCSL                CPI for All Urban Consumers: All Items          M Inflation
-#>   CPILFESL  CPI for All Urban Consumers: Less Food and Energy            M Inflation
-#>      PCEPI         PCE: Chain-type Price Index                            M Inflation
-#>      ...
+#>        id                                                     title frequency
+#>  CPIAUCSL                    CPI for All Urban Consumers: All Items         M
+#>  CPILFESL         CPI for All Urban Consumers: Less Food and Energy         M
+#>     PCEPI Personal Consumption Expenditures: Chain-type Price Index         M
+#> ...
 
 fred_catalogue(query = "mortgage")
 #> # FRED: catalogue · 1 row
-#>           id                                title frequency       category
-#>  MORTGAGE30US  30-Year Fixed Rate Mortgage Average         W Interest Rates
+#>            id                               title frequency   units
+#>  MORTGAGE30US 30-Year Fixed Rate Mortgage Average         W Percent
+#>        category                        description
+#>  Interest Rates Freddie Mac PMMS 30y mortgage rate
 ```
 
 **2. Search from R** using `fred_search()` for the full FRED database (live API):
@@ -165,10 +167,11 @@ library(fred)
 # US quarterly GDP
 gdp <- fred_series("GDP")
 tail(gdp)
-#>          date series_id    value
-#>   2023-04-01       GDP 27063.01
-#>   2023-07-01       GDP 27610.55
-#>   ...
+#> # FRED: 1 series · 6 obs
+#>        date series_id    value
+#>  2025-04-01       GDP 30630.17
+#>  2025-07-01       GDP 31180.49
+#> ...
 ```
 
 ### Fetch multiple series in one call
@@ -179,8 +182,8 @@ macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"))
 
 # Returns a single data frame with a series_id column
 table(macro$series_id)
-#>  CPIAUCSL       GDP    UNRATE
-#>       977       310       953
+#> CPIAUCSL      GDP   UNRATE 
+#>      957      323      945 
 ```
 
 ### Growth rates and transformations
@@ -191,11 +194,12 @@ FRED can compute transformations server-side, so you don't have to calculate the
 # Year-on-year percent change in GDP
 gdp_growth <- fred_series("GDP", units = "pc1")
 tail(gdp_growth, 4)
-#>          date series_id value
-#>   2023-01-01       GDP  3.57
-#>   2023-04-01       GDP  4.49
-#>   2023-07-01       GDP  5.36
-#>   2023-10-01       GDP  5.78
+#> # FRED: 1 series · 4 obs · units=pc1
+#>        date series_id   value
+#>  2025-10-01       GDP 5.12193
+#>  2026-01-01       GDP 5.74803
+#>  2026-04-01       GDP 6.31030
+#>  2026-07-01       GDP 5.86759
 
 # Other options: "pch" (period-on-period %), "chg" (level change),
 # "log" (natural log), "pca" (annualised rate)
@@ -207,11 +211,12 @@ tail(gdp_growth, 4)
 # CPI since 2020 only
 cpi <- fred_series("CPIAUCSL", from = "2020-01-01")
 head(cpi, 4)
-#>          date series_id   value
-#>   2020-01-01  CPIAUCSL  257.971
-#>   2020-02-01  CPIAUCSL  258.678
-#>   2020-03-01  CPIAUCSL  258.115
-#>   2020-04-01  CPIAUCSL  256.389
+#> # FRED: 1 series · 4 obs
+#>        date series_id   value
+#>  2020-01-01  CPIAUCSL 259.127
+#>  2020-02-01  CPIAUCSL 259.250
+#>  2020-03-01  CPIAUCSL 258.076
+#>  2020-04-01  CPIAUCSL 256.032
 ```
 
 ### Aggregate daily data to a lower frequency
@@ -221,11 +226,12 @@ head(cpi, 4)
 # Aggregate to monthly averages:
 rates <- fred_series("DGS10", frequency = "m")
 tail(rates, 4)
-#>          date series_id value
-#>   2024-09-01     DGS10  3.73
-#>   2024-10-01     DGS10  4.10
-#>   2024-11-01     DGS10  4.34
-#>   2024-12-01     DGS10  4.39
+#> # FRED: 1 series · 4 obs · freq=m
+#>        date series_id value
+#>  2026-07-01     DGS10  4.60
+#>  2026-08-01     DGS10  4.68
+#>  2026-09-01     DGS10  4.99
+#>  2026-10-01     DGS10  5.14
 
 # Or get end-of-period values instead of averages:
 rates_eop <- fred_series("DGS10", frequency = "m", aggregation = "eop")
@@ -234,9 +240,9 @@ rates_eop <- fred_series("DGS10", frequency = "m", aggregation = "eop")
 ### Look up what a series actually measures
 
 ```r
-fred_info("UNRATE")
-#>       id                                title frequency units  seasonal_adjustment
-#>   UNRATE   Unemployment Rate                   Monthly     %   Seasonally Adjusted
+fred_info("UNRATE")[, c("id", "title", "frequency", "units", "seasonal_adjustment")]
+#>      id             title frequency   units seasonal_adjustment
+#>  UNRATE Unemployment Rate   Monthly Percent Seasonally Adjusted
 ```
 
 ### Wide format
@@ -247,12 +253,12 @@ For multi-series analysis it's often easier to have one column per series. Pass 
 macro <- fred_series(c("GDP", "UNRATE", "CPIAUCSL"),
                      from = "2020-01-01", format = "wide")
 head(macro)
-#> # FRED: 3 series · 60 obs · format=wide
-#>         date       GDP UNRATE CPIAUCSL
-#>   2020-01-01  21561.14    3.5  259.037
-#>   2020-02-01        NA    3.5  259.250
-#>   2020-03-01  21289.27    4.4  258.115
-#>   ...
+#> # FRED: 3 series · 6 obs
+#>        date      GDP UNRATE CPIAUCSL
+#>  2020-01-01 21751.24    3.6  259.127
+#>  2020-02-01       NA    3.5  259.250
+#>  2020-03-01       NA    4.4  258.076
+#> ...
 ```
 
 The header at the top is a one-line summary of the query (series count, observations, transform, frequency, vintage). Downstream code can treat the result as a normal data frame.
@@ -308,13 +314,16 @@ fred_cache_info()
 #> $n_files
 #> [1] 27
 #>
+#> $size_bytes
+#> [1] 422195
+#>
 #> $size_human
 #> [1] "412.3 KB"
 #>
 #> $files
-#>                                  name size_bytes            modified
-#>   obs_GDP_lin_avg.rds                    18234   2026-04-09 11:02:13
-#>   obs_UNRATE_lin_avg.rds                 16711   2026-04-09 11:02:14
+#>                     name size_bytes            modified
+#>      obs_GDP_lin_avg.rds      18234 2026-04-09 11:02:13
+#>   obs_UNRATE_lin_avg.rds      16711 2026-04-09 11:02:14
 #>   ...
 ```
 
@@ -348,11 +357,11 @@ fred_recession_dates(flag = seq(as.Date("2007-01-01"),
 # FOMC scheduled meeting dates 2017-2026, with SEP flag
 fred_fomc_dates(year = 2024, sep_only = TRUE)
 #> # FRED: fomc_dates · 4 rows
-#>          date    type   sep
-#>   2024-03-20 regular  TRUE
-#>   2024-06-12 regular  TRUE
-#>   2024-09-18 regular  TRUE
-#>   2024-12-18 regular  TRUE
+#>        date    type  sep
+#>  2024-03-20 regular TRUE
+#>  2024-06-12 regular TRUE
+#>  2024-09-18 regular TRUE
+#>  2024-12-18 regular TRUE
 ```
 
 ### Workflow utilities
