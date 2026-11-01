@@ -25,7 +25,10 @@ fred_vintage_revisions(series_id, from = NULL, to = NULL, cache = TRUE)
 
 - cache:
 
-  Logical. Cache the underlying vintage download. Default `TRUE`.
+  Logical. Cache the underlying vintage download for 24 hours (see the
+  `cache` argument of
+  [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)).
+  Default `TRUE`.
 
 ## Value
 

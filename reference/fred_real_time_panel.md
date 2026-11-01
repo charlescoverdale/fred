@@ -46,7 +46,10 @@ fred_real_time_panel(
 
 - cache:
 
-  Logical. Cache results locally. Default `TRUE`.
+  Logical. Cache results locally for 24 hours (see the `cache` argument
+  of
+  [`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)).
+  Default `TRUE`.
 
 ## Value
 

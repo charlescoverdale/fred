@@ -1,5 +1,38 @@
 # Changelog
 
+## fred 0.3.2
+
+### `fred_cache_info()` sizes were 1,024 times too large
+
+`size_human` started counting from kilobytes and then stepped up a unit
+before reporting, so a 47 KB cache was reported as “47.1 MB”. Sizes now
+use the right unit.
+
+### API errors are no longer reported as connection failures
+
+[`fred_request()`](https://charlescoverdale.github.io/fred/reference/fred_request.md),
+which every data function goes through, let
+[`httr2::req_perform()`](https://httr2.r-lib.org/reference/req_perform.html)
+raise on any HTTP error and reported all of them as “Failed to connect
+to the FRED API. Check your internet connection”. A mistyped series ID
+or an unregistered API key, both HTTP 400, sent users to check their
+network, and the status-specific handling for 400, 404 and 429 below it
+was unreachable. HTTP errors now reach that handling, and a 400 quotes
+FRED’s own explanation (“The series does not exist.”, “The value for
+variable api_key is not registered.”).
+
+### Cached series now expire after 24 hours
+
+[`fred_series()`](https://charlescoverdale.github.io/fred/reference/fred_series.md)
+cached each request under a key built from its arguments and returned
+that copy on every later call, with no expiry. A call such as
+`fred_series("UNRATE")` therefore kept returning the observations from
+the first time it ran, without new releases or revisions, until the
+cache was cleared or `cache = FALSE` was passed. Cached copies are now
+downloaded again once they are 24 hours old. Set
+`options(fred.cache_ttl = )` to a number of hours to change this (`Inf`
+restores the old behaviour).
+
 ## fred 0.3.1
 
 CRAN release: 2026-09-09

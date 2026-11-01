@@ -64,8 +64,10 @@ fred_series(
 - cache:
 
   Logical. If `TRUE` (the default), results are cached locally and
-  returned from the cache on subsequent calls. Set to `FALSE` to force a
-  fresh download from the API.
+  returned from the cache on subsequent calls for 24 hours, after which
+  they are downloaded again (set `options(fred.cache_ttl = )` to a
+  number of hours to change this). Set to `FALSE` to force a fresh
+  download from the API.
 
 ## Value
 
