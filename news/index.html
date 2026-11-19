@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fred</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.2" id="fred-032">fred 0.3.2<a class="anchor" aria-label="anchor" href="#fred-032"></a></h2>
+<h2 class="pkg-version" data-toc-text="development version" id="fred-development-version">fred (development version)<a class="anchor" aria-label="anchor" href="#fred-development-version"></a></h2>
+<div class="section level3">
+<h3 id="stalled-requests-no-longer-hang-the-session-development-version">Stalled requests no longer hang the session<a class="anchor" aria-label="anchor" href="#stalled-requests-no-longer-hang-the-session-development-version"></a></h3>
+<p><code><a href="../reference/fred_request.html">fred_request()</a></code>, and every function built on it, set no HTTP timeout, so a FRED server that accepted the connection and then stalled hung the R session indefinitely (and would hang a CRAN check). Requests now give up if the connection takes over 20 seconds to open or the transfer stalls for 60 seconds, and report the usual “Failed to connect to the FRED API” error. Slow but progressing downloads are unaffected.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.2" id="fred-032">fred 0.3.2<a class="anchor" aria-label="anchor" href="#fred-032"></a></h2><p class="text-muted">CRAN release: 2026-11-01</p>
 <div class="section level3">
 <h3 id="fred_cache_info-sizes-were-times-too-large-0-3-2">
 <code>fred_cache_info()</code> sizes were 1,024 times too large<a class="anchor" aria-label="anchor" href="#fred_cache_info-sizes-were-times-too-large-0-3-2"></a></h3>
