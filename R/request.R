@@ -40,6 +40,16 @@ fred_request <- function(endpoint, ...) {
     backoff = ~ 5
   )
   req <- httr2::req_user_agent(req, "fred R package (https://github.com/charlescoverdale/fred)")
+  # Abort a connection that takes over 20 seconds to open, or a transfer
+  # that stalls below 1 byte/s for 60 seconds. httr2 sets no timeout of its
+  # own, so a stalled FRED server hung the session indefinitely. A stall
+  # raises a curl error, reported by the handler below.
+  req <- httr2::req_options(
+    req,
+    connecttimeout = 20L,
+    low_speed_limit = 1L,
+    low_speed_time = 60L
+  )
   # Return HTTP errors as responses. Without this, req_perform() raised on
   # every 4xx, the handler below reported them all as a connection failure
   # (a mistyped series ID or a bad key read "check your internet

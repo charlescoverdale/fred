@@ -1,3 +1,14 @@
+# fred (development version)
+
+## Stalled requests no longer hang the session
+
+`fred_request()`, and every function built on it, set no HTTP timeout, so
+a FRED server that accepted the connection and then stalled hung the R
+session indefinitely (and would hang a CRAN check). Requests now give up
+if the connection takes over 20 seconds to open or the transfer stalls for
+60 seconds, and report the usual "Failed to connect to the FRED API"
+error. Slow but progressing downloads are unaffected.
+
 # fred 0.3.2
 
 ## `fred_cache_info()` sizes were 1,024 times too large
